@@ -1,0 +1,11 @@
+node_modules
+.expo
+dist
+coverage
+package-lock.json
+assets
+scripts
+src/components
+src/constants
+src/hooks
+src/global.css

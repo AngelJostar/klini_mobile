@@ -1,56 +1,54 @@
-# Welcome to your Expo app 👋
+# Klini Mobile
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación móvil de Dr. Sam para los perfiles Paciente y Médico. Está construida con Expo SDK 55,
+React Native, Expo Router y TypeScript.
 
-## Get started
+## Requisitos
 
-1. Install dependencies
+- Node.js 20.19 o superior.
+- Expo Go para prototipos o un emulador Android.
+- Dr. Sam ejecutándose como API Laravel.
 
-   ```bash
-   npm install
-   ```
+## Inicio local
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```powershell
+npm install
+Copy-Item .env.example .env
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+En Android Studio se puede abrir el emulador presionando `a` en la terminal de Expo.
 
-### Other setup steps
+Para usar explícitamente Expo Go:
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```powershell
+npm run start:go
+```
 
-## Learn more
+Para compilar o iniciar el development build:
 
-To learn more about developing your project with Expo, look at the following resources:
+```powershell
+npm run android:dev
+npm run start:dev
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Verificaciones
 
-## Join the community
+```powershell
+npm run lint
+npm run typecheck
+npm run format:check
+npx expo-doctor
+```
 
-Join our community of developers creating universal apps.
+## Estructura inicial
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- `src/app/(auth)`: acceso y recuperación de sesión.
+- `src/app/(patient)`: pantallas exclusivas del paciente.
+- `src/app/(doctor)`: pantallas exclusivas del médico.
+- `src/config`: configuración validada de ambientes.
+- `src/theme`: colores, espaciado y futuros componentes visuales.
+- `docs/environments.md`: configuración local, de pruebas y producción.
+- `docs/android-development.md`: emulador, Expo Go y development build.
+
+El proyecto sigue el plan `Plan_de_construccion_Klini_Mobile.docx` de Dr. Sam.

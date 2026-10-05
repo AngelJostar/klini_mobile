@@ -1,16 +1,37 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import React from 'react';
-import { useColorScheme } from 'react-native';
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+import { ContentState } from '@/components/ui/content-state';
+import { AuthProvider, useAuth } from '@/providers/auth-provider';
+import { NetworkProvider } from '@/providers/network-provider';
+import { NotificationProvider } from '@/providers/notification-provider';
+import { QueryProvider } from '@/providers/query-provider';
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function RootLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
+    <QueryProvider>
+      <AuthProvider>
+        <NetworkProvider>
+          <NotificationProvider>
+            <StatusBar style="dark" />
+            <RootNavigator />
+          </NotificationProvider>
+        </NetworkProvider>
+      </AuthProvider>
+    </QueryProvider>
+  );
+}
+
+function RootNavigator() {
+  const { user, isRestoring } = useAuth();
+  if (isRestoring) return <ContentState loading title="Restaurando sesión" />;
+
+  return (
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Protected guard={!user}><Stack.Screen name="(auth)" /></Stack.Protected>
+        <Stack.Protected guard={user?.role === 'patient'}><Stack.Screen name="(patient)" /></Stack.Protected>
+        <Stack.Protected guard={user?.role === 'doctor'}><Stack.Screen name="(doctor)" /></Stack.Protected>
+      </Stack>
   );
 }

@@ -1,0 +1,20 @@
+appId: mx.klini.mobile
+---
+- launchApp:
+    clearState: true
+- assertVisible: Klini Mobile
+- tapOn: Usuario o correo
+- inputText: jimmy.carter
+- tapOn: Contraseña
+- inputText: Demo2026
+- tapOn: Iniciar sesión
+- assertVisible: Médico
+- assertVisible: Solicitudes activas
+- tapOn: Pacientes autorizados
+- assertVisible: Pacientes
+- back
+- tapOn: Solicitudes
+- assertVisible: Seguimiento de solicitudes
+- back
+- tapOn: Cerrar sesión
+- assertVisible: Klini Mobile

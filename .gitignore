@@ -2,6 +2,8 @@
 
 # dependencies
 node_modules/
+.jest-cache/
+coverage/
 
 # Expo
 .expo/
@@ -30,8 +32,10 @@ yarn-error.*
 .DS_Store
 *.pem
 
-# local env files
-.env*.local
+# environment files
+.env
+.env.*
+!.env.example
 
 # typescript
 *.tsbuildinfo

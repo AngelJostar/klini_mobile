@@ -1,16 +1,18 @@
 {
   "expo": {
-    "name": "klini-mobile",
+    "name": "Klini Mobile",
     "slug": "klini-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "klinimobile",
+    "scheme": "klini",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "mx.klini.mobile"
     },
     "android": {
+      "package": "mx.klini.mobile",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -25,6 +27,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-dev-client",
       [
         "expo-splash-screen",
         {
@@ -33,6 +36,15 @@
             "image": "./assets/images/splash-icon.png",
             "imageWidth": 76
           }
+        }
+      ],
+      "expo-secure-store"
+      ,
+      [
+        "expo-notifications",
+        {
+          "color": "#008F83",
+          "defaultChannel": "klini-general"
         }
       ]
     ],
