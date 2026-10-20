@@ -1,0 +1,176 @@
+.native-shell :is(.superadmin-native-brand,.insurance-advisor-native-brand) {display:flex;justify-content:center;padding:0;margin:0 0 28px;background:none;}
+.native-shell :is(.superadmin-native-brand,.insurance-advisor-native-brand)>.klini-brand {display:flex;width:100%;height:auto;border:0;background:#fff;padding:14px;border-radius:14px;}
+.native-shell :is(.superadmin-native-menu,.insurance-advisor-native-menu,.insurance-health-native-sidebar-menu) {display:grid;gap:6px;}
+.native-shell :is(.superadmin-native-menu,.insurance-advisor-native-menu,.insurance-health-native-sidebar-menu) a {color:#c7d8e1;font-size:12px;font-weight:400;min-height:44px;border:1px solid transparent;border-radius:10px;padding:10px 12px;gap:10px;display:flex;align-items:center;line-height:1.4;transition:background .18s,color .18s;}
+.native-shell :is(.superadmin-native-menu,.insurance-advisor-native-menu,.insurance-health-native-sidebar-menu) a span {color:inherit;font-size:12px;}
+.native-shell :is(.superadmin-native-menu,.insurance-advisor-native-menu,.insurance-health-native-sidebar-menu) a:is(.is-active,:hover) {background:#ddf3ef;color:#007d79;border-color:#ddf3ef;}
+.native-shell :is(.insurance-advisor-native-back,.insurance-health-native-access) {color:#c7d8e1;border-color:#365069;background:transparent;font-size:12px;border-radius:10px;}
+.native-shell :is(.superadmin-native-workspace,.insurance-health-native-workspace) {padding:28px;min-width:0;}
+.native-shell .insurance-advisor-native-workspace {min-width:0;background:#f5f9f8;}
+.native-shell :is(.superadmin-native-header,.insurance-health-native-pagebar,.insurance-advisor-native-hero),.native-shell .klini-access-hero {position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:30px 32px;min-height:158px;border:0;border-radius:20px;background:#082441;color:#fff;margin:0 0 24px;box-shadow:0 14px 32px #08244110;}
+.native-shell :is(.superadmin-native-header,.insurance-health-native-pagebar,.insurance-advisor-native-hero)::before,.native-shell .klini-access-hero::before {content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#082441 0%,#082441 48%,#082441c9 75%,#08244165),url('../brand/klini/workspace-art.webp') right center/cover no-repeat;}
+.native-shell :is(.superadmin-native-header,.insurance-health-native-pagebar,.insurance-advisor-native-hero) h1,.native-shell .klini-access-hero h1 {color:white;font-size:clamp(24px,2.2vw,34px);line-height:1.15;letter-spacing:-1px;max-width:680px;margin:8px 0 12px;}
+.native-shell :is(.superadmin-native-header,.insurance-health-native-pagebar,.insurance-advisor-native-hero) :is(p,small,strong),.native-shell .klini-access-hero p {color:#ddf3ef;font-size:12px;line-height:1.7;max-width:640px;}
+.native-shell :is(.superadmin-native-header,.insurance-health-native-pagebar,.insurance-advisor-native-hero) .eyebrow {color:#8ee4d7;letter-spacing:1.8px;font-size:10px;}
+.native-shell .insurance-advisor-native-hero {margin:24px 28px;}
+.native-shell :is(.insurance-advisor-native-topbar,.insurance-health-native-topbar) {background:white;border-bottom:1px solid #dce8e7;padding:14px 28px;min-height:78px;box-shadow:none;}
+.native-shell .insurance-advisor-native-topbar::after {display:none;}
+.native-shell :is(.superadmin-native-actions,.insurance-advisor-native-hero-actions) a,.native-shell .insurance-advisor-native-hero-actions button {background:#ddf3ef;color:#082441;border:1px solid #ddf3ef;border-radius:999px;padding:11px 18px;min-height:40px;font-size:12px;white-space:nowrap;}
+.native-shell :is(.superadmin-native-metrics,.insurance-health-native-metrics,.insurance-advisor-native-metrics) {gap:14px;margin-bottom:24px;}
+.native-shell .insurance-advisor-native-metrics {width:auto;max-width:none;margin:0 28px 24px;}
+.native-shell .insurance-health-native-screen--sidebar .insurance-health-native-metrics {grid-template-columns:repeat(4,minmax(0,1fr));}
+.native-shell :is(.superadmin-native-metrics,.insurance-health-native-metrics,.insurance-advisor-native-metrics)>article {background:#fff;border:1px solid #dce8e7;border-radius:14px;padding:20px;min-height:112px;box-shadow:0 6px 16px #08244104;position:relative;overflow:hidden;}
+.native-shell :is(.superadmin-native-metrics,.insurance-health-native-metrics,.insurance-advisor-native-metrics)>article::after {content:'';position:absolute;top:0;left:20px;width:26px;height:3px;border-radius:0 0 4px 4px;background:#00aaa5;}
+.native-shell :is(.superadmin-native-metrics,.insurance-health-native-metrics,.insurance-advisor-native-metrics) strong {font-size:28px;color:#082441;letter-spacing:-1px;line-height:1.3;}
+.native-shell :is(.superadmin-native-metrics,.insurance-health-native-metrics,.insurance-advisor-native-metrics) :is(small,article>span) {font-size:11px;color:#536575;}
+.native-shell :is(.insurance-health-native-panel,.insurance-advisor-native-panel,.insurance-advisor-native-table-card,.insurance-advisor-native-detail,.superadmin-native-module-card,.superadmin-native-bottom>article,.insurance-table-panel,.insurance-form-panel,.insurance-panel,.insurance-report-panel,.insurance-admin-panel,.insurance-permissions-panel) {border:1px solid #dce8e7;border-radius:16px;background:#fff;box-shadow:0 4px 20px #08244104;}
+.native-shell :is(.insurance-health-native-hero,.insurance-filter-bar) {border:1px solid #dce8e7;border-radius:14px;background:white;padding:20px 24px;}
+.native-shell .insurance-health-native-primary-action {display:inline-flex;align-items:center;justify-content:center;align-self:center;height:auto;min-height:42px;padding:12px 20px;width:auto;border-radius:999px;background:#007d79;color:white;font-size:12px;}
+.native-shell .insurance-advisor-native-grid {grid-template-columns:minmax(0,1fr) 300px;margin:0 28px 24px;width:auto;}
+.native-shell .insurance-advisor-native-detail {padding:20px;background:linear-gradient(145deg,#ddf3ef,#fff 60%);min-width:0;}
+.native-shell .insurance-advisor-native-detail-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+.native-shell .insurance-advisor-native-detail-grid>div {min-width:0;background:#ffffffbb;border:1px solid #dce8e7;border-radius:10px;}
+.native-shell .insurance-advisor-native-detail :is(strong,p,span) {overflow-wrap:anywhere;}
+.native-shell .insurance-advisor-native-tabs {margin:0 28px 18px;width:auto;display:flex;flex-wrap:wrap;gap:8px;background:transparent;padding:0;}
+.native-shell .insurance-advisor-native-tabs a {border-radius:999px;min-height:36px;padding:9px 18px;background:#fff;border:1px solid #dce8e7;}
+.native-shell .insurance-advisor-native-tabs a.is-active {background:#007d79;color:white;border-color:#007d79;}
+.native-shell :is(.insurance-health-native-heading,.insurance-advisor-native-heading,.superadmin-native-section-heading) h2 {font-size:18px;letter-spacing:-.4px;color:#082441;}
+.native-shell :is(.insurance-advisor-native-table,.insurance-health-native-workspace .data-table) {font-size:12px;}
+.native-shell :is(.insurance-advisor-native-table,.insurance-health-native-workspace .data-table) th {background:#f5f9f8;color:#536575;font-size:10px;padding:14px 12px;letter-spacing:.3px;}
+.native-shell :is(.insurance-advisor-native-table,.insurance-health-native-workspace .data-table) td {padding:15px 12px;line-height:1.5;border-color:#e7efed;}
+.native-shell .insurance-advisor-native-table-scroll {overflow-x:auto;}
+.native-shell :is(.insurance-advisor-native-filters,.insurance-filter-bar) input,.native-shell :is(.insurance-advisor-native-filters,.insurance-filter-bar) select {min-height:40px;border-radius:9px;border-color:#cadbd8;font-size:12px;background:#fff;}
+.native-shell .superadmin-native-module-card {padding:22px;display:flex;flex-direction:column;gap:12px;}
+.native-shell .superadmin-native-module-card h3 {font-size:17px;letter-spacing:-.4px;}
+.native-shell .superadmin-native-module-card p {font-size:12px;line-height:1.7;color:#536575;}
+.native-shell .superadmin-native-module-footer {margin-top:auto;}
+.native-shell :is(.superadmin-native-module-footer a,.insurance-advisor-native-row-actions a,.insurance-advisor-native-heading-actions>a) {border-radius:999px;padding:8px 14px;font-size:11px;}
+/* The shared access page uses real module descriptions, never technical route names. */
+.native-shell.klini-access-body .shell {max-width:1440px;padding:28px 36px;margin:auto;}
+.native-shell.klini-access-body {background:#f5f9f8;}
+.native-shell .klini-access-hero {min-height:230px;}
+.native-shell .klini-access-hero .klini-brand {background:transparent;padding:0;align-items:flex-start;}
+.native-shell .klini-access-hero .dashboard-logout-button {color:#ddf3ef;background:#ffffff10;border:1px solid #ffffff40;border-radius:999px;}
+.native-shell.klini-access-body .metric-grid {grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
+.native-shell.klini-access-body .metric-card {border:1px solid #dce8e7;border-radius:14px;background:#fff;box-shadow:none;padding:20px;min-height:100px;}
+.native-shell.klini-access-body .metric-card span {color:#536575;font-size:10px;letter-spacing:.7px;}
+.native-shell.klini-access-body .metric-card strong {color:#082441;font-size:28px;letter-spacing:-1px;}
+.native-shell.klini-access-body .module-grid {grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+.native-shell.klini-access-body .module-card {position:relative;min-height:226px;border:1px solid #dce8e7;background:#fff;border-radius:18px;padding:24px;display:flex;flex-direction:column;gap:10px;box-shadow:0 5px 20px #08244104;transition:transform .18s,border-color .18s,box-shadow .18s;}
+.native-shell.klini-access-body .module-card:hover {transform:translateY(-3px);border-color:#00aaa5;box-shadow:0 14px 32px #08244112;}
+.native-shell.klini-access-body .module-card>span:not(.module-priority-mark):not(.klini-module-symbol) {font-size:16px;color:#082441;line-height:1.4;}
+.native-shell.klini-access-body .module-card small {font-size:12px;line-height:1.6;text-transform:none;letter-spacing:0;color:#536575;}
+.native-shell.klini-access-body .klini-module-symbol {width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:#ddf3ef;color:#007d79;}
+.native-shell.klini-access-body .module-priority-mark {position:absolute;top:26px;right:20px;font-size:9px;}
+.native-shell.klini-access-body .module-card-access {display:flex;justify-content:space-between;align-items:center;width:100%;background:transparent;border:0;border-top:1px solid #e7efed;border-radius:0;padding:12px 0 0;margin-top:auto;color:#007d79;font-size:12px;}
+.native-shell.klini-access-body .section-title {margin:32px 0 18px;}
+.native-shell :is(a,button,input,select,textarea):focus-visible {outline:3px solid #00aaa5;outline-offset:3px;}
+@media(prefers-reduced-motion:reduce) {.native-shell.klini-access-body .module-card {transition:none;transform:none;}}
+@media(max-width:1200px) {
+ .native-shell .insurance-advisor-native-grid {grid-template-columns:minmax(0,1fr);}
+ .native-shell .insurance-advisor-native-detail-grid {grid-template-columns:repeat(4,minmax(0,1fr));}
+ .native-shell .insurance-health-native-screen--sidebar .insurance-health-native-metrics {grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+@media(max-width:900px) {
+ .native-shell :is(.superadmin-native-screen,.insurance-advisor-native-screen,.insurance-health-native-screen--sidebar) {grid-template-columns:190px minmax(0,1fr);}
+ .native-shell :is(.superadmin-native-workspace,.insurance-health-native-workspace) {padding:18px;}
+ .native-shell :is(.superadmin-native-header,.insurance-health-native-pagebar,.insurance-advisor-native-hero) {padding:24px;flex-wrap:wrap;}
+ .native-shell.klini-access-body .module-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .native-shell.klini-access-body .metric-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(max-width:640px) {
+ .native-shell :is(.superadmin-native-screen,.insurance-advisor-native-screen,.insurance-health-native-screen--sidebar) {display:flex;flex-direction:column;}
+ .native-shell :is(.superadmin-native-sidebar,.insurance-advisor-native-sidebar,.insurance-health-native-sidebar) {position:static;min-height:0;width:100%;padding:16px;}
+ .native-shell :is(.superadmin-native-menu,.insurance-advisor-native-menu,.insurance-health-native-sidebar-menu) {display:flex;overflow-x:auto;padding-bottom:6px;}
+ .native-shell :is(.superadmin-native-menu,.insurance-advisor-native-menu,.insurance-health-native-sidebar-menu) a {flex-shrink:0;white-space:nowrap;}
+ .native-shell :is(.superadmin-native-brand,.insurance-advisor-native-brand) {margin-bottom:12px;max-width:180px;}
+ .native-shell :is(.superadmin-native-workspace,.insurance-health-native-workspace,.insurance-advisor-native-workspace) {width:100%;padding:16px;}
+ .native-shell :is(.insurance-advisor-native-hero,.insurance-advisor-native-metrics,.insurance-advisor-native-grid,.insurance-advisor-native-tabs) {margin-left:0;margin-right:0;}
+ .native-shell :is(.insurance-advisor-native-topbar,.insurance-health-native-topbar) {padding:14px;flex-wrap:wrap;}
+ .native-shell .insurance-health-native-screen--sidebar .insurance-health-native-metrics {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .native-shell .insurance-advisor-native-detail-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .native-shell.klini-access-body .shell {padding:16px;}
+ .native-shell.klini-access-body .module-grid {grid-template-columns:1fr;}
+ .native-shell .klini-access-hero {padding:24px;flex-wrap:wrap;}
+}
+
+.native-shell.klini-access-body .module-card>.klini-module-symbol {width:42px;min-width:42px;max-width:42px;height:42px;min-height:42px;padding:0;}
+.native-shell :is(.superadmin-native-header,.insurance-health-native-pagebar,.insurance-advisor-native-hero),.native-shell .klini-access-hero {background-image:linear-gradient(90deg,#082441 0%,#082441 44%,#082441e6 70%,#08244185),url('../brand/klini/workspace-art.webp');background-position:right center;background-size:cover;}
+.native-shell :is(.superadmin-native-header,.insurance-health-native-pagebar,.insurance-advisor-native-hero)::before,.native-shell .klini-access-hero::before {display:none;}
+.native-shell .insurance-health-native-screen--sidebar .insurance-health-native-primary-action {height:auto;min-height:42px;max-height:48px;width:auto;min-width:0;padding:12px 22px;border-radius:999px;align-self:center;}
+.native-shell .insurance-health-native-screen--sidebar .insurance-health-native-hero {min-height:0;padding:22px 24px;margin-bottom:20px;}
+.native-shell .insurance-health-native-screen--sidebar .insurance-health-native-hero h2 {font-size:20px;}
+.native-shell .insurance-advisor-native-actions a {min-height:38px;display:inline-flex;align-items:center;justify-content:center;padding:10px 18px;border-radius:999px;font-size:12px;}
+.native-shell .insurance-advisor-native-detail-grid>div:nth-child(2) {grid-column:1/-1;}
+.native-shell .insurance-advisor-native-detail-grid>div strong {font-size:12px;line-height:1.6;font-weight:400;}
+.native-shell .insurance-advisor-native-detail h2 {font-size:22px;line-height:1.2;}
+.native-shell .insurance-advisor-native-metrics article>span:first-child {background:#ddf3ef;color:#007d79;border-radius:10px;}
+.native-shell .superadmin-native-header .superadmin-native-actions strong {color:#ddf3ef;}
+.native-shell :is(.superadmin-native-screen,.insurance-advisor-native-screen,.insurance-health-native-screen--sidebar) :is(p,small) {font-weight:400;}
+.native-shell :is(.superadmin-native-metrics,.insurance-advisor-native-metrics,.insurance-health-native-metrics) article>span {font-weight:400;}
+.native-shell .superadmin-native-module-footer a {color:#007d79;text-decoration:none;border:1px solid #c5e5de;background:#f5f9f8;}
+.native-shell :is(.superadmin-native-bottom,.insurance-health-native-grid) {gap:18px;}
+.native-shell .superadmin-native-modules {background:white;border:1px solid #dce8e7;border-radius:16px;overflow:hidden;}
+.native-shell .superadmin-native-module-grid {gap:14px;padding:18px;}
+.native-shell .insurance-advisor-native-table-card {min-height:0;}
+.native-shell .insurance-advisor-native-table td {font-weight:400;}
+@media(max-width:640px) {
+ .native-shell :is(.superadmin-native-metrics,.insurance-advisor-native-metrics) {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .native-shell .superadmin-native-module-grid {grid-template-columns:1fr;}
+ .native-shell :is(.superadmin-native-header,.insurance-health-native-pagebar,.insurance-advisor-native-hero) h1 {font-size:25px;}
+}
+.native-shell .insurance-health-native-workspace>.page-heading {padding:28px 32px;min-height:154px;margin:0 0 24px;border:0;border-radius:20px;background:linear-gradient(90deg,#082441 0%,#082441 44%,#082441e6 70%,#08244185),url('../brand/klini/workspace-art.webp') right center/cover;color:white;box-shadow:0 14px 32px #08244110;}
+.native-shell .insurance-health-native-workspace>.page-heading::before {display:none;}
+.native-shell .insurance-health-native-workspace>.page-heading h1 {color:white;font-size:clamp(24px,2.2vw,34px);letter-spacing:-1px;margin:8px 0 12px;}
+.native-shell .insurance-health-native-workspace>.page-heading p {color:#ddf3ef;font-size:12px;line-height:1.7;}
+.native-shell .insurance-health-native-workspace>.page-heading .eyebrow {color:#8ee4d7;font-size:10px;letter-spacing:1.8px;}
+.native-shell .insurance-health-native-workspace :is(.insurance-filter-bar button,.button.primary,button.primary) {background:#007d79;color:white;border-color:#007d79;border-radius:999px;}
+.native-shell .insurance-health-native-workspace>.page-heading .button {background:#ddf3ef;color:#082441;border:1px solid #ddf3ef;border-radius:999px;padding:11px 18px;}
+/* Compact module cards: three columns with readable content and actions. */
+.native-shell .superadmin-native-module-grid {grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:14px;}
+.native-shell .superadmin-native-module-card {min-height:0;padding:14px;gap:5px;border-radius:12px;}
+.native-shell .superadmin-native-module-card h3 {font-size:14px;line-height:1.3;margin:0;max-width:calc(100% - 65px);}
+.native-shell .superadmin-native-module-card small {font-size:10px;line-height:1.4;}
+.native-shell .superadmin-native-module-card p {font-size:11px;line-height:1.5;margin:6px 0;}
+.native-shell .superadmin-native-module-status {top:14px;right:12px;font-size:10px;padding:4px 7px;gap:4px;}
+.native-shell .superadmin-native-module-status span {width:6px;height:6px;}
+.native-shell .superadmin-native-module-footer {padding-top:5px;gap:8px;}
+.native-shell .superadmin-native-module-footer strong {font-size:10px;}
+.native-shell .superadmin-native-module-footer a {font-size:10px;padding:5px 10px;}
+@media(max-width:1100px) {.native-shell .superadmin-native-module-grid {grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:640px) {.native-shell .superadmin-native-module-grid {grid-template-columns:1fr;}}
+.native-shell .klini-module-panel-link {color:inherit;text-decoration:none;}
+.native-shell .klini-module-panel-link::after {content:'';position:absolute;inset:0;border-radius:12px;z-index:1;}
+.native-shell .superadmin-native-module-card:has(.klini-module-panel-link):hover {border-color:#00aaa5;background:#f5f9f8;box-shadow:0 5px 16px #0824410c;}
+.native-shell .superadmin-native-module-footer a {position:relative;z-index:2;}
+.native-shell .klini-module-panel-link:focus-visible {outline:none;}
+.native-shell .klini-module-panel-link:focus-visible::after {outline:3px solid #00aaa5;outline-offset:3px;}
+.native-shell .superadmin-native-header {overflow:visible;z-index:5;}
+.native-shell .klini-session-menu {position:relative;color:#082441;}
+.native-shell .klini-session-menu summary {list-style:none;display:flex;align-items:center;gap:9px;cursor:pointer;border:1px solid #ffffff50;border-radius:999px;padding:7px 12px;background:#ffffff12;color:white;font-size:12px;}
+.native-shell .klini-session-menu summary::-webkit-details-marker {display:none;}
+.native-shell .klini-session-avatar {display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#ddf3ef;color:#007d79;}
+.native-shell .klini-session-dropdown {position:absolute;right:0;top:calc(100% + 12px);width:320px;max-width:calc(100vw - 48px);border:1px solid #dce8e7;border-radius:16px;background:white;box-shadow:0 20px 60px #08244130;padding:12px;z-index:20;}
+.native-shell .klini-session-heading {padding:8px 10px 12px;font-size:14px;font-weight:700;}
+.native-shell .klini-session-heading small {display:block;color:#536575;font-size:10px;margin-top:4px;}
+.native-shell .klini-session-dropdown nav {max-height:320px;overflow-y:auto;display:grid;gap:4px;}
+.native-shell .klini-session-dropdown nav a {display:flex;align-items:center;gap:10px;margin:0;padding:10px;border:0;border-radius:9px;background:white;color:#082441;font-size:11px;white-space:normal;min-height:40px;}
+.native-shell .klini-session-dropdown nav a span:nth-child(2) {flex:1;}
+.native-shell .klini-session-dropdown nav a:is(:hover,[aria-current]) {background:#ddf3ef;color:#007d79;}
+.native-shell .klini-session-dropdown form {border-top:1px solid #dce8e7;padding-top:10px;margin-top:10px;}
+.native-shell .klini-session-dropdown button {display:flex;align-items:center;justify-content:space-between;width:100%;border:0;background:#fff3f3;color:#a52e3b;padding:11px;border-radius:9px;font-size:12px;}
+.native-shell .superadmin-native-header .klini-session-dropdown :is(small,strong) {color:#536575;}
+@media(max-width:640px) {.native-shell .klini-session-dropdown {right:auto;left:0;}}
+.native-shell .klini-session-user {display:block;font-size:9px;margin-top:2px;color:#ddf3ef;} .native-shell .klini-session-logout {margin:0;} .native-shell .klini-session-logout button {display:inline-flex;align-items:center;gap:10px;border:1px solid #ffffff70;border-radius:999px;background:#fff;color:#a52e3b;padding:11px 16px;min-height:40px;font-size:12px;cursor:pointer;}
+.native-shell .superadmin-native-metrics {grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:16px;}
+.native-shell .superadmin-native-metrics>article {min-height:0;padding:10px 12px;border-radius:10px;gap:3px;}
+.native-shell .superadmin-native-metrics strong {font-size:22px;line-height:1.15;}
+.native-shell .superadmin-native-metrics :is(small,article>span) {font-size:10px;line-height:1.3;}
+@media(max-width:1100px) {.native-shell .superadmin-native-metrics {grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media(max-width:640px) {.native-shell .superadmin-native-metrics {grid-template-columns:repeat(2,minmax(0,1fr));}}
+/* Klini workspace system: shared visual template, existing routes and controls. */
+.native-shell { --klini-ink:#082441; --klini-teal:#007d79; --klini-line:#dce8e7; --klini-surface:#f5f9f8; }
+.klini-icon { width:20px;height:20px;flex-shrink:0;vertical-align:middle; }
+.native-shell :is(.superadmin-native-screen,.insurance-advisor-native-screen) {grid-template-columns:224px minmax(0,1fr);background:var(--klini-surface);}
+.native-shell .insurance-health-native-screen--sidebar {grid-template-columns:224px minmax(0,1fr);background:var(--klini-surface);}
+.native-shell :is(.superadmin-native-sidebar,.insurance-advisor-native-sidebar,.insurance-health-native-sidebar) {background:#082441;border:0;padding:24px 16px;color:#ddf3ef;}

@@ -1,0 +1,561 @@
+openapi: 3.1.0
+info:
+  title: Klini Mobile API
+  version: 1.0.0
+  description: API versionada de Dr. Sam para los perfiles Paciente y Médico.
+servers:
+  - url: http://127.0.0.1:8000/api/mobile/v1
+    description: Entorno local
+tags:
+  - name: Authentication
+  - name: Patient
+  - name: Doctor
+  - name: Devices
+security:
+  - bearerAuth: []
+paths:
+  /auth/login:
+    post:
+      tags: [Authentication]
+      summary: Iniciar una sesión móvil
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example: {login: doctor.demo, password: password, device_name: Pixel 8}
+      responses:
+        '201': {$ref: '#/components/responses/LoginSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '429': {$ref: '#/components/responses/TooManyRequests'}
+  /auth/logout:
+    post:
+      tags: [Authentication]
+      summary: Revocar el token utilizado
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+  /auth/forgot-password:
+    post:
+      tags: [Authentication]
+      summary: Solicitar instrucciones de recuperación sin revelar si la cuenta existe
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {type: object, required: [login], properties: {login: {type: string}}}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '429': {$ref: '#/components/responses/TooManyRequests'}
+  /auth/reset-password:
+    post:
+      tags: [Authentication]
+      summary: Restablecer contraseña con un token válido
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ResetPasswordRequest'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+        '429': {$ref: '#/components/responses/TooManyRequests'}
+  /auth/password:
+    put:
+      tags: [Authentication]
+      summary: Cambiar contraseña y revocar las demás sesiones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ChangePasswordRequest'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+  /auth/sessions:
+    get:
+      tags: [Authentication]
+      summary: Listar sesiones del usuario
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+  /auth/sessions/{token}:
+    delete:
+      tags: [Authentication]
+      summary: Revocar una sesión propia
+      parameters:
+        - {$ref: '#/components/parameters/TokenId'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '404': {$ref: '#/components/responses/NotFound'}
+  /me:
+    get:
+      tags: [Authentication]
+      summary: Consultar la identidad autenticada
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+  /devices/push:
+    put:
+      tags: [Devices]
+      summary: Registrar o reactivar el token push del dispositivo autenticado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [push_token, platform]
+              properties:
+                push_token: {type: string, maxLength: 2048}
+                platform: {type: string, enum: [android, ios]}
+                device_name: {type: [string, 'null'], maxLength: 120}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '201': {$ref: '#/components/responses/Created'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+    delete:
+      tags: [Devices]
+      summary: Desactivar avisos push en el dispositivo autenticado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [push_token]
+              properties:
+                push_token: {type: string, maxLength: 2048}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+  /patient/profile:
+    get:
+      tags: [Patient]
+      summary: Consultar el perfil del paciente autenticado
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+    patch:
+      tags: [Patient]
+      summary: Actualizar los datos de contacto permitidos del paciente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone: {type: [string, 'null'], maxLength: 30}
+                email: {type: [string, 'null'], format: email, maxLength: 255}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+  /patient/dashboard:
+    get:
+      tags: [Patient]
+      summary: Consultar indicadores, siguiente cita y avisos del paciente
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /patient/appointments:
+    get:
+      tags: [Patient]
+      summary: Listar citas propias
+      parameters: [{$ref: '#/components/parameters/Page'}, {$ref: '#/components/parameters/PerPage'}]
+      responses:
+        '200': {$ref: '#/components/responses/PaginatedSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /patient/appointments/{appointment}:
+    get:
+      tags: [Patient]
+      summary: Consultar el detalle de una cita propia
+      parameters:
+        - {$ref: '#/components/parameters/AppointmentId'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+  /patient/clinical-records:
+    get:
+      tags: [Patient]
+      summary: Listar el historial clínico propio
+      parameters: [{$ref: '#/components/parameters/Page'}, {$ref: '#/components/parameters/PerPage'}]
+      responses:
+        '200': {$ref: '#/components/responses/PaginatedSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /patient/prescriptions:
+    get:
+      tags: [Patient]
+      summary: Listar recetas propias
+      parameters: [{$ref: '#/components/parameters/Page'}, {$ref: '#/components/parameters/PerPage'}]
+      responses:
+        '200': {$ref: '#/components/responses/PaginatedSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /patient/documents:
+    get:
+      tags: [Patient]
+      summary: Listar documentos propios
+      parameters: [{$ref: '#/components/parameters/Page'}, {$ref: '#/components/parameters/PerPage'}]
+      responses:
+        '200': {$ref: '#/components/responses/PaginatedSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /patient/documents/{document}/download:
+    get:
+      tags: [Patient]
+      summary: Descargar un documento propio
+      parameters:
+        - {$ref: '#/components/parameters/DocumentId'}
+      responses:
+        '200':
+          description: Archivo privado solicitado
+          content:
+            application/octet-stream:
+              schema: {type: string, format: binary}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+  /doctor/dashboard:
+    get:
+      tags: [Doctor]
+      summary: Consultar indicadores del médico autenticado
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /doctor/appointments:
+    get:
+      tags: [Doctor]
+      summary: Listar la agenda del médico
+      parameters:
+        - {$ref: '#/components/parameters/Page'}
+        - {$ref: '#/components/parameters/PerPage'}
+        - {name: date, in: query, schema: {type: string, format: date}}
+      responses:
+        '200': {$ref: '#/components/responses/PaginatedSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /doctor/appointments/{appointment}:
+    get:
+      tags: [Doctor]
+      summary: Consultar una cita propia
+      parameters:
+        - {$ref: '#/components/parameters/AppointmentId'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+    patch:
+      tags: [Doctor]
+      summary: Actualizar una cita propia
+      parameters:
+        - {$ref: '#/components/parameters/AppointmentId'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status: {type: string, enum: [scheduled, in_progress, completed, cancelled]}
+            example: {status: in_progress}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+  /doctor/patients:
+    get:
+      tags: [Doctor]
+      summary: Buscar pacientes con relación clínica
+      parameters:
+        - {$ref: '#/components/parameters/Page'}
+        - {$ref: '#/components/parameters/PerPage'}
+        - {name: search, in: query, schema: {type: string, maxLength: 255}}
+      responses:
+        '200': {$ref: '#/components/responses/PaginatedSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /doctor/patients/{patient}:
+    get:
+      tags: [Doctor]
+      summary: Consultar expediente resumido de un paciente autorizado
+      parameters:
+        - {$ref: '#/components/parameters/PatientId'}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+  /doctor/patients/{patient}/clinical-records:
+    post:
+      tags: [Doctor]
+      summary: Agregar una nota al expediente autorizado
+      parameters:
+        - {$ref: '#/components/parameters/PatientId'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/ClinicalRecordRequest'}
+            example: {record_type: follow_up, title: Seguimiento, summary: Evolución favorable, recorded_at: '2026-10-02T12:00:00-06:00'}
+      responses:
+        '201': {$ref: '#/components/responses/Created'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+  /doctor/prescriptions:
+    get:
+      tags: [Doctor]
+      summary: Listar recetas emitidas por el médico
+      parameters: [{$ref: '#/components/parameters/Page'}, {$ref: '#/components/parameters/PerPage'}]
+      responses:
+        '200': {$ref: '#/components/responses/PaginatedSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+    post:
+      tags: [Doctor]
+      summary: Emitir una receta para un paciente autorizado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/PrescriptionRequest'}
+      responses:
+        '201': {$ref: '#/components/responses/Created'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+  /doctor/requests:
+    get:
+      tags: [Doctor]
+      summary: Listar solicitudes emitidas por el médico
+      parameters: [{$ref: '#/components/parameters/Page'}, {$ref: '#/components/parameters/PerPage'}]
+      responses:
+        '200': {$ref: '#/components/responses/PaginatedSuccess'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /doctor/requests/laboratory:
+    post:
+      tags: [Doctor]
+      summary: Crear una solicitud de laboratorio
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/LaboratoryRequest'}
+            example: {patient_id: 10, service: Biometría hemática completa, diagnosis: Evaluación de anemia, priority: routine}
+      responses:
+        '201': {$ref: '#/components/responses/Created'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+  /doctor/mixtures/catalogs/{type}:
+    get:
+      tags: [Doctor]
+      summary: Consultar el catálogo NPT u oncológico asignado a la unidad del médico
+      parameters:
+        - {name: type, in: path, required: true, schema: {type: string, enum: [npt, oncology]}}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+  /doctor/mixtures/prevalidate:
+    post:
+      tags: [Doctor]
+      summary: Prevalidar productos de una mezcla sin crear la solicitud
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+  /doctor/mixtures:
+    post:
+      tags: [Doctor]
+      summary: Crear una solicitud NPT u oncológica prevalidada
+      parameters:
+        - {name: Idempotency-Key, in: header, required: true, schema: {type: string, maxLength: 100}}
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema: {type: object, required: [request_type, patient_id, service], properties: {request_type: {type: string, enum: [npt, chemo]}, patient_id: {type: integer}, service: {type: string}, authorization_file: {type: string, format: binary}}}
+      responses:
+        '201': {$ref: '#/components/responses/Created'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/ValidationError'}
+  /doctor/mixtures/{providerRequest}:
+    get:
+      tags: [Doctor]
+      summary: Consultar autorizaciones, integración y eventos de una solicitud propia
+      parameters:
+        - {name: providerRequest, in: path, required: true, schema: {type: integer}}
+      responses:
+        '200': {$ref: '#/components/responses/Success'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+components:
+  securitySchemes:
+    bearerAuth: {type: http, scheme: bearer, bearerFormat: Sanctum}
+  parameters:
+    Page: {name: page, in: query, schema: {type: integer, minimum: 1, default: 1}}
+    PerPage: {name: per_page, in: query, schema: {type: integer, minimum: 1, maximum: 50, default: 15}}
+    TokenId: {name: token, in: path, required: true, schema: {type: integer}}
+    PatientId: {name: patient, in: path, required: true, schema: {type: integer}}
+    DocumentId: {name: document, in: path, required: true, schema: {type: integer}}
+    AppointmentId: {name: appointment, in: path, required: true, schema: {type: integer}}
+  schemas:
+    LoginRequest:
+      type: object
+      required: [login, password, device_name]
+      properties:
+        login: {type: string}
+        password: {type: string, format: password}
+        device_name: {type: string, maxLength: 100}
+    ResetPasswordRequest:
+      type: object
+      required: [email, token, password, password_confirmation]
+      properties:
+        email: {type: string, format: email}
+        token: {type: string}
+        password: {type: string, format: password}
+        password_confirmation: {type: string, format: password}
+    ChangePasswordRequest:
+      type: object
+      required: [current_password, password, password_confirmation]
+      properties:
+        current_password: {type: string, format: password}
+        password: {type: string, format: password}
+        password_confirmation: {type: string, format: password}
+    ClinicalRecordRequest:
+      type: object
+      required: [record_type, title, summary, recorded_at]
+      properties:
+        record_type: {type: string, enum: [clinical_note, diagnosis, follow_up, study]}
+        title: {type: string, maxLength: 180}
+        summary: {type: string, maxLength: 5000}
+        recorded_at: {type: string, format: date-time}
+    PrescriptionRequest:
+      type: object
+      required: [patient_id, issued_at, diagnosis, items]
+      properties:
+        patient_id: {type: integer}
+        issued_at: {type: string, format: date-time}
+        diagnosis: {type: string, maxLength: 1000}
+        notes: {type: [string, 'null'], maxLength: 3000}
+        items:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            type: object
+            required: [medication_name, quantity]
+            properties:
+              medication_name: {type: string}
+              dose: {type: [string, 'null']}
+              frequency: {type: [string, 'null']}
+              duration: {type: [string, 'null']}
+              quantity: {type: integer, minimum: 1, maximum: 999}
+              instructions: {type: [string, 'null']}
+    LaboratoryRequest:
+      type: object
+      required: [patient_id, service, diagnosis]
+      properties:
+        patient_id: {type: integer}
+        service: {type: string, maxLength: 255}
+        required_at: {type: [string, 'null'], format: date-time}
+        diagnosis: {type: string, maxLength: 2000}
+        notes: {type: [string, 'null'], maxLength: 4000}
+        priority: {type: string, enum: [routine, urgent], default: routine}
+    SuccessEnvelope:
+      type: object
+      required: [success, data]
+      properties:
+        success: {type: boolean, const: true}
+        data: {type: object, additionalProperties: true}
+    ErrorEnvelope:
+      type: object
+      required: [success, error]
+      properties:
+        success: {type: boolean, const: false}
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: {type: string, example: validation_error}
+            message: {type: string, example: Los datos enviados no son válidos.}
+            details: {type: object, additionalProperties: true}
+  responses:
+    Success:
+      description: Operación completada
+      content: {application/json: {schema: {$ref: '#/components/schemas/SuccessEnvelope'}}}
+    Created:
+      description: Recurso creado
+      content: {application/json: {schema: {$ref: '#/components/schemas/SuccessEnvelope'}}}
+    PaginatedSuccess:
+      description: Lista paginada
+      content:
+        application/json:
+          schema:
+            allOf:
+              - {$ref: '#/components/schemas/SuccessEnvelope'}
+              - type: object
+                properties:
+                  meta:
+                    type: object
+                    properties:
+                      pagination: {type: object, properties: {current_page: {type: integer}, last_page: {type: integer}, per_page: {type: integer}, total: {type: integer}}}
+    LoginSuccess:
+      description: Token creado
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/SuccessEnvelope'}
+          example: {success: true, data: {token_type: Bearer, access_token: 1|token, expires_at: '2026-11-01T12:00:00-06:00', user: {id: 1, role: doctor}}}
+    Unauthorized:
+      description: Token ausente, inválido o vencido
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}, example: {success: false, error: {code: unauthenticated, message: La sesión no es válida o ha expirado.}}}}
+    Forbidden:
+      description: Perfil o permiso no autorizado
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}, example: {success: false, error: {code: role_not_allowed, message: Este perfil no tiene acceso a este recurso.}}}}
+    NotFound:
+      description: Recurso inexistente o fuera del alcance del usuario
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}, example: {success: false, error: {code: not_found, message: El recurso solicitado no existe.}}}}
+    ValidationError:
+      description: Datos inválidos
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}, example: {success: false, error: {code: validation_error, message: Los datos enviados no son válidos., details: {fields: {status: [El campo estatus es obligatorio.]}}}}}
+    Conflict:
+      description: La operación ya se encuentra en proceso
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}}}
+    TooManyRequests:
+      description: Límite de solicitudes excedido
+      content: {application/json: {schema: {$ref: '#/components/schemas/ErrorEnvelope'}, example: {success: false, error: {code: too_many_requests, message: Se realizaron demasiadas solicitudes. Inténtalo nuevamente más tarde.}}}}

@@ -1,0 +1,109 @@
+/* Klini's shared service carousel: supplied 3D artwork, live labels and selection. */
+.native-shell.klini-carousels-enabled .klini-carousel {
+  position:relative;display:flex;align-items:center;gap:8px;isolation:isolate;
+  padding:12px 12px 26px;border:1px solid #125275;border-radius:18px;
+  background:#082441 url('../brand/klini/carousel/navy-waves.png') center/cover;
+  box-shadow:0 12px 32px #08244112;min-width:0;
+}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-track {
+  display:flex;position:relative;flex:1;gap:10px;min-width:0;
+  overflow-x:auto;scroll-snap-type:x proximity;padding:6px 5px 8px;
+  scrollbar-width:none;align-items:stretch;
+}
+.native-shell.klini-carousels-enabled .klini-carousel-track::-webkit-scrollbar {display:none;}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-track > .klini-carousel-tile {
+  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  flex:0 0 140px;width:140px;min-width:140px;max-width:140px;height:148px;min-height:148px;
+  margin:0;padding:24px 8px 24px;gap:4px;border:2px solid #c8f2ef;border-radius:16px;
+  color:#082441;background:linear-gradient(135deg,#ffffff 0%,#edfafa 64%,#ddf6f1 100%);
+  box-shadow:inset 0 0 0 3px #ffffffc4,inset -4px -5px 6px #86d8d93b,0 6px 12px #00172f80;
+  text-align:center;text-decoration:none;white-space:normal;scroll-snap-align:start;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-tile::before,.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-tile::after {display:none;}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-track > .klini-carousel-tile:is(:hover,:focus-visible) {
+  transform:translateY(-3px);border-color:#02e4dd;outline:2px solid #fff;outline-offset:3px;
+}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-track > .klini-carousel-tile.is-active {
+  background:linear-gradient(135deg,#edfffb,#c8f6ee);border-color:#00ddd5;color:#082441;
+  box-shadow:inset 0 0 0 2px white,0 0 0 2px #00aaa5,0 0 22px #00ded870;
+}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-tile .klini-carousel-label {
+  display:block;margin:auto 0 0;padding:0;min-height:30px;font-size:11px;
+  line-height:1.25;font-weight:700;color:#082441;letter-spacing:-.3px;
+  overflow:visible;text-overflow:clip;-webkit-line-clamp:unset;max-height:none;white-space:normal;
+}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-art {display:block;position:relative;height:50px;max-width:100%;flex-shrink:0;overflow:hidden;mix-blend-mode:multiply;mask-image:radial-gradient(ellipse 66% 66% at center,black 65%,transparent 96%);}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-art img {position:absolute;max-width:none;max-height:none;object-fit:fill;pointer-events:none;}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-has-art > :is(.unit-service-carousel-icon,.institution-service-carousel-icon,.operational-oncology-filter-initial,svg) {display:none;}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-tile:not(.klini-carousel-has-art) > :is(.unit-service-carousel-icon,.institution-service-carousel-icon,.operational-oncology-filter-initial,svg) {
+  display:grid;place-items:center;flex-shrink:0;width:50px;height:50px;margin:0;padding:8px;
+  background:radial-gradient(ellipse,#b9efe5,#ecfaf8 70%);border:0;border-radius:16px;
+  color:#009d99;filter:drop-shadow(2px 3px 2px #008c8c25);font-size:26px;
+}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-tile:not(.klini-carousel-has-art) svg {stroke:currentColor;}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-tile:not(.klini-carousel-has-art) > span > svg {width:34px;height:34px;}
+.native-shell.klini-carousels-enabled .klini-carousel .operational-oncology-filter-copy {margin-top:auto;}
+.native-shell.klini-carousels-enabled .klini-carousel .operational-oncology-filter-copy small {display:none;}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-badge {
+  display:none;position:absolute;top:5px;left:50%;transform:translateX(-50%);width:auto;
+  padding:2px 9px;border-radius:30px;background:#00aaa5;color:#fff;font-size:9px;font-weight:700;line-height:1.3;white-space:nowrap;
+}
+.native-shell.klini-carousels-enabled .klini-carousel .is-active .klini-carousel-badge {display:block;}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-enter {
+  position:absolute;right:7px;bottom:5px;display:grid;place-items:center;width:18px;height:18px;
+  border:1px solid #00aaa5;border-radius:50%;background:#f3fffc;color:#008e91;font:16px/1 Arial,sans-serif;
+}
+.native-shell.klini-carousels-enabled .klini-carousel .is-active .klini-carousel-enter {background:#00aaa5;color:#fff;}
+.native-shell.klini-carousels-enabled .klini-carousel > .klini-carousel-control {
+  flex:0 0 32px;display:grid;place-items:center;width:32px;height:32px;min-width:32px;padding:0;
+  border-radius:50%;border:1px solid #b7edeb;background:linear-gradient(#fff,#dff8f4);color:#009e9f;
+  font-size:23px;box-shadow:0 3px 8px #00172f60;
+}
+.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-indicators {position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;max-width:85%;overflow:auto;}
+.native-shell.klini-carousels-enabled .klini-carousel-indicators > button {width:18px;min-width:18px;height:5px;min-height:5px;padding:0;border:0;border-radius:10px;background:#377795;box-shadow:none;}
+.native-shell.klini-carousels-enabled .klini-carousel-indicators > button[aria-current=true] {background:#00eee3;box-shadow:0 0 8px #00ddd560;}
+.native-shell.klini-carousels-enabled .klini-carousel > .klini-carousel-control:disabled {opacity:.35;cursor:default;box-shadow:none;}
+.native-shell.klini-carousels-enabled .klini-carousel[data-klini-count="1"] {padding:8px 12px;}
+.native-shell.klini-carousels-enabled .klini-carousel[data-klini-count="1"] > :is(.klini-carousel-control,.klini-carousel-indicators) {display:none;}
+.native-shell.klini-carousels-enabled .klini-carousel[data-klini-count="1"] .klini-carousel-track > .klini-carousel-tile {flex-basis:220px;width:220px;max-width:220px;height:100px;min-height:100px;display:grid;grid-template-columns:50px 1fr;padding:22px 10px;gap:10px;}
+.native-shell.klini-carousels-enabled .klini-carousel[data-klini-count="1"] .klini-carousel-label {min-height:0;margin:0;}
+.native-shell.klini-carousels-enabled .klini-carousel[data-klini-count="1"] .operational-oncology-filter-copy {margin:0;}
+.native-shell.klini-carousels-enabled .klini-carousel[data-klini-count="1"] .klini-carousel-art {height:50px;}
+.native-shell.klini-carousels-enabled .klini-carousel[data-klini-count="1"] .klini-carousel-tile:not(.klini-carousel-has-art) > :is(span,svg):not(.klini-carousel-badge):not(.klini-carousel-enter):not(.operational-oncology-filter-copy) {height:50px;width:50px;margin:0;}
+/* Compact variants retain their clinical labels, dates and filtering controls. */
+.native-shell :is([data-insurance-tabs-carousel],[data-calendar-filter-carousel],[data-health-carousel],[data-health-filter-carousel],[data-device-filter-carousel],[data-register-carousel],[data-register-history-carousel],.patient-doctor-date-carousel) {
+  background:#082441 url('../brand/klini/carousel/navy-waves.png') center/cover;
+  border:1px solid #125275;border-radius:14px;padding:8px;gap:8px;
+}
+.native-shell :is([data-insurance-tabs-carousel],[data-calendar-filter-carousel],[data-health-carousel],[data-health-filter-carousel],[data-device-filter-carousel],[data-register-carousel],[data-register-history-carousel],.patient-doctor-date-carousel) > button {
+  background:linear-gradient(135deg,#fff,#e3f8f3);color:#082441;border:1px solid #c8f2ef;border-radius:14px;box-shadow:inset 0 0 0 2px #ffffffa0;
+}
+.native-shell :is([data-insurance-tabs-carousel],[data-calendar-filter-carousel],[data-health-carousel],[data-health-filter-carousel],[data-device-filter-carousel],[data-register-carousel],[data-register-history-carousel],.patient-doctor-date-carousel) > button:is(.is-active,[aria-pressed=true]) {
+  background:#d6f7ed;border-color:#00ddd5;box-shadow:0 0 0 2px #00aaa5,0 0 14px #00ded840;
+}
+/* Smaller patient navigation cards; keep favorite controls and full labels accessible. */
+.native-shell :is([data-calendar-filter-carousel],[data-health-carousel],[data-register-carousel],[data-register-history-carousel]) > button {
+  flex:0 0 100px;width:100px;min-width:100px;min-height:96px;height:auto;
+  gap:6px;padding:24px 7px 10px;border-radius:12px;
+}
+.native-shell :is([data-calendar-filter-carousel],[data-health-carousel],[data-register-carousel],[data-register-history-carousel]) > button > :is(.patient-register-history-image,.patient-register-history-glyph,.patient-health-parameter-image,.patient-register-metric-image,.patient-register-metric-glyph) {
+  width:32px;height:32px;font-size:21px;border-radius:10px;
+}
+.native-shell :is([data-calendar-filter-carousel],[data-health-carousel],[data-register-carousel],[data-register-history-carousel]) > button > b {
+  font-size:11px;line-height:1.2;white-space:normal;overflow:visible;
+}
+.native-shell :is([data-health-carousel],[data-register-carousel],[data-register-history-carousel]) > button > :is(i,.patient-register-favorite-toggle,.patient-register-history-favorite) {
+  top:4px;right:5px;width:24px;height:24px;font-size:13px;
+}
+.native-shell :is([data-insurance-tabs-carousel],[data-health-filter-carousel],[data-device-filter-carousel]) > button {
+  min-height:36px;padding:7px 12px;font-size:11px;
+}
+.native-shell .patient-doctor-date-carousel > button {flex-basis:48px;min-height:54px;padding:6px;border-radius:10px;}
+@media(max-width:900px) {
+  .native-shell.klini-carousels-enabled .klini-carousel {padding:8px 8px 24px;gap:6px;border-radius:16px;}
+  .native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-track {gap:8px;}
+  .native-shell.klini-carousels-enabled .klini-carousel:not([data-klini-count="1"]) .klini-carousel-track > .klini-carousel-tile {flex-basis:126px;width:126px;min-width:126px;max-width:126px;}
+  .native-shell.klini-carousels-enabled .klini-carousel > .klini-carousel-control {flex-basis:30px;min-width:30px;width:30px;height:30px;}
+}
+@media(prefers-reduced-motion:reduce) {.native-shell.klini-carousels-enabled .klini-carousel .klini-carousel-track > .klini-carousel-tile {transition:none;transform:none;}}

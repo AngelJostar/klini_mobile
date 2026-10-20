@@ -1,0 +1,1932 @@
+[
+  {
+    "path": "LEEME.html",
+    "bytes": 14254,
+    "sha256": "3740e06652869600d23bc2843b8aa391da6ea3289fd72954673dec9656c996d9",
+    "generated": true
+  },
+  {
+    "path": "MAPA-DEL-MODULO.json",
+    "bytes": 4844,
+    "sha256": "02ec990bcb21d824fffeba9269f55442de33fbee21e3a878c65ef202d7599f41",
+    "generated": true
+  },
+  {
+    "path": "RECURSOS-EXTERNOS.json",
+    "bytes": 20266,
+    "sha256": "63221f5e6bafb8b26d424a993379c98e67a535714372417044fcbe771b31cbfd",
+    "generated": true
+  },
+  {
+    "path": "VERIFICACION.json",
+    "bytes": 821,
+    "sha256": "a284d64894364fe9120795adc1803bd0dd7f18e286609020a1ed495eaff7ab23",
+    "generated": true
+  },
+  {
+    "path": "VERSION.json",
+    "bytes": 590,
+    "sha256": "2583fb99522af03867c4395e0110eb96fbb576ffdf6a98c5206ae444181c10c4",
+    "generated": true
+  },
+  {
+    "path": "adaptadores/android/AndroidManifest.fragment.xml",
+    "bytes": 418,
+    "sha256": "8dcf4deea070fbc077180da847456e57f310afb2bf9581eab359c54876cad863",
+    "generated": true
+  },
+  {
+    "path": "adaptadores/android/PatientWebViewActivity.kt",
+    "bytes": 3756,
+    "sha256": "efceb4981140fb18302c81d3d60f204ffccf24cf623a88e053343a47b77ddf24",
+    "generated": true
+  },
+  {
+    "path": "adaptadores/flutter/patient_webview.dart",
+    "bytes": 2193,
+    "sha256": "725d1a57b0f00810fff8612a089fd126d944f93ce3bb1b393688eb835cdf1eb0",
+    "generated": true
+  },
+  {
+    "path": "adaptadores/react-native/PatientWebView.tsx",
+    "bytes": 2114,
+    "sha256": "0b4cefec8c5775fc13936e6c6262d71bf088e8a75b35797d12f352a59f13403c",
+    "generated": true
+  },
+  {
+    "path": "codigo/app/Enums/UserRole.php",
+    "bytes": 1850,
+    "sha256": "973a588f4511fc965f7b7ea1d013a781d28953fcd9f9a9cc8da39d6e182fee10",
+    "source": "app/Enums/UserRole.php",
+    "originalSha256": "973a588f4511fc965f7b7ea1d013a781d28953fcd9f9a9cc8da39d6e182fee10"
+  },
+  {
+    "path": "codigo/app/Http/Controllers/Api/Mobile/V1/AuthController.php",
+    "bytes": 6017,
+    "sha256": "a34332a8d25fcd902c46b7b2ba5d993ca0035cc08dd1e0315ada09200ee6bf0d",
+    "source": "app/Http/Controllers/Api/Mobile/V1/AuthController.php",
+    "originalSha256": "a34332a8d25fcd902c46b7b2ba5d993ca0035cc08dd1e0315ada09200ee6bf0d"
+  },
+  {
+    "path": "codigo/app/Http/Controllers/Api/Mobile/V1/MobileDeviceController.php",
+    "bytes": 2372,
+    "sha256": "fa52fa605fd81f6717d9fbd16479f490b6310dcf6effe07bdda3a2c25773cc88",
+    "source": "app/Http/Controllers/Api/Mobile/V1/MobileDeviceController.php",
+    "originalSha256": "fa52fa605fd81f6717d9fbd16479f490b6310dcf6effe07bdda3a2c25773cc88"
+  },
+  {
+    "path": "codigo/app/Http/Controllers/Api/Mobile/V1/PasswordController.php",
+    "bytes": 4143,
+    "sha256": "10218df048a75c87dd9e8116c5d5693ae543ca6219eebb181226e4b2296f82bd",
+    "source": "app/Http/Controllers/Api/Mobile/V1/PasswordController.php",
+    "originalSha256": "10218df048a75c87dd9e8116c5d5693ae543ca6219eebb181226e4b2296f82bd"
+  },
+  {
+    "path": "codigo/app/Http/Controllers/Api/Mobile/V1/PatientReadController.php",
+    "bytes": 11973,
+    "sha256": "0344b299fc2f7d4e558284f9e9d442c3b5180f3f92521a16a74f087e4f4a7123",
+    "source": "app/Http/Controllers/Api/Mobile/V1/PatientReadController.php",
+    "originalSha256": "0344b299fc2f7d4e558284f9e9d442c3b5180f3f92521a16a74f087e4f4a7123"
+  },
+  {
+    "path": "codigo/app/Http/Controllers/Controller.php",
+    "bytes": 87,
+    "sha256": "9c2dca00ce3fd784c2dc7b3143650183ddd7224896e766c2a2f50ab6420f4603",
+    "source": "app/Http/Controllers/Controller.php",
+    "originalSha256": "9c2dca00ce3fd784c2dc7b3143650183ddd7224896e766c2a2f50ab6420f4603"
+  },
+  {
+    "path": "codigo/app/Http/Controllers/Patient/PatientPortalController.php",
+    "bytes": 15579,
+    "sha256": "01696c31fe66277cb6975531a0245e65e7319b641357e07762ab10536da67ee1",
+    "source": "app/Http/Controllers/Patient/PatientPortalController.php",
+    "originalSha256": "01696c31fe66277cb6975531a0245e65e7319b641357e07762ab10536da67ee1"
+  },
+  {
+    "path": "codigo/app/Http/Middleware/EnsureMobileRole.php",
+    "bytes": 1211,
+    "sha256": "a66bdd4973d3e5e91594142c8223f28cdd07d72d2b173877ced584a6b55196d3",
+    "source": "app/Http/Middleware/EnsureMobileRole.php",
+    "originalSha256": "a66bdd4973d3e5e91594142c8223f28cdd07d72d2b173877ced584a6b55196d3"
+  },
+  {
+    "path": "codigo/app/Http/Middleware/EnsureUserRole.php",
+    "bytes": 491,
+    "sha256": "c14d59e475003e23bc7bebbbb470fb09a82ed86278ce395cd7c2ecffd2ab013c",
+    "source": "app/Http/Middleware/EnsureUserRole.php",
+    "originalSha256": "c14d59e475003e23bc7bebbbb470fb09a82ed86278ce395cd7c2ecffd2ab013c"
+  },
+  {
+    "path": "codigo/app/Http/Middleware/PreventStaleSessionPages.php",
+    "bytes": 536,
+    "sha256": "b2795061dc1fb89531ddc26260d2981f5c9eca5229eeb060b9b5d57802701123",
+    "source": "app/Http/Middleware/PreventStaleSessionPages.php",
+    "originalSha256": "b2795061dc1fb89531ddc26260d2981f5c9eca5229eeb060b9b5d57802701123"
+  },
+  {
+    "path": "codigo/app/Http/Requests/Api/Mobile/V1/LoginRequest.php",
+    "bytes": 802,
+    "sha256": "30b17ca74db25df1c03c509d549bc7f32adf613ff21a70592dbb6c8700d6baf9",
+    "source": "app/Http/Requests/Api/Mobile/V1/LoginRequest.php",
+    "originalSha256": "30b17ca74db25df1c03c509d549bc7f32adf613ff21a70592dbb6c8700d6baf9"
+  },
+  {
+    "path": "codigo/app/Models/Appointment.php",
+    "bytes": 1083,
+    "sha256": "3f697b484386232e4745b5f53c8ee6867d4ca4451ec29dad1efd32289e309302",
+    "source": "app/Models/Appointment.php",
+    "originalSha256": "3f697b484386232e4745b5f53c8ee6867d4ca4451ec29dad1efd32289e309302"
+  },
+  {
+    "path": "codigo/app/Models/AppointmentStatusEvent.php",
+    "bytes": 581,
+    "sha256": "a5bc5bbf36be21365511cd94cf7da2d8d7a08f082fcc3c4448bf27275bcf73da",
+    "source": "app/Models/AppointmentStatusEvent.php",
+    "originalSha256": "a5bc5bbf36be21365511cd94cf7da2d8d7a08f082fcc3c4448bf27275bcf73da"
+  },
+  {
+    "path": "codigo/app/Models/AuditLog.php",
+    "bytes": 353,
+    "sha256": "c732876cb95e4f90e191fce0d5317fe8d61aab13f4045784756c4c9d6c327058",
+    "source": "app/Models/AuditLog.php",
+    "originalSha256": "c732876cb95e4f90e191fce0d5317fe8d61aab13f4045784756c4c9d6c327058"
+  },
+  {
+    "path": "codigo/app/Models/Authorization.php",
+    "bytes": 835,
+    "sha256": "93c2e327c0c4235743f9a3699f84f7a94cab3369d1c9d079c75dcf90c0368f54",
+    "source": "app/Models/Authorization.php",
+    "originalSha256": "93c2e327c0c4235743f9a3699f84f7a94cab3369d1c9d079c75dcf90c0368f54"
+  },
+  {
+    "path": "codigo/app/Models/BaseModel.php",
+    "bytes": 155,
+    "sha256": "01a2b6f52795d42eda3a1d01aee1127597aff01a0b867f4ea7f0877fed5299df",
+    "source": "app/Models/BaseModel.php",
+    "originalSha256": "01a2b6f52795d42eda3a1d01aee1127597aff01a0b867f4ea7f0877fed5299df"
+  },
+  {
+    "path": "codigo/app/Models/ChronicCondition.php",
+    "bytes": 442,
+    "sha256": "fa192357b98d04c9a05b731c94dd2ec678185c8f14709a010005ef633d8ecc13",
+    "source": "app/Models/ChronicCondition.php",
+    "originalSha256": "fa192357b98d04c9a05b731c94dd2ec678185c8f14709a010005ef633d8ecc13"
+  },
+  {
+    "path": "codigo/app/Models/ClinicalEncounter.php",
+    "bytes": 804,
+    "sha256": "747e34f9b769d4b2268b5f4e6c2efaf3c58bf78d8cfe0ac18a37173bb3e6dda0",
+    "source": "app/Models/ClinicalEncounter.php",
+    "originalSha256": "747e34f9b769d4b2268b5f4e6c2efaf3c58bf78d8cfe0ac18a37173bb3e6dda0"
+  },
+  {
+    "path": "codigo/app/Models/ClinicalRecord.php",
+    "bytes": 513,
+    "sha256": "57baf05ca0075aa1d932f3533a6c33eb2d51a69a483990560f72998571eef437",
+    "source": "app/Models/ClinicalRecord.php",
+    "originalSha256": "57baf05ca0075aa1d932f3533a6c33eb2d51a69a483990560f72998571eef437"
+  },
+  {
+    "path": "codigo/app/Models/ContractedService.php",
+    "bytes": 671,
+    "sha256": "4583c935f749190e37473a05ffb8e61dcc2f75e41b6cb9403f93a060fe33b20b",
+    "source": "app/Models/ContractedService.php",
+    "originalSha256": "4583c935f749190e37473a05ffb8e61dcc2f75e41b6cb9403f93a060fe33b20b"
+  },
+  {
+    "path": "codigo/app/Models/DeliveryReport.php",
+    "bytes": 432,
+    "sha256": "57a18f9602c12e49fcc02449f05c7b77b1c7f506c59e705657b3fc6e9122c7e0",
+    "source": "app/Models/DeliveryReport.php",
+    "originalSha256": "57a18f9602c12e49fcc02449f05c7b77b1c7f506c59e705657b3fc6e9122c7e0"
+  },
+  {
+    "path": "codigo/app/Models/DeliveryRoute.php",
+    "bytes": 847,
+    "sha256": "7ca509dfc2bbaa7c6e4f04127b70276b443948d009fc455e6ca3fa6a25278995",
+    "source": "app/Models/DeliveryRoute.php",
+    "originalSha256": "7ca509dfc2bbaa7c6e4f04127b70276b443948d009fc455e6ca3fa6a25278995"
+  },
+  {
+    "path": "codigo/app/Models/Doctor.php",
+    "bytes": 1328,
+    "sha256": "fff2e24fd790a0b380aa284ae1b8e50e8ab2ab9354f06939df9e3548d254b228",
+    "source": "app/Models/Doctor.php",
+    "originalSha256": "fff2e24fd790a0b380aa284ae1b8e50e8ab2ab9354f06939df9e3548d254b228"
+  },
+  {
+    "path": "codigo/app/Models/DoctorAvailabilityException.php",
+    "bytes": 491,
+    "sha256": "ab17863b56ee85bdd5d348954fe1ebdf664408d9a4204193065b8e6747f10fc2",
+    "source": "app/Models/DoctorAvailabilityException.php",
+    "originalSha256": "ab17863b56ee85bdd5d348954fe1ebdf664408d9a4204193065b8e6747f10fc2"
+  },
+  {
+    "path": "codigo/app/Models/DoctorAvailabilityRule.php",
+    "bytes": 553,
+    "sha256": "6ced7c94a8f297a708168a4de441f9a2488b54a388be8c10e10f098732eb2fc9",
+    "source": "app/Models/DoctorAvailabilityRule.php",
+    "originalSha256": "6ced7c94a8f297a708168a4de441f9a2488b54a388be8c10e10f098732eb2fc9"
+  },
+  {
+    "path": "codigo/app/Models/DoctorClinic.php",
+    "bytes": 551,
+    "sha256": "a211f3cd62d3e5068bf9c40146f740eb297886ce7ae561ae2143147301811d35",
+    "source": "app/Models/DoctorClinic.php",
+    "originalSha256": "a211f3cd62d3e5068bf9c40146f740eb297886ce7ae561ae2143147301811d35"
+  },
+  {
+    "path": "codigo/app/Models/Document.php",
+    "bytes": 1223,
+    "sha256": "1027562d543468ef9ddcf055859a5538e13bf6baacc213e3a396996b58d37753",
+    "source": "app/Models/Document.php",
+    "originalSha256": "1027562d543468ef9ddcf055859a5538e13bf6baacc213e3a396996b58d37753"
+  },
+  {
+    "path": "codigo/app/Models/Hospital.php",
+    "bytes": 721,
+    "sha256": "2520d540f4b41b10e7ac85bffbe6734acdaa982a826ee3ac8bd054f5447e7df7",
+    "source": "app/Models/Hospital.php",
+    "originalSha256": "2520d540f4b41b10e7ac85bffbe6734acdaa982a826ee3ac8bd054f5447e7df7"
+  },
+  {
+    "path": "codigo/app/Models/Hospitalization.php",
+    "bytes": 1417,
+    "sha256": "b8610fbcaf45681cae6803c5eb98990c28aa14db537e5a7c3956d0ce8a871b66",
+    "source": "app/Models/Hospitalization.php",
+    "originalSha256": "b8610fbcaf45681cae6803c5eb98990c28aa14db537e5a7c3956d0ce8a871b66"
+  },
+  {
+    "path": "codigo/app/Models/HospitalizationDailyNote.php",
+    "bytes": 719,
+    "sha256": "42afa64b5a11f17ca10ec9dbee7fbcefec74f47b73406d75982488c45fb4da2a",
+    "source": "app/Models/HospitalizationDailyNote.php",
+    "originalSha256": "42afa64b5a11f17ca10ec9dbee7fbcefec74f47b73406d75982488c45fb4da2a"
+  },
+  {
+    "path": "codigo/app/Models/HospitalizationProcedure.php",
+    "bytes": 610,
+    "sha256": "0c097a8cc81424174b2f464607860a16e9cd69165392327e4f5967220624c8b1",
+    "source": "app/Models/HospitalizationProcedure.php",
+    "originalSha256": "0c097a8cc81424174b2f464607860a16e9cd69165392327e4f5967220624c8b1"
+  },
+  {
+    "path": "codigo/app/Models/Institution.php",
+    "bytes": 656,
+    "sha256": "036a3dd80f879025284d696b9b4db2318aded7e2ecf0416d419260808d3121d8",
+    "source": "app/Models/Institution.php",
+    "originalSha256": "036a3dd80f879025284d696b9b4db2318aded7e2ecf0416d419260808d3121d8"
+  },
+  {
+    "path": "codigo/app/Models/InsurancePolicy.php",
+    "bytes": 506,
+    "sha256": "5bddb908a91f489a81a7568f188486acc23874b66b12def39e5384ed5225c54f",
+    "source": "app/Models/InsurancePolicy.php",
+    "originalSha256": "5bddb908a91f489a81a7568f188486acc23874b66b12def39e5384ed5225c54f"
+  },
+  {
+    "path": "codigo/app/Models/InventoryItem.php",
+    "bytes": 754,
+    "sha256": "e53c47c958d630af4d78cb42b65da646eb26eaa0cb9700fb10e4ad8badbc0cf3",
+    "source": "app/Models/InventoryItem.php",
+    "originalSha256": "e53c47c958d630af4d78cb42b65da646eb26eaa0cb9700fb10e4ad8badbc0cf3"
+  },
+  {
+    "path": "codigo/app/Models/InventoryMovement.php",
+    "bytes": 718,
+    "sha256": "5e781502f8f3f37e36a885242055c2270fefce09983cc3f80fa0640a120ce354",
+    "source": "app/Models/InventoryMovement.php",
+    "originalSha256": "5e781502f8f3f37e36a885242055c2270fefce09983cc3f80fa0640a120ce354"
+  },
+  {
+    "path": "codigo/app/Models/Invoice.php",
+    "bytes": 1052,
+    "sha256": "a4a581db89068468b236684dc7b96ffc714b5198c7fb41344382e03bd2f525ff",
+    "source": "app/Models/Invoice.php",
+    "originalSha256": "a4a581db89068468b236684dc7b96ffc714b5198c7fb41344382e03bd2f525ff"
+  },
+  {
+    "path": "codigo/app/Models/InvoiceItem.php",
+    "bytes": 515,
+    "sha256": "b9398a41b1058205cc15f588e166e2b26860207a12d70dc1a4dec1747bc662e2",
+    "source": "app/Models/InvoiceItem.php",
+    "originalSha256": "b9398a41b1058205cc15f588e166e2b26860207a12d70dc1a4dec1747bc662e2"
+  },
+  {
+    "path": "codigo/app/Models/MedicalUnit.php",
+    "bytes": 1355,
+    "sha256": "d5759d2d0574db7acb7914d7445e690ef3150380ba339ad7f2f65b79ea3f3b50",
+    "source": "app/Models/MedicalUnit.php",
+    "originalSha256": "d5759d2d0574db7acb7914d7445e690ef3150380ba339ad7f2f65b79ea3f3b50"
+  },
+  {
+    "path": "codigo/app/Models/Medication.php",
+    "bytes": 817,
+    "sha256": "d5db860753dd33071a53c81a1901ecf1b1ecf5b70b11617f2516d87e716e0f80",
+    "source": "app/Models/Medication.php",
+    "originalSha256": "d5db860753dd33071a53c81a1901ecf1b1ecf5b70b11617f2516d87e716e0f80"
+  },
+  {
+    "path": "codigo/app/Models/MedicationCatalogItem.php",
+    "bytes": 731,
+    "sha256": "034a3a0ba0666a3f9424aa9c7ab26485a9e3212004d5590bf80de47b1172f7ee",
+    "source": "app/Models/MedicationCatalogItem.php",
+    "originalSha256": "034a3a0ba0666a3f9424aa9c7ab26485a9e3212004d5590bf80de47b1172f7ee"
+  },
+  {
+    "path": "codigo/app/Models/MedicationDelivery.php",
+    "bytes": 872,
+    "sha256": "535edc4cf4a9df43aeddfcd8f6aa10431245b792a236f9959e9512020765ef62",
+    "source": "app/Models/MedicationDelivery.php",
+    "originalSha256": "535edc4cf4a9df43aeddfcd8f6aa10431245b792a236f9959e9512020765ef62"
+  },
+  {
+    "path": "codigo/app/Models/MessengerProfile.php",
+    "bytes": 556,
+    "sha256": "bdc52771c796c10e1cf09f2f37f88d82d65478b562deaa63222b114d544dccac",
+    "source": "app/Models/MessengerProfile.php",
+    "originalSha256": "bdc52771c796c10e1cf09f2f37f88d82d65478b562deaa63222b114d544dccac"
+  },
+  {
+    "path": "codigo/app/Models/MixtureIntegration.php",
+    "bytes": 473,
+    "sha256": "f3d7bee13caab1bc28ced6eeec2a8f90b408bd29e7ea855de01423c3897f9ee4",
+    "source": "app/Models/MixtureIntegration.php",
+    "originalSha256": "f3d7bee13caab1bc28ced6eeec2a8f90b408bd29e7ea855de01423c3897f9ee4"
+  },
+  {
+    "path": "codigo/app/Models/MobileDeviceRegistration.php",
+    "bytes": 646,
+    "sha256": "66196c2c613fd80dbd7f13c4bd739ffd69f6dc91e243d0e591792e5d4a355926",
+    "source": "app/Models/MobileDeviceRegistration.php",
+    "originalSha256": "66196c2c613fd80dbd7f13c4bd739ffd69f6dc91e243d0e591792e5d4a355926"
+  },
+  {
+    "path": "codigo/app/Models/OperationalArea.php",
+    "bytes": 420,
+    "sha256": "88e64cb18d2a86cf931d4a73e9e6c2585835dd25f6dcf49be35bccd1d55eea3c",
+    "source": "app/Models/OperationalArea.php",
+    "originalSha256": "88e64cb18d2a86cf931d4a73e9e6c2585835dd25f6dcf49be35bccd1d55eea3c"
+  },
+  {
+    "path": "codigo/app/Models/OperationalProfile.php",
+    "bytes": 655,
+    "sha256": "1897adba4e008adc0f295142c0a46755085ea92343ef0fc08983869fc35418c0",
+    "source": "app/Models/OperationalProfile.php",
+    "originalSha256": "1897adba4e008adc0f295142c0a46755085ea92343ef0fc08983869fc35418c0"
+  },
+  {
+    "path": "codigo/app/Models/Patient.php",
+    "bytes": 3786,
+    "sha256": "bbe781497cd450998d3df2b8e39ad557787bb0289c7a79ad981cce8d1607aa6a",
+    "source": "app/Models/Patient.php",
+    "originalSha256": "bbe781497cd450998d3df2b8e39ad557787bb0289c7a79ad981cce8d1607aa6a"
+  },
+  {
+    "path": "codigo/app/Models/PatientDiagnosis.php",
+    "bytes": 870,
+    "sha256": "2c386bfdc01086f5e72cc7c0492ec362b3b2d9c6964797cbba110daff382a8e7",
+    "source": "app/Models/PatientDiagnosis.php",
+    "originalSha256": "2c386bfdc01086f5e72cc7c0492ec362b3b2d9c6964797cbba110daff382a8e7"
+  },
+  {
+    "path": "codigo/app/Models/PatientOrder.php",
+    "bytes": 761,
+    "sha256": "609ae98107922cb86dc61f00caff97d93b03b436f4479adc1b7faad65196538b",
+    "source": "app/Models/PatientOrder.php",
+    "originalSha256": "609ae98107922cb86dc61f00caff97d93b03b436f4479adc1b7faad65196538b"
+  },
+  {
+    "path": "codigo/app/Models/PatientOrderItem.php",
+    "bytes": 647,
+    "sha256": "5f4a3dbfa3559f8bd9c02a5b3fe7b527d7bf67adf57632b1ba50e6eed12045b2",
+    "source": "app/Models/PatientOrderItem.php",
+    "originalSha256": "5f4a3dbfa3559f8bd9c02a5b3fe7b527d7bf67adf57632b1ba50e6eed12045b2"
+  },
+  {
+    "path": "codigo/app/Models/PatientProfileRelationship.php",
+    "bytes": 1274,
+    "sha256": "fe22058692fe8d0a165245ff07b70059d6ae07287a465a81fd8d427636944ab2",
+    "source": "app/Models/PatientProfileRelationship.php",
+    "originalSha256": "fe22058692fe8d0a165245ff07b70059d6ae07287a465a81fd8d427636944ab2"
+  },
+  {
+    "path": "codigo/app/Models/PatientProfileRelationshipType.php",
+    "bytes": 529,
+    "sha256": "52300bb409bd7a5421bc34762c02801b6ffe21bc21694b018d91ed18153455e6",
+    "source": "app/Models/PatientProfileRelationshipType.php",
+    "originalSha256": "52300bb409bd7a5421bc34762c02801b6ffe21bc21694b018d91ed18153455e6"
+  },
+  {
+    "path": "codigo/app/Models/PharmacyProduct.php",
+    "bytes": 582,
+    "sha256": "f3aab8406826b1e3e9350e631b09a6378f0a808dbd33fe3a86e7fcf17f5ccbc2",
+    "source": "app/Models/PharmacyProduct.php",
+    "originalSha256": "f3aab8406826b1e3e9350e631b09a6378f0a808dbd33fe3a86e7fcf17f5ccbc2"
+  },
+  {
+    "path": "codigo/app/Models/Prescription.php",
+    "bytes": 674,
+    "sha256": "2a7176fff4cd962a12b7e615b8842dbe4f436effb570eb224d5464387a26a77c",
+    "source": "app/Models/Prescription.php",
+    "originalSha256": "2a7176fff4cd962a12b7e615b8842dbe4f436effb570eb224d5464387a26a77c"
+  },
+  {
+    "path": "codigo/app/Models/PrescriptionItem.php",
+    "bytes": 533,
+    "sha256": "0fdfa443a030f4a2f89dd619ed368c364128355d29e36fe67fa5f33809f1ae8c",
+    "source": "app/Models/PrescriptionItem.php",
+    "originalSha256": "0fdfa443a030f4a2f89dd619ed368c364128355d29e36fe67fa5f33809f1ae8c"
+  },
+  {
+    "path": "codigo/app/Models/ProcedureArea.php",
+    "bytes": 708,
+    "sha256": "f98f48c05d891ea6804687c2d8124be6f6d9adad458a45a6a29afd33dcff99b9",
+    "source": "app/Models/ProcedureArea.php",
+    "originalSha256": "f98f48c05d891ea6804687c2d8124be6f6d9adad458a45a6a29afd33dcff99b9"
+  },
+  {
+    "path": "codigo/app/Models/ProcedureAreaSchedule.php",
+    "bytes": 424,
+    "sha256": "0737d2bd59fc1e7fa0032aab71053bd5aa94f9543b94fa55480df70dd168f630",
+    "source": "app/Models/ProcedureAreaSchedule.php",
+    "originalSha256": "0737d2bd59fc1e7fa0032aab71053bd5aa94f9543b94fa55480df70dd168f630"
+  },
+  {
+    "path": "codigo/app/Models/Provider.php",
+    "bytes": 520,
+    "sha256": "978356f6b17354171298e5c1b13c481a22b11267a1955d96dc8275dbfa7de046",
+    "source": "app/Models/Provider.php",
+    "originalSha256": "978356f6b17354171298e5c1b13c481a22b11267a1955d96dc8275dbfa7de046"
+  },
+  {
+    "path": "codigo/app/Models/ProviderRequest.php",
+    "bytes": 1149,
+    "sha256": "f9ad955ed71d220f74d69570c7b4309cb18328b6d7a9f57be6f52f8f259541f4",
+    "source": "app/Models/ProviderRequest.php",
+    "originalSha256": "f9ad955ed71d220f74d69570c7b4309cb18328b6d7a9f57be6f52f8f259541f4"
+  },
+  {
+    "path": "codigo/app/Models/ProviderRequestStatusEvent.php",
+    "bytes": 436,
+    "sha256": "b3f3e0ff476cdc25914203e28e616115d389c82d721d2f70f1ece3228e9bb128",
+    "source": "app/Models/ProviderRequestStatusEvent.php",
+    "originalSha256": "b3f3e0ff476cdc25914203e28e616115d389c82d721d2f70f1ece3228e9bb128"
+  },
+  {
+    "path": "codigo/app/Models/Service.php",
+    "bytes": 374,
+    "sha256": "312863f5ee131ab905f3a3ba8826c77317ab68a8be1035a17d5eabf6af99883e",
+    "source": "app/Models/Service.php",
+    "originalSha256": "312863f5ee131ab905f3a3ba8826c77317ab68a8be1035a17d5eabf6af99883e"
+  },
+  {
+    "path": "codigo/app/Models/Treatment.php",
+    "bytes": 1358,
+    "sha256": "0d400e50f460240dbcf4bc67254a6ac5078a6622c7b9ce49747e9fa7ee15e0ea",
+    "source": "app/Models/Treatment.php",
+    "originalSha256": "0d400e50f460240dbcf4bc67254a6ac5078a6622c7b9ce49747e9fa7ee15e0ea"
+  },
+  {
+    "path": "codigo/app/Models/TreatmentChangeLog.php",
+    "bytes": 589,
+    "sha256": "c3321f2864e41236c2e393ed56fccdc28eb4cbd1e70811ef9c91018b93bd8382",
+    "source": "app/Models/TreatmentChangeLog.php",
+    "originalSha256": "c3321f2864e41236c2e393ed56fccdc28eb4cbd1e70811ef9c91018b93bd8382"
+  },
+  {
+    "path": "codigo/app/Models/UnitMedicationSetting.php",
+    "bytes": 512,
+    "sha256": "16e46ed76c51fe4d65b6acfe884f83c2da74007d5ab7a5333e47b1b23f052969",
+    "source": "app/Models/UnitMedicationSetting.php",
+    "originalSha256": "16e46ed76c51fe4d65b6acfe884f83c2da74007d5ab7a5333e47b1b23f052969"
+  },
+  {
+    "path": "codigo/app/Models/User.php",
+    "bytes": 2654,
+    "sha256": "49aabb5fbefbe6783dfd77a24fef1815ab0af31295a74a04a7c4ecb507c5dd0a",
+    "source": "app/Models/User.php",
+    "originalSha256": "49aabb5fbefbe6783dfd77a24fef1815ab0af31295a74a04a7c4ecb507c5dd0a"
+  },
+  {
+    "path": "codigo/app/Notifications/MobileResetPasswordNotification.php",
+    "bytes": 960,
+    "sha256": "f777d3d4c1515c1a32da719c7e9172261d8f9f5f7faf3fb85695475129fdc55a",
+    "source": "app/Notifications/MobileResetPasswordNotification.php",
+    "originalSha256": "f777d3d4c1515c1a32da719c7e9172261d8f9f5f7faf3fb85695475129fdc55a"
+  },
+  {
+    "path": "codigo/app/Services/AppointmentSchedulingService.php",
+    "bytes": 9744,
+    "sha256": "0c1b89e7e7f83f2702cb6de5c95cd4e67018364b47a60ac3649040c6ee3d0a4b",
+    "source": "app/Services/AppointmentSchedulingService.php",
+    "originalSha256": "0c1b89e7e7f83f2702cb6de5c95cd4e67018364b47a60ac3649040c6ee3d0a4b"
+  },
+  {
+    "path": "codigo/app/Services/Platform/PlatformAuditService.php",
+    "bytes": 776,
+    "sha256": "a2544b1eddeb128e14a1c648374574a2404e540e390c2648a0f5591b04d0859b",
+    "source": "app/Services/Platform/PlatformAuditService.php",
+    "originalSha256": "a2544b1eddeb128e14a1c648374574a2404e540e390c2648a0f5591b04d0859b"
+  },
+  {
+    "path": "codigo/app/Support/MobileApiResponse.php",
+    "bytes": 943,
+    "sha256": "5b695114ea203a3e2603fdd9a79fda9f443c4fd13407ab62c671b427506f2feb",
+    "source": "app/Support/MobileApiResponse.php",
+    "originalSha256": "5b695114ea203a3e2603fdd9a79fda9f443c4fd13407ab62c671b427506f2feb"
+  },
+  {
+    "path": "codigo/composer.json",
+    "bytes": 1279,
+    "sha256": "3634d088fec15019c971afb52ab990ae52772e018dfad340ef2b1fefd67760fc",
+    "source": "composer.json",
+    "originalSha256": "3634d088fec15019c971afb52ab990ae52772e018dfad340ef2b1fefd67760fc"
+  },
+  {
+    "path": "codigo/composer.lock",
+    "bytes": 313044,
+    "sha256": "1daecbbd955d1cb1277691b66f7fd46bb04e3035acf060420680d66062c9ee31",
+    "source": "composer.lock",
+    "originalSha256": "1daecbbd955d1cb1277691b66f7fd46bb04e3035acf060420680d66062c9ee31"
+  },
+  {
+    "path": "codigo/config/mobile-api.php",
+    "bytes": 181,
+    "sha256": "e4261855f7e73020b4a606fd8640c4c6d6ffa576d88e5fdcd6603a8daa2ed2c1",
+    "source": "config/mobile-api.php",
+    "originalSha256": "e4261855f7e73020b4a606fd8640c4c6d6ffa576d88e5fdcd6603a8daa2ed2c1"
+  },
+  {
+    "path": "codigo/phpunit.xml",
+    "bytes": 1184,
+    "sha256": "feaa35910b653f1afaba03c0f7347adfad3a17e3e27eb573a32c135b3973055a",
+    "source": "phpunit.xml",
+    "originalSha256": "feaa35910b653f1afaba03c0f7347adfad3a17e3e27eb573a32c135b3973055a"
+  },
+  {
+    "path": "codigo/public/brand/klini/brand-still-life.webp",
+    "bytes": 96356,
+    "sha256": "86b6f6cac48fa9366998e5d73247fc4b4308f23fc5448ab647074ff62da0a74e",
+    "source": "public/brand/klini/brand-still-life.webp",
+    "originalSha256": "86b6f6cac48fa9366998e5d73247fc4b4308f23fc5448ab647074ff62da0a74e"
+  },
+  {
+    "path": "codigo/public/brand/klini/carousel/01_catalogo.png",
+    "bytes": 152529,
+    "sha256": "c06b3bcd2dec64aa1dfd90fc113937744e88c338d9ec4869ea2796eff85887a6",
+    "source": "public/brand/klini/carousel/01_catalogo.png",
+    "originalSha256": "c06b3bcd2dec64aa1dfd90fc113937744e88c338d9ec4869ea2796eff85887a6"
+  },
+  {
+    "path": "codigo/public/brand/klini/carousel/02_consulta_externa.png",
+    "bytes": 215863,
+    "sha256": "a9987475947d2cc18450e36278c655a4bece39b5d6618ef589e3329eb7085aa2",
+    "source": "public/brand/klini/carousel/02_consulta_externa.png",
+    "originalSha256": "a9987475947d2cc18450e36278c655a4bece39b5d6618ef589e3329eb7085aa2"
+  },
+  {
+    "path": "codigo/public/brand/klini/carousel/03_nutricion_parenteral.png",
+    "bytes": 158973,
+    "sha256": "de39e5a5940a4878bb4c0c0b21c0ab7418b10d33fbf3148944021d60d7ca46e4",
+    "source": "public/brand/klini/carousel/03_nutricion_parenteral.png",
+    "originalSha256": "de39e5a5940a4878bb4c0c0b21c0ab7418b10d33fbf3148944021d60d7ca46e4"
+  },
+  {
+    "path": "codigo/public/brand/klini/carousel/04_quimioterapia.png",
+    "bytes": 157114,
+    "sha256": "dfab9a33425df11987a1d1b79facd58fe4d069e3488341df870ed1482497c2b2",
+    "source": "public/brand/klini/carousel/04_quimioterapia.png",
+    "originalSha256": "dfab9a33425df11987a1d1b79facd58fe4d069e3488341df870ed1482497c2b2"
+  },
+  {
+    "path": "codigo/public/brand/klini/carousel/05_importacion_medicamentos.png",
+    "bytes": 184447,
+    "sha256": "898d4cc2a75a668104e0d2f0d332c268088a6d078c4c5b63d96a17d347ec85be",
+    "source": "public/brand/klini/carousel/05_importacion_medicamentos.png",
+    "originalSha256": "898d4cc2a75a668104e0d2f0d332c268088a6d078c4c5b63d96a17d347ec85be"
+  },
+  {
+    "path": "codigo/public/brand/klini/carousel/06_pedido_entrega_medicamentos.png",
+    "bytes": 178877,
+    "sha256": "41ba223c6eccb80fde04c572d80f5414867c2c9d17e556a0ca063d5ac306b55d",
+    "source": "public/brand/klini/carousel/06_pedido_entrega_medicamentos.png",
+    "originalSha256": "41ba223c6eccb80fde04c572d80f5414867c2c9d17e556a0ca063d5ac306b55d"
+  },
+  {
+    "path": "codigo/public/brand/klini/carousel/navy-waves.png",
+    "bytes": 879225,
+    "sha256": "08446fcb8e3bef734bda2e7523440dfd806673b166c272264a06cc19127fb64b",
+    "source": "public/brand/klini/carousel/navy-waves.png",
+    "originalSha256": "08446fcb8e3bef734bda2e7523440dfd806673b166c272264a06cc19127fb64b"
+  },
+  {
+    "path": "codigo/public/brand/klini/dejavu-bold.woff",
+    "bytes": 28220,
+    "sha256": "6628c9ae4c3c7b6c239cd2fef05e0bcfef03b3182875c94bae217aa230bb6fc2",
+    "source": "public/brand/klini/dejavu-bold.woff",
+    "originalSha256": "6628c9ae4c3c7b6c239cd2fef05e0bcfef03b3182875c94bae217aa230bb6fc2"
+  },
+  {
+    "path": "codigo/public/brand/klini/dejavu.woff",
+    "bytes": 30212,
+    "sha256": "92744b3299377f9f002dd3ccb6a077b313c0c26dca949f989f741c2b80e4800c",
+    "source": "public/brand/klini/dejavu.woff",
+    "originalSha256": "92744b3299377f9f002dd3ccb6a077b313c0c26dca949f989f741c2b80e4800c"
+  },
+  {
+    "path": "codigo/public/brand/klini/favicon.svg",
+    "bytes": 13748,
+    "sha256": "b0694f53433bf2a7a3ea476d210823cc4ff88db5bbf90b75ae082192fa95e9cc",
+    "source": "public/brand/klini/favicon.svg",
+    "originalSha256": "b0694f53433bf2a7a3ea476d210823cc4ff88db5bbf90b75ae082192fa95e9cc"
+  },
+  {
+    "path": "codigo/public/brand/klini/font-license.txt",
+    "bytes": 3937,
+    "sha256": "baa2e5e5cdb29e9052bbe4e171b2feb4b3314116ef9032fe11bd874c803cc815",
+    "source": "public/brand/klini/font-license.txt",
+    "originalSha256": "baa2e5e5cdb29e9052bbe4e171b2feb4b3314116ef9032fe11bd874c803cc815"
+  },
+  {
+    "path": "codigo/public/brand/klini/klini-white.svg",
+    "bytes": 42140,
+    "sha256": "6b8b133bb7b5b0f58a356afbc984a738e7f84d6b877b665d00dfb3e141de738b",
+    "source": "public/brand/klini/klini-white.svg",
+    "originalSha256": "6b8b133bb7b5b0f58a356afbc984a738e7f84d6b877b665d00dfb3e141de738b"
+  },
+  {
+    "path": "codigo/public/brand/klini/klini.svg",
+    "bytes": 42140,
+    "sha256": "1ed6b9af3ce71101b09b74ea1c7a6b80b04fbbce700961886f26279891a317e2",
+    "source": "public/brand/klini/klini.svg",
+    "originalSha256": "1ed6b9af3ce71101b09b74ea1c7a6b80b04fbbce700961886f26279891a317e2"
+  },
+  {
+    "path": "codigo/public/brand/klini/system-art.png",
+    "bytes": 1025615,
+    "sha256": "ed2e5d7b76b35d58e603bca5fa1bea4a1495ab8707a78f8355e3e38ab283fbe9",
+    "source": "public/brand/klini/system-art.png",
+    "originalSha256": "ed2e5d7b76b35d58e603bca5fa1bea4a1495ab8707a78f8355e3e38ab283fbe9"
+  },
+  {
+    "path": "codigo/public/brand/klini/wellness-running.webp",
+    "bytes": 179368,
+    "sha256": "b7d6dc43e55e49ab36d4d98de4c2a65626d175ab2e9520506c27026dc37901bb",
+    "source": "public/brand/klini/wellness-running.webp",
+    "originalSha256": "b7d6dc43e55e49ab36d4d98de4c2a65626d175ab2e9520506c27026dc37901bb"
+  },
+  {
+    "path": "codigo/public/brand/klini/wellness-watch.webp",
+    "bytes": 95840,
+    "sha256": "2b47442beb45bb88421cdfe4a8482bcf75797552b5cd8229e228519caf423375",
+    "source": "public/brand/klini/wellness-watch.webp",
+    "originalSha256": "2b47442beb45bb88421cdfe4a8482bcf75797552b5cd8229e228519caf423375"
+  },
+  {
+    "path": "codigo/public/brand/klini/wellness-yoga.webp",
+    "bytes": 191740,
+    "sha256": "5e5724dbc2a1f7d45e0fc30a50fa2c3dc7be55c01fb436d88851d1e364188529",
+    "source": "public/brand/klini/wellness-yoga.webp",
+    "originalSha256": "5e5724dbc2a1f7d45e0fc30a50fa2c3dc7be55c01fb436d88851d1e364188529"
+  },
+  {
+    "path": "codigo/public/brand/klini/workspace-art.webp",
+    "bytes": 82532,
+    "sha256": "db5ce99d0e77b6c3d88957946ce402bf6c16aa2c5bb12b2e2147f7c84ae3af92",
+    "source": "public/brand/klini/workspace-art.webp",
+    "originalSha256": "db5ce99d0e77b6c3d88957946ce402bf6c16aa2c5bb12b2e2147f7c84ae3af92"
+  },
+  {
+    "path": "codigo/public/css/communities.css",
+    "bytes": 283088,
+    "sha256": "06789a30bab784878e317990c945b3e9bea6b2531a2eb9140e4957f45d9307fc",
+    "source": "public/css/communities.css",
+    "originalSha256": "06789a30bab784878e317990c945b3e9bea6b2531a2eb9140e4957f45d9307fc"
+  },
+  {
+    "path": "codigo/public/css/drsam.css",
+    "bytes": 1057679,
+    "sha256": "7a4c6496dce1e8023af713375bb8e6924f93c1c7f1c5a5ab60937521840b05e7",
+    "source": "public/css/drsam.css",
+    "originalSha256": "7a4c6496dce1e8023af713375bb8e6924f93c1c7f1c5a5ab60937521840b05e7"
+  },
+  {
+    "path": "codigo/public/css/klini-brand.css",
+    "bytes": 4787,
+    "sha256": "2298f5065c6781414680216bdad0fc2dac1785e63709658037b98f38b776e9e9",
+    "source": "public/css/klini-brand.css",
+    "originalSha256": "2298f5065c6781414680216bdad0fc2dac1785e63709658037b98f38b776e9e9"
+  },
+  {
+    "path": "codigo/public/css/klini-carousels.css",
+    "bytes": 10713,
+    "sha256": "f9d2b09fd3ebd30eac05c7295eb4494a91475a31901f998bd43a7eba89771c91",
+    "source": "public/css/klini-carousels.css",
+    "originalSha256": "f9d2b09fd3ebd30eac05c7295eb4494a91475a31901f998bd43a7eba89771c91"
+  },
+  {
+    "path": "codigo/public/css/klini-system.css",
+    "bytes": 10118,
+    "sha256": "39f88c383671ba56b2fe7ebbb36a18b1723eb451e35ce880d094c6071b2bf529",
+    "source": "public/css/klini-system.css",
+    "originalSha256": "39f88c383671ba56b2fe7ebbb36a18b1723eb451e35ce880d094c6071b2bf529"
+  },
+  {
+    "path": "codigo/public/css/klini-workspace.css",
+    "bytes": 23470,
+    "sha256": "dfe5b7d40b41f2b35904fbb99c678412976747fde80fd823c248cdb436929ccb",
+    "source": "public/css/klini-workspace.css",
+    "originalSha256": "dfe5b7d40b41f2b35904fbb99c678412976747fde80fd823c248cdb436929ccb"
+  },
+  {
+    "path": "codigo/public/css/patient-bottom-nav-mobile.css",
+    "bytes": 1675,
+    "sha256": "6ddf2a9267776665ad9746b4cc56d56a5c08e0bc85c1c2e37150b87409436b93",
+    "source": "public/css/patient-bottom-nav-mobile.css",
+    "originalSha256": "6ddf2a9267776665ad9746b4cc56d56a5c08e0bc85c1c2e37150b87409436b93"
+  },
+  {
+    "path": "codigo/public/css/patient-calendar-mobile.css",
+    "bytes": 8071,
+    "sha256": "4647d778a1d0401d5ee0851c1e9ac3a5ca6e45fc100b40eb793e1ecf75d81cad",
+    "source": "public/css/patient-calendar-mobile.css",
+    "originalSha256": "4647d778a1d0401d5ee0851c1e9ac3a5ca6e45fc100b40eb793e1ecf75d81cad"
+  },
+  {
+    "path": "codigo/public/css/patient-history-mobile.css",
+    "bytes": 2599,
+    "sha256": "6791f9b3e940033b1f45d8b4ce062d2df630e8015c673e37cf5a0a4a7fed96b9",
+    "source": "public/css/patient-history-mobile.css",
+    "originalSha256": "6791f9b3e940033b1f45d8b4ce062d2df630e8015c673e37cf5a0a4a7fed96b9"
+  },
+  {
+    "path": "codigo/public/css/patient-portal-source.css",
+    "bytes": 1057632,
+    "sha256": "1272be58564467a37f4933ba6f42e18c36557d5241c3dc0d81f96f805e59a968",
+    "source": "public/css/patient-portal-source.css",
+    "originalSha256": "1272be58564467a37f4933ba6f42e18c36557d5241c3dc0d81f96f805e59a968"
+  },
+  {
+    "path": "codigo/public/css/patient-profile-panel.css",
+    "bytes": 75976,
+    "sha256": "700d86d59442ee8a0539165f6b441ee6def08a5af07bf3e058790b5a4b5de53f",
+    "source": "public/css/patient-profile-panel.css",
+    "originalSha256": "700d86d59442ee8a0539165f6b441ee6def08a5af07bf3e058790b5a4b5de53f"
+  },
+  {
+    "path": "codigo/public/css/patient-social.css",
+    "bytes": 7689,
+    "sha256": "db1232e6e37c8990ee0bae570f3615195e187b911323811fb485ada4f15e477c",
+    "source": "public/css/patient-social.css",
+    "originalSha256": "db1232e6e37c8990ee0bae570f3615195e187b911323811fb485ada4f15e477c"
+  },
+  {
+    "path": "codigo/public/css/policy-saved-overlay.css",
+    "bytes": 3499,
+    "sha256": "6146a0f8c72e2e3553c775296e6e6e9e7319db0e6dbcbcb522cf6486d0d51a7f",
+    "source": "public/css/policy-saved-overlay.css",
+    "originalSha256": "6146a0f8c72e2e3553c775296e6e6e9e7319db0e6dbcbcb522cf6486d0d51a7f"
+  },
+  {
+    "path": "codigo/public/images/calendar-icons/calendar.png",
+    "bytes": 631287,
+    "sha256": "a60b7342c83e8cad4960dc945643d881ea8e45c40f781d89b477993ccbde127d",
+    "source": "public/images/calendar-icons/calendar.png",
+    "originalSha256": "a60b7342c83e8cad4960dc945643d881ea8e45c40f781d89b477993ccbde127d"
+  },
+  {
+    "path": "codigo/public/images/communities/avatar-carlos.png",
+    "bytes": 7410,
+    "sha256": "75e65953f9e7d9581bc76be9322f373f2c19a9b979342f9c4e3600da5044b044",
+    "source": "public/images/communities/avatar-carlos.png",
+    "originalSha256": "75e65953f9e7d9581bc76be9322f373f2c19a9b979342f9c4e3600da5044b044"
+  },
+  {
+    "path": "codigo/public/images/communities/category-mine.png",
+    "bytes": 25929,
+    "sha256": "04555e3402828832f73de643e8beb88eda94c612965ba12d8c07bdc2c188f1d8",
+    "source": "public/images/communities/category-mine.png",
+    "originalSha256": "04555e3402828832f73de643e8beb88eda94c612965ba12d8c07bdc2c188f1d8"
+  },
+  {
+    "path": "codigo/public/images/communities/category-new.png",
+    "bytes": 53801,
+    "sha256": "b00ba3375a37788b3804fc10dd31327b5b6258cdfe834fe617c353b154c0b6db",
+    "source": "public/images/communities/category-new.png",
+    "originalSha256": "b00ba3375a37788b3804fc10dd31327b5b6258cdfe834fe617c353b154c0b6db"
+  },
+  {
+    "path": "codigo/public/images/communities/category-sport.png",
+    "bytes": 29896,
+    "sha256": "396369d5a7d3ccaf33ee901fdfe713856021fe757abc4aecd130e6cab6a297a9",
+    "source": "public/images/communities/category-sport.png",
+    "originalSha256": "396369d5a7d3ccaf33ee901fdfe713856021fe757abc4aecd130e6cab6a297a9"
+  },
+  {
+    "path": "codigo/public/images/communities/category-wellness.png",
+    "bytes": 59914,
+    "sha256": "474e3b8963f2939e4789aee472454a61941e9141334e9a4c6d6179ffd8a03ba0",
+    "source": "public/images/communities/category-wellness.png",
+    "originalSha256": "474e3b8963f2939e4789aee472454a61941e9141334e9a4c6d6179ffd8a03ba0"
+  },
+  {
+    "path": "codigo/public/images/communities/create-cover.png",
+    "bytes": 474521,
+    "sha256": "771ac535945d74bcec5097cabbf237345baec1487bbdc7402a95e3f1c059c976",
+    "source": "public/images/communities/create-cover.png",
+    "originalSha256": "771ac535945d74bcec5097cabbf237345baec1487bbdc7402a95e3f1c059c976"
+  },
+  {
+    "path": "codigo/public/images/communities/owner-mariana.png",
+    "bytes": 51351,
+    "sha256": "705b564dfd03de366a45a1d35451dbff9b99e15499d9dc6cb371903c959f6559",
+    "source": "public/images/communities/owner-mariana.png",
+    "originalSha256": "705b564dfd03de366a45a1d35451dbff9b99e15499d9dc6cb371903c959f6559"
+  },
+  {
+    "path": "codigo/public/images/history-icons/all.png",
+    "bytes": 133201,
+    "sha256": "d5ac7e8405b906b4f17e37741aa40a4cc75d8359e306ec7f31a09007f1bdcf23",
+    "source": "public/images/history-icons/all.png",
+    "originalSha256": "d5ac7e8405b906b4f17e37741aa40a4cc75d8359e306ec7f31a09007f1bdcf23"
+  },
+  {
+    "path": "codigo/public/images/history-icons/consultation.png",
+    "bytes": 418413,
+    "sha256": "7b6db633ab11a0e63a5bb75ae7e38ccce0120128e733bd0b815c414c98ecca59",
+    "source": "public/images/history-icons/consultation.png",
+    "originalSha256": "7b6db633ab11a0e63a5bb75ae7e38ccce0120128e733bd0b815c414c98ecca59"
+  },
+  {
+    "path": "codigo/public/images/history-icons/hospitalization.png",
+    "bytes": 464746,
+    "sha256": "50cac0208c1bfb8256f4b995daa5c96fba17f5ce0f4357bd804d81c2be73f4d6",
+    "source": "public/images/history-icons/hospitalization.png",
+    "originalSha256": "50cac0208c1bfb8256f4b995daa5c96fba17f5ce0f4357bd804d81c2be73f4d6"
+  },
+  {
+    "path": "codigo/public/images/history-icons/laboratory.png",
+    "bytes": 555273,
+    "sha256": "21a9549c1997db141da60ed7eebbe5bcaf4850fda63f95c207071e112a969dbd",
+    "source": "public/images/history-icons/laboratory.png",
+    "originalSha256": "21a9549c1997db141da60ed7eebbe5bcaf4850fda63f95c207071e112a969dbd"
+  },
+  {
+    "path": "codigo/public/images/history-icons/manual-register.png",
+    "bytes": 583875,
+    "sha256": "2db20cc5fe75eadb2d8035cd2ecfe351f99f919a226684176faa3d23ad75e2c3",
+    "source": "public/images/history-icons/manual-register.png",
+    "originalSha256": "2db20cc5fe75eadb2d8035cd2ecfe351f99f919a226684176faa3d23ad75e2c3"
+  },
+  {
+    "path": "codigo/public/images/history-icons/prescriptions.png",
+    "bytes": 606653,
+    "sha256": "a90de38e958015283400cf6c81786a5bbc581b8ac9d7574ce6baa1d0d460e91d",
+    "source": "public/images/history-icons/prescriptions.png",
+    "originalSha256": "a90de38e958015283400cf6c81786a5bbc581b8ac9d7574ce6baa1d0d460e91d"
+  },
+  {
+    "path": "codigo/public/images/history-icons/studies.png",
+    "bytes": 704039,
+    "sha256": "601e2066fe8d4874f4dc5db70e232061ab50073b693bc376815f701d030e8e68",
+    "source": "public/images/history-icons/studies.png",
+    "originalSha256": "601e2066fe8d4874f4dc5db70e232061ab50073b693bc376815f701d030e8e68"
+  },
+  {
+    "path": "codigo/public/images/history-icons/vaccines.png",
+    "bytes": 711537,
+    "sha256": "891bb7d9b3262c7a42dd247c290834c2ce2f23f3daa4ddc2804fa403ce65675e",
+    "source": "public/images/history-icons/vaccines.png",
+    "originalSha256": "891bb7d9b3262c7a42dd247c290834c2ce2f23f3daa4ddc2804fa403ce65675e"
+  },
+  {
+    "path": "codigo/public/images/patient-export/025137a57f3ca9681a57.jpg",
+    "bytes": 23561,
+    "sha256": "216221155c4d757b7842e069eb95ccfdd603f94ddbcf5c079682331aa301b146",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/053bd5cb0be986bb99b7.jpg",
+    "bytes": 338470,
+    "sha256": "2535a05e2f96cbc8846bc7801c734d9362bf8ea37824d6f3d7524abbed3172f7",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/0eed2f25295ada06cb90.jpg",
+    "bytes": 57496,
+    "sha256": "d13b4de77e66d1208ceec575ca62cb5954f5177bd6c335c57a75f0bb9b46a640",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/12abb8f6d5927a3c831c.jpg",
+    "bytes": 380389,
+    "sha256": "b22062b499de49b9ecffadf8d31a939463efca4a2d67f2172161732afe214e03",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/17bcd799e74650458a0e.jpg",
+    "bytes": 7080,
+    "sha256": "62a06e89ac7e7da87f2d096b2573073481d500b6991dec081268abca8dcd0b98",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/18ff3de3a304845f9d98.jpg",
+    "bytes": 158588,
+    "sha256": "94b5fe400d515c7c248f53f23d17b44cda32a6ff40246434174f716b8a7e72de",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/2249ee14324419269d99.jpg",
+    "bytes": 444526,
+    "sha256": "101cf4023a546524bd6b694113c86c416346319f85c9c78119a113a4054cdb09",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/22ed010786489ca9fe1e.jpg",
+    "bytes": 137307,
+    "sha256": "e8a870a43cc7b72d16a47c4b77a20e36e56aca86f7acd21304dc3717b780c15b",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/23deab93472032b80cf5.jpg",
+    "bytes": 19210,
+    "sha256": "bf7204ffbf54c590bfb192dad4628283f41e9fe88ff5fbac41a02e0dc42a005e",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/2b4d0e28bd24e5cc52dc.jpg",
+    "bytes": 22223,
+    "sha256": "f0ab45f7bf93d8eb67586839b91dadd3e0423ebdf48df2418ae4b1db372b5ea4",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/2b9f2acde9605c18f665.jpg",
+    "bytes": 160487,
+    "sha256": "b6801c31cc77eff173e761436d4c09fc5b1e5e85055b703698dc61ee9841a27b",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/37242dce71befb619f94.jpg",
+    "bytes": 318129,
+    "sha256": "4c6085c4d254b6ec6ed5173d3b867b0959ecb310c86d7e41f6ab288a48f0dded",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/38d14bf66ff30240c8bc.jpg",
+    "bytes": 13048,
+    "sha256": "e2cf73e391b120f437a0ece7958c6b84d78862b3a32812de49ba7e019ad9661e",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/3984b99af2b59454d85e.jpg",
+    "bytes": 14507,
+    "sha256": "cd09b9aafda2fce78afe9459fd7201da13a8f4c641c83d5eb66703c26e9642f4",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/408d9fc2edb97e4d641f.jpg",
+    "bytes": 19236,
+    "sha256": "d3d9758b5dd0aa4ce19fb520084ab5a5ae6deb86d2f6fd3c5be25a4286f933cf",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/41d374994b6ce1850cc2.jpg",
+    "bytes": 16592,
+    "sha256": "f8bfd677e8941e1a12ad86f8c2b40d51910851bccd08dc7e89d74bdb739ee5fc",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/41fafeca192d22ac1c04.jpg",
+    "bytes": 10334,
+    "sha256": "a457e106b4b47d90192e0afa79c008b272053196766e7a5c10a443ba270ce88d",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/42dee029eaeb6a9103fc.jpg",
+    "bytes": 12705,
+    "sha256": "ff9b8e0fe6a7102131dc4680e4c87b0edb3698ae39ce1be17fa9386c99024ebf",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/44d5adc37ae04f49c009.jpg",
+    "bytes": 708595,
+    "sha256": "e39fd57099cfa66bda80d035dfe1c956214c23bf77e15e7f52470cc65255a68a",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/4bc03be023db6becef69.jpg",
+    "bytes": 599327,
+    "sha256": "0be050085324ce2e23092f76c95e36c8c6ef6f3e99eb148d9b389b778d319155",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/4e8616057ba3ddd057c2.jpg",
+    "bytes": 17714,
+    "sha256": "64e7d085554d6f5140d88ec5db40d52c5cc633daa206f5c4d95a923e292eda1a",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/58f5ec6b1b32fa8dfa5a.jpg",
+    "bytes": 113316,
+    "sha256": "90a5955fb4bf45b999ea911b59df0883166c8ae3b05136737e7d349a790d804b",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/5f8ec1f0b28698a301dc.jpg",
+    "bytes": 286587,
+    "sha256": "e12bad36dc6b2ba53fc806e80696360fda0b08fc194487929319d4f725ca0a84",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/66b4b1b9c976d3999ae6.jpg",
+    "bytes": 17503,
+    "sha256": "1a4fc628981d6e86bb4a647d6a2910c4846916b4e02db41575e1f59456d8c4dd",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/697acf432c30040e98d8.jpg",
+    "bytes": 114655,
+    "sha256": "8761b864b10e15cf87d15e16b7fd50b35b8ea380dfd8c0359daf3dbb1d8def83",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/6b0b240436ac1414521e.jpg",
+    "bytes": 17495,
+    "sha256": "eb95b83410301c6ce9d11708dd414af76596d880cea968de5634aabf9699d8df",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/6de0a7f0c746ad783b31.jpg",
+    "bytes": 16844,
+    "sha256": "7b0514d9bc1a0678c4564703a46f4a1fe01e17b5a5e83cba967aa6662404901f",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/79c1f3731e62fb9ad0ec.jpg",
+    "bytes": 337301,
+    "sha256": "a40da975a9543f31953588f75cf0a17312ccdcecf876e12a670a2e1e399f855d",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/7c6c94b37faf68177701.jpg",
+    "bytes": 17918,
+    "sha256": "bf528870a0d3ea66d89fcb31e507a852767edb4fd9bad2cc5c47f60c29f50dac",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/847391ad6e1a2d5a1665.jpg",
+    "bytes": 457293,
+    "sha256": "83c7f3a8eb1738996f26bb7791ea99acb7c919967d4178ac1df03103a95483e9",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/88790920a1b06a6b679a.jpg",
+    "bytes": 183931,
+    "sha256": "0f488ef33de9edd244f33d2f79184aa4f6096ed4801ab54a220131caa49b8b95",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/88ac192570ebecf4e969.jpg",
+    "bytes": 167545,
+    "sha256": "3ed34ea26e610fad51ff046da8ca99b8f87d90131428194ed55e603fe3f2de74",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/8b44dedfdfafe0addfce.jpg",
+    "bytes": 198094,
+    "sha256": "63c597139b509429e72d7997b4af9296863dbd934c39dfb4ac10394acd306e69",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/8de7f3abd9b1451e2fc4.jpg",
+    "bytes": 81399,
+    "sha256": "a05dff7d88c65f645941317ca898f900fef731ca6d8a509a2ad6c6504015b652",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/93851cce76f290545d44.jpg",
+    "bytes": 159076,
+    "sha256": "161c7c7b456f9a34029614fff1624ddefe1cd56068e164f79e60f33647667157",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/93b6a487565a6d983f8e.jpg",
+    "bytes": 11103,
+    "sha256": "a3ccb12785b81382eac5171b73ace57f54d91994bd2debfcde26b2bc1351dfdf",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/943f4dd5afbf6af7fc9e.jpg",
+    "bytes": 279978,
+    "sha256": "6a1e46d9bae9c4a20b5803a0018e69d86bc671102f0e3cd1d54baec01f6a2788",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/9640e7795c8db2cdba57.jpg",
+    "bytes": 13164,
+    "sha256": "f11e25e8c95ecfd2e8e3cba9c80d70f896249f640992f3ecb91f14a4eac52739",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/97828858e7cb4ebc41c2.jpg",
+    "bytes": 17653,
+    "sha256": "39198f5e5b0a879acdd28b6ce714944e695a1e03d1d13eaad808277d7f2ce42a",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/998ce081eeca9ff6b6eb.jpg",
+    "bytes": 314982,
+    "sha256": "83199bdbbc7e77aff2efc2365bfb97bcc0b33a1a7643abccbbc13f54fbdc1b4c",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/9bfe0ef87111af6547ae.jpg",
+    "bytes": 467571,
+    "sha256": "49897d2aae7020128b25013f8a68619c3a5a1e4520bfa56ca95a2fa4a3e57d33",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/a3dde8d27437d87d2bd8.jpg",
+    "bytes": 471753,
+    "sha256": "5434d8d34367c6267cdde449c49cd6f7a8e4fb52dc846b1ca9fb31e46af0a073",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/a659aa3215522fb9f590.jpg",
+    "bytes": 140860,
+    "sha256": "b20ffc7cd28f33c90c033360458443be83400783e67c85dcce00dd0129e41e4c",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/a8739ed0eb5ad2677255.jpg",
+    "bytes": 16399,
+    "sha256": "8af0f4e3e956f47c0e98e958ed888a33127a7ed40a876c85f0ed872cc44311f8",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/a875f0e9e033f205a761.jpg",
+    "bytes": 193816,
+    "sha256": "bbe9fb9b22bb7a12932b0f27f062f3f3df9b93b5b9392378ad93397e152732da",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/aa061533cdffccf31974.jpg",
+    "bytes": 13988,
+    "sha256": "0acffca5a14b09ddb617ce5ef17f5fc3529d78ff798e1a43508297bda99134bc",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/afe20faba2275119b253.jpg",
+    "bytes": 316402,
+    "sha256": "05906001e1e573e8ec6359dea0dd1f7f165e7dc7f8b66f60c6d5de08c2426c4b",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/b59ab911e2e7afa4f63e.jpg",
+    "bytes": 288450,
+    "sha256": "7848fb85ef91f29f684c7224cee9e2dd46f7561d9f6d2cfa6b6aa00d2967224e",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/b59b76e1620259f879ce.jpg",
+    "bytes": 423713,
+    "sha256": "e28134f7118d7eeba774a6ea56fd0b7d1e98eceb28c186d764b5eec258a1f5a2",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/bae5b7d5f17ea4346b8e.jpg",
+    "bytes": 369708,
+    "sha256": "000cc603b9b8b1c4f1c33f715094334b4cacee30671faba284f4853c2f59aa76",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/c5f724b7a75a6cd919b7.jpg",
+    "bytes": 74980,
+    "sha256": "9a4bc2251fb6b35943293c1ea49bac6758bfa6ac6c4e1dbad2f7237d040f0bca",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/cd307ee6afc3f2957403.jpg",
+    "bytes": 111846,
+    "sha256": "6825d6b962fecb77a54a1f90ad892a3ceb7ba1dec4193af1f9b73be07c7a3a73",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/d058a3cf7b1d172870e0.jpg",
+    "bytes": 282520,
+    "sha256": "dd6ca23f4e626632af47701d6cbc8d6601b81d0e69a545c25fb479be9cbe696f",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/d170c3103974c5febbd0.jpg",
+    "bytes": 10962,
+    "sha256": "dc0b26959a3027e4c8f389905b443e8e918cfee4a67c8c2ed6e7e8babafdd671",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/d48389cc338d6118e8b2.jpg",
+    "bytes": 17827,
+    "sha256": "b836d2adfae94dc35bff7c7c610a43e05720219642e256359105b836e92f0f8a",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/de157019d31e6c6f8325.jpg",
+    "bytes": 10569,
+    "sha256": "3ad176041a3a641672660fc6c7a83be410b3ff6cd1f858de8871fd22c63e4b48",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/df94a43f03f910053436.jpg",
+    "bytes": 15384,
+    "sha256": "6739297e1134aa7031cdd0742ac4c0d5e42defcf9e8e01686188d9d666d687f8",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/e49873da2b386a07d76a.jpg",
+    "bytes": 16687,
+    "sha256": "542c2014988f7d4265476e535a66bd7519f7ecec584a79e0abb7f270c9fc70ef",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/e7553043d2dd01250832.jpg",
+    "bytes": 15831,
+    "sha256": "19374afa7e63e2bd9e2e9d184e1d584ba2c9a2d4f2eaf184021075414204070b",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/f0d4bfbd855cbea59304.jpg",
+    "bytes": 13742,
+    "sha256": "6d76256cd89770f51537326736608bebc36545586ccafd3001c76d552afadd10",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/f122e1d2a549e41a1c36.jpg",
+    "bytes": 42176,
+    "sha256": "0fcfc74b4b7bab56089b1a81e2eb8e53177759bd7524bf36da195542b825c561",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/f8bdbee90198bf11fadc.jpg",
+    "bytes": 104723,
+    "sha256": "91fa36a016e95eea33deb98487786860fd095fd7e57b17bf1a9a8d023ca938c9",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/f8f0f44d6906551ddbcd.jpg",
+    "bytes": 12842,
+    "sha256": "58fee2457a35dd8ea6c95b8f7ca7912a988a15cfac81e98cb6c145be776f172c",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/fd7ce2230d3ca6a58cae.jpg",
+    "bytes": 14320,
+    "sha256": "f69a7567b79b6d35ab3dc103c168a378e3f9454d246526a6c46ce1094f01387f",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/fdae6f1f9d838e48f96e.jpg",
+    "bytes": 11007,
+    "sha256": "343b90a024bdc556e8aba6b194f3bdb26d2fdf7fcf885e1c93dd76d1ca60d0a8",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/fe4d65015c1a79c1acae.jpg",
+    "bytes": 12590,
+    "sha256": "e8a8e34bd1b972cd642e41986a758999d81782e4528df598fbf02bbd9b4dbe63",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/patient-export/fef141294fffa9354688.jpg",
+    "bytes": 27603,
+    "sha256": "92ca80182618367ff8a92377173405a857493ec5e9bdedcc2c17508188e17fc7",
+    "generated": true
+  },
+  {
+    "path": "codigo/public/images/register-icons/activity.png",
+    "bytes": 526835,
+    "sha256": "5a8ec83395cce956f10c9eee6697b466c82a5c7102f00063886fa9c7e5681006",
+    "source": "public/images/register-icons/activity.png",
+    "originalSha256": "5a8ec83395cce956f10c9eee6697b466c82a5c7102f00063886fa9c7e5681006"
+  },
+  {
+    "path": "codigo/public/images/register-icons/calories.png",
+    "bytes": 438695,
+    "sha256": "7e3cb1c5d7eb6a4b42d6577475748e10974c1133600f8e43cc5dc80d8046026a",
+    "source": "public/images/register-icons/calories.png",
+    "originalSha256": "7e3cb1c5d7eb6a4b42d6577475748e10974c1133600f8e43cc5dc80d8046026a"
+  },
+  {
+    "path": "codigo/public/images/register-icons/fertility.png",
+    "bytes": 477238,
+    "sha256": "67bccab4d8e4a9d0cc2e67e6a962db4700b6f12310b0a4b688a384b6343494ff",
+    "source": "public/images/register-icons/fertility.png",
+    "originalSha256": "67bccab4d8e4a9d0cc2e67e6a962db4700b6f12310b0a4b688a384b6343494ff"
+  },
+  {
+    "path": "codigo/public/images/register-icons/foods.png",
+    "bytes": 629935,
+    "sha256": "88218e225dc2e3b6076e09f63d454b23f96b0f73e7d16d5c2d77fc5d218ad890",
+    "source": "public/images/register-icons/foods.png",
+    "originalSha256": "88218e225dc2e3b6076e09f63d454b23f96b0f73e7d16d5c2d77fc5d218ad890"
+  },
+  {
+    "path": "codigo/public/images/register-icons/glucose.png",
+    "bytes": 668473,
+    "sha256": "32fcf1c01281b048a1caffd0fc884d16470b3f9ca30dabaea1de93c5991031bd",
+    "source": "public/images/register-icons/glucose.png",
+    "originalSha256": "32fcf1c01281b048a1caffd0fc884d16470b3f9ca30dabaea1de93c5991031bd"
+  },
+  {
+    "path": "codigo/public/images/register-icons/hospitalization.png",
+    "bytes": 434855,
+    "sha256": "60ba5c8e14f3fb6b0e48a459c7ad180deaf940372540bef756d6cbdef1a4c1f8",
+    "source": "public/images/register-icons/hospitalization.png",
+    "originalSha256": "60ba5c8e14f3fb6b0e48a459c7ad180deaf940372540bef756d6cbdef1a4c1f8"
+  },
+  {
+    "path": "codigo/public/images/register-icons/laboratory.png",
+    "bytes": 536118,
+    "sha256": "11665ab03d32b94880f3bc3cbb6da80e5258fb4c148d4a82f458b6a55ae96dd8",
+    "source": "public/images/register-icons/laboratory.png",
+    "originalSha256": "11665ab03d32b94880f3bc3cbb6da80e5258fb4c148d4a82f458b6a55ae96dd8"
+  },
+  {
+    "path": "codigo/public/images/register-icons/manual-register.png",
+    "bytes": 398201,
+    "sha256": "fc579206d78b1940fc9227323aee4ca4123bb33a4fc28a27553e947e9cce3546",
+    "source": "public/images/register-icons/manual-register.png",
+    "originalSha256": "fc579206d78b1940fc9227323aee4ca4123bb33a4fc28a27553e947e9cce3546"
+  },
+  {
+    "path": "codigo/public/images/register-icons/medication.png",
+    "bytes": 400632,
+    "sha256": "b6a43dbdcbcbc874d8fa961b6b13945c04ffe5421d55f3766ee4e80f58d30f23",
+    "source": "public/images/register-icons/medication.png",
+    "originalSha256": "b6a43dbdcbcbc874d8fa961b6b13945c04ffe5421d55f3766ee4e80f58d30f23"
+  },
+  {
+    "path": "codigo/public/images/register-icons/meditation.png",
+    "bytes": 531863,
+    "sha256": "5d9d1773037187b981a4a6403134783b85a5b3b5febc38865dc9a189ed510498",
+    "source": "public/images/register-icons/meditation.png",
+    "originalSha256": "5d9d1773037187b981a4a6403134783b85a5b3b5febc38865dc9a189ed510498"
+  },
+  {
+    "path": "codigo/public/images/register-icons/menstrual-cycle.png",
+    "bytes": 377354,
+    "sha256": "37f54e2c934542328d005584632423660b60a635f3af18b5bcc8c7d9fc04f09e",
+    "source": "public/images/register-icons/menstrual-cycle.png",
+    "originalSha256": "37f54e2c934542328d005584632423660b60a635f3af18b5bcc8c7d9fc04f09e"
+  },
+  {
+    "path": "codigo/public/images/register-icons/mood.png",
+    "bytes": 477238,
+    "sha256": "67bccab4d8e4a9d0cc2e67e6a962db4700b6f12310b0a4b688a384b6343494ff",
+    "source": "public/images/register-icons/mood.png",
+    "originalSha256": "67bccab4d8e4a9d0cc2e67e6a962db4700b6f12310b0a4b688a384b6343494ff"
+  },
+  {
+    "path": "codigo/public/images/register-icons/ph.png",
+    "bytes": 417988,
+    "sha256": "566da6afd3deb13f5858e40f619570282ce45a347fbc95f3b5206fbf2001130d",
+    "source": "public/images/register-icons/ph.png",
+    "originalSha256": "566da6afd3deb13f5858e40f619570282ce45a347fbc95f3b5206fbf2001130d"
+  },
+  {
+    "path": "codigo/public/images/register-icons/prescriptions.png",
+    "bytes": 558137,
+    "sha256": "9499f1a84ee3ae66743e8ec9bb525aad84323103b3e7ea3c0dcf70294356150b",
+    "source": "public/images/register-icons/prescriptions.png",
+    "originalSha256": "9499f1a84ee3ae66743e8ec9bb525aad84323103b3e7ea3c0dcf70294356150b"
+  },
+  {
+    "path": "codigo/public/images/register-icons/pressure.png",
+    "bytes": 646434,
+    "sha256": "8d51fa24aa6066816f552415d9c10a958053497a9b382f54389287241a0513a0",
+    "source": "public/images/register-icons/pressure.png",
+    "originalSha256": "8d51fa24aa6066816f552415d9c10a958053497a9b382f54389287241a0513a0"
+  },
+  {
+    "path": "codigo/public/images/register-icons/rest.png",
+    "bytes": 449605,
+    "sha256": "6ab2c65e77d391ab5a579ce8e0cf4b8d8c8ba102547817fd77f37cb44fdd4541",
+    "source": "public/images/register-icons/rest.png",
+    "originalSha256": "6ab2c65e77d391ab5a579ce8e0cf4b8d8c8ba102547817fd77f37cb44fdd4541"
+  },
+  {
+    "path": "codigo/public/images/register-icons/sleep.png",
+    "bytes": 507875,
+    "sha256": "a6c4ce176cd2e090f997ce9ecf27198bdaa2e6a53ab88b2ee8d9df4d013c3a33",
+    "source": "public/images/register-icons/sleep.png",
+    "originalSha256": "a6c4ce176cd2e090f997ce9ecf27198bdaa2e6a53ab88b2ee8d9df4d013c3a33"
+  },
+  {
+    "path": "codigo/public/images/register-icons/steps.png",
+    "bytes": 526835,
+    "sha256": "5a8ec83395cce956f10c9eee6697b466c82a5c7102f00063886fa9c7e5681006",
+    "source": "public/images/register-icons/steps.png",
+    "originalSha256": "5a8ec83395cce956f10c9eee6697b466c82a5c7102f00063886fa9c7e5681006"
+  },
+  {
+    "path": "codigo/public/images/register-icons/studies.png",
+    "bytes": 621107,
+    "sha256": "fd7786c45b221cd553fa0ba6911e7981877e393624e3bf827668ba5f5ee7bcaa",
+    "source": "public/images/register-icons/studies.png",
+    "originalSha256": "fd7786c45b221cd553fa0ba6911e7981877e393624e3bf827668ba5f5ee7bcaa"
+  },
+  {
+    "path": "codigo/public/images/register-icons/vaccines.png",
+    "bytes": 491671,
+    "sha256": "656441a0259bb904e290a5393752b059eebbe7af95aff75b88b55bf636a6d7b8",
+    "source": "public/images/register-icons/vaccines.png",
+    "originalSha256": "656441a0259bb904e290a5393752b059eebbe7af95aff75b88b55bf636a6d7b8"
+  },
+  {
+    "path": "codigo/public/images/register-icons/vitals.png",
+    "bytes": 646434,
+    "sha256": "8d51fa24aa6066816f552415d9c10a958053497a9b382f54389287241a0513a0",
+    "source": "public/images/register-icons/vitals.png",
+    "originalSha256": "8d51fa24aa6066816f552415d9c10a958053497a9b382f54389287241a0513a0"
+  },
+  {
+    "path": "codigo/public/images/register-icons/water.png",
+    "bytes": 444578,
+    "sha256": "793cb0d7ebbaca19dcd7ae2747f8a81c2284bb54ca9d0622d6b1227b47a70df4",
+    "source": "public/images/register-icons/water.png",
+    "originalSha256": "793cb0d7ebbaca19dcd7ae2747f8a81c2284bb54ca9d0622d6b1227b47a70df4"
+  },
+  {
+    "path": "codigo/public/images/register-icons/weight.png",
+    "bytes": 2180521,
+    "sha256": "6b1cb9cbcd688117ed324d3ebf8c3f2eef890285d5c3630c3cb41c8af7481cef",
+    "source": "public/images/register-icons/weight.png",
+    "originalSha256": "6b1cb9cbcd688117ed324d3ebf8c3f2eef890285d5c3630c3cb41c8af7481cef"
+  },
+  {
+    "path": "codigo/public/js/communities.js",
+    "bytes": 312967,
+    "sha256": "b4e11f0c0497804e1588fd84e6a3010d2775169a39a43ea8dcf99dd598e0bf3e",
+    "source": "public/js/communities.js",
+    "originalSha256": "6534e3535596dc58db410107647b690a510b27940b11d7401de50c5150a6631c"
+  },
+  {
+    "path": "codigo/public/js/drsam-table-filters.js",
+    "bytes": 14082,
+    "sha256": "ddf72b96871349ab3ae89324b1aa768fc2d920180585d3c7386c0a77a988747a",
+    "source": "public/js/drsam-table-filters.js",
+    "originalSha256": "ddf72b96871349ab3ae89324b1aa768fc2d920180585d3c7386c0a77a988747a"
+  },
+  {
+    "path": "codigo/public/js/klini-carousels.js",
+    "bytes": 5840,
+    "sha256": "e416d6ac33bbfe2c7f84a99343e93ca2c245e5d2215abda00990a70b0c0e46ee",
+    "source": "public/js/klini-carousels.js",
+    "originalSha256": "e416d6ac33bbfe2c7f84a99343e93ca2c245e5d2215abda00990a70b0c0e46ee"
+  },
+  {
+    "path": "codigo/public/js/klini-profiles.js",
+    "bytes": 12122,
+    "sha256": "d5ac4e67ade6222e4bdd537605a1edc1a09ea322dd9ecf52d6b3084b10288907",
+    "source": "public/js/klini-profiles.js",
+    "originalSha256": "d5ac4e67ade6222e4bdd537605a1edc1a09ea322dd9ecf52d6b3084b10288907"
+  },
+  {
+    "path": "codigo/public/js/patient-portal-table-filters.js",
+    "bytes": 13806,
+    "sha256": "f342f9a6fc2f0503f4d14228d1b360dcf5128a5c4869acb0bc401acf99d99da5",
+    "source": "public/js/patient-portal-table-filters.js",
+    "originalSha256": "f342f9a6fc2f0503f4d14228d1b360dcf5128a5c4869acb0bc401acf99d99da5"
+  },
+  {
+    "path": "codigo/public/js/patient-profile-panel.js",
+    "bytes": 106140,
+    "sha256": "f7d56dedcaf5626e088166af717761a983cb4a13adca2c9e36fa2fba9b926b55",
+    "source": "public/js/patient-profile-panel.js",
+    "originalSha256": "f7d56dedcaf5626e088166af717761a983cb4a13adca2c9e36fa2fba9b926b55"
+  },
+  {
+    "path": "codigo/public/js/patient-social.js",
+    "bytes": 14946,
+    "sha256": "6ae3cb38c6668019693b4fe324b6af69aa403d08e11faa1f00efce86650dda1b",
+    "source": "public/js/patient-social.js",
+    "originalSha256": "6ae3cb38c6668019693b4fe324b6af69aa403d08e11faa1f00efce86650dda1b"
+  },
+  {
+    "path": "codigo/public/mobile-preview.html",
+    "bytes": 2348,
+    "sha256": "39eaf8cf4f4bdb08220ee43cad2d604cd4c21fe6ba563e56d5ca593098ff9288",
+    "source": "public/mobile-preview.html",
+    "originalSha256": "39eaf8cf4f4bdb08220ee43cad2d604cd4c21fe6ba563e56d5ca593098ff9288"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/assets/avatars/ana.png",
+    "bytes": 31080,
+    "sha256": "5a04453e09a5b5f50a141a40955853868799cae9c6cf6d4a9c34236ab474a4b2",
+    "source": "public/vendor/klini-patient/assets/avatars/ana.png",
+    "originalSha256": "5a04453e09a5b5f50a141a40955853868799cae9c6cf6d4a9c34236ab474a4b2"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/assets/avatars/carlos.png",
+    "bytes": 28515,
+    "sha256": "c6658ea7a049b9dc6c1dea158ca20d614dbaf239014d2d6e47b136acb8a1a6a3",
+    "source": "public/vendor/klini-patient/assets/avatars/carlos.png",
+    "originalSha256": "c6658ea7a049b9dc6c1dea158ca20d614dbaf239014d2d6e47b136acb8a1a6a3"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/assets/avatars/diego.png",
+    "bytes": 32392,
+    "sha256": "40862b5e1b110a0e501ef9d8a2a3517aea0a652f59e66474adc25e708f9ba3a4",
+    "source": "public/vendor/klini-patient/assets/avatars/diego.png",
+    "originalSha256": "40862b5e1b110a0e501ef9d8a2a3517aea0a652f59e66474adc25e708f9ba3a4"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/assets/avatars/mariana.png",
+    "bytes": 32568,
+    "sha256": "9fb9b3e95f9f4d37a776cdcf6d6841f510f0a6e048d8c2dd8cb482c125c024fe",
+    "source": "public/vendor/klini-patient/assets/avatars/mariana.png",
+    "originalSha256": "9fb9b3e95f9f4d37a776cdcf6d6841f510f0a6e048d8c2dd8cb482c125c024fe"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/assets/avatars/perfil.png",
+    "bytes": 23555,
+    "sha256": "2c51d2df843712553c30e5206c9e8bc54e0be1b76fa73431728a86338061eeb0",
+    "source": "public/vendor/klini-patient/assets/avatars/perfil.png",
+    "originalSha256": "2c51d2df843712553c30e5206c9e8bc54e0be1b76fa73431728a86338061eeb0"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/assets/avatars/valeria.png",
+    "bytes": 32226,
+    "sha256": "ee04065993ceae6e915471d8dd6b33ab117ed0dae774ab4aa85dcbf4f6810ec7",
+    "source": "public/vendor/klini-patient/assets/avatars/valeria.png",
+    "originalSha256": "ee04065993ceae6e915471d8dd6b33ab117ed0dae774ab4aa85dcbf4f6810ec7"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/assets/brand/klini-logo-primary.svg",
+    "bytes": 50589,
+    "sha256": "2fd70babe5b46abe2c169e105bd52364c459a80e78d14faf619633e4caffa268",
+    "source": "public/vendor/klini-patient/assets/brand/klini-logo-primary.svg",
+    "originalSha256": "2fd70babe5b46abe2c169e105bd52364c459a80e78d14faf619633e4caffa268"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/assets/fonts/DejaVuSans-Bold.woff",
+    "bytes": 350676,
+    "sha256": "e2628176bc9349ce845ca54d9680058665209f7d21488f15a836cfc1439aeb2a",
+    "source": "public/vendor/klini-patient/assets/fonts/DejaVuSans-Bold.woff",
+    "originalSha256": "e2628176bc9349ce845ca54d9680058665209f7d21488f15a836cfc1439aeb2a"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/assets/fonts/DejaVuSans.woff",
+    "bytes": 379400,
+    "sha256": "e62e0ba87b06e53b604c473be54ba859d59bf7cf99478a850d979e2fe94c0a99",
+    "source": "public/vendor/klini-patient/assets/fonts/DejaVuSans.woff",
+    "originalSha256": "e62e0ba87b06e53b604c473be54ba859d59bf7cf99478a850d979e2fe94c0a99"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/assets/photos/caminata-runway.png",
+    "bytes": 2176572,
+    "sha256": "c9b15f24b79667743b37c372fb183fb540670f65962349b55d37ffb65fd389c8",
+    "source": "public/vendor/klini-patient/assets/photos/caminata-runway.png",
+    "originalSha256": "c9b15f24b79667743b37c372fb183fb540670f65962349b55d37ffb65fd389c8"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/assets/photos/meditacion.png",
+    "bytes": 175535,
+    "sha256": "4b85997e22aa867e9ba4b735a7c2b89c9741ed2eeda1456c0be9e314536b695e",
+    "source": "public/vendor/klini-patient/assets/photos/meditacion.png",
+    "originalSha256": "4b85997e22aa867e9ba4b735a7c2b89c9741ed2eeda1456c0be9e314536b695e"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/assets/photos/running.png",
+    "bytes": 885248,
+    "sha256": "178cbefe87d6516a6130e296925bfaa6e6534eec1ba07aafe56fe967fab41691",
+    "source": "public/vendor/klini-patient/assets/photos/running.png",
+    "originalSha256": "178cbefe87d6516a6130e296925bfaa6e6534eec1ba07aafe56fe967fab41691"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/assets/photos/yoga.png",
+    "bytes": 1310902,
+    "sha256": "c0b090b5a0432f71151a58242e8d2142a663c3884ca308dc8e033e7b7a01c1c2",
+    "source": "public/vendor/klini-patient/assets/photos/yoga.png",
+    "originalSha256": "c0b090b5a0432f71151a58242e8d2142a663c3884ca308dc8e033e7b7a01c1c2"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/assets/provenance.json",
+    "bytes": 2329,
+    "sha256": "9b5d615805ce988478ba5087ece65da870950fc6d79a5880cc5d1d1ea86265ad",
+    "source": "public/vendor/klini-patient/assets/provenance.json",
+    "originalSha256": "9b5d615805ce988478ba5087ece65da870950fc6d79a5880cc5d1d1ea86265ad"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/licenses/DejaVu.txt",
+    "bytes": 3937,
+    "sha256": "baa2e5e5cdb29e9052bbe4e171b2feb4b3314116ef9032fe11bd874c803cc815",
+    "source": "public/vendor/klini-patient/licenses/DejaVu.txt",
+    "originalSha256": "baa2e5e5cdb29e9052bbe4e171b2feb4b3314116ef9032fe11bd874c803cc815"
+  },
+  {
+    "path": "codigo/public/vendor/klini-patient/licenses/Lucide.txt",
+    "bytes": 3251,
+    "sha256": "6fc5b7332939dd5c61af3a5f97450f7bc05d4a396dd0bc21ac341716b3b05096",
+    "source": "public/vendor/klini-patient/licenses/Lucide.txt",
+    "originalSha256": "6fc5b7332939dd5c61af3a5f97450f7bc05d4a396dd0bc21ac341716b3b05096"
+  },
+  {
+    "path": "codigo/resources/views/components/klini-icon.blade.php",
+    "bytes": 1626,
+    "sha256": "c8aace8b2acad5578e71afd1485bd4d811c8ee1ba50e100d2aae9015d7a30f8c",
+    "source": "resources/views/components/klini-icon.blade.php",
+    "originalSha256": "c8aace8b2acad5578e71afd1485bd4d811c8ee1ba50e100d2aae9015d7a30f8c"
+  },
+  {
+    "path": "codigo/resources/views/layouts/app.blade.php",
+    "bytes": 2035,
+    "sha256": "32bc0d14d4ffc3e0119e7352739139e52b7a78ed0771ba4aaf80b491b4950d3d",
+    "source": "resources/views/layouts/app.blade.php",
+    "originalSha256": "32bc0d14d4ffc3e0119e7352739139e52b7a78ed0771ba4aaf80b491b4950d3d"
+  },
+  {
+    "path": "codigo/resources/views/patient/dashboard.blade.php",
+    "bytes": 345981,
+    "sha256": "cc621068289e03c1e818e4038539c73721b53b1ee7cc12edd204636e7908188d",
+    "source": "resources/views/patient/dashboard.blade.php",
+    "originalSha256": "cc621068289e03c1e818e4038539c73721b53b1ee7cc12edd204636e7908188d"
+  },
+  {
+    "path": "codigo/resources/views/patient/partials/clinical-history.blade.php",
+    "bytes": 6103,
+    "sha256": "805928b72c89b5ec3fa8cefdafcafb8d3f8de80bb0f1669c9bfa5faf8c04f4bc",
+    "source": "resources/views/patient/partials/clinical-history.blade.php",
+    "originalSha256": "805928b72c89b5ec3fa8cefdafcafb8d3f8de80bb0f1669c9bfa5faf8c04f4bc"
+  },
+  {
+    "path": "codigo/resources/views/patient/partials/wellness-navigation.blade.php",
+    "bytes": 542,
+    "sha256": "0ab53ce27323db68ba4c966a3f2229a50b9449f0da98e9dee7c5aabae685befc",
+    "source": "resources/views/patient/partials/wellness-navigation.blade.php",
+    "originalSha256": "0ab53ce27323db68ba4c966a3f2229a50b9449f0da98e9dee7c5aabae685befc"
+  },
+  {
+    "path": "codigo/tests/Feature/Api/Mobile/MobileAuthenticationTest.php",
+    "bytes": 14901,
+    "sha256": "d55bf3d9627829dea49e5812e50c5b47b88d2cd3a84b9f892c045825d9731dac",
+    "source": "tests/Feature/Api/Mobile/MobileAuthenticationTest.php",
+    "originalSha256": "d55bf3d9627829dea49e5812e50c5b47b88d2cd3a84b9f892c045825d9731dac"
+  },
+  {
+    "path": "codigo/tests/Feature/Api/Mobile/PatientReadApiTest.php",
+    "bytes": 9175,
+    "sha256": "94c2a3dbbb2cce589f14d5f5e2fe4990d02424b2b25fd969d059e1be6893b917",
+    "source": "tests/Feature/Api/Mobile/PatientReadApiTest.php",
+    "originalSha256": "94c2a3dbbb2cce589f14d5f5e2fe4990d02424b2b25fd969d059e1be6893b917"
+  },
+  {
+    "path": "codigo/tests/Feature/PatientPortalTest.php",
+    "bytes": 20373,
+    "sha256": "c7ff7a74ef79b1297a26b9e2ca991e481f9366c229f320618db3d44ae90613e4",
+    "source": "tests/Feature/PatientPortalTest.php",
+    "originalSha256": "c7ff7a74ef79b1297a26b9e2ca991e481f9366c229f320618db3d44ae90613e4"
+  },
+  {
+    "path": "codigo/tests/Frontend/CommunityCalendar.test.mjs",
+    "bytes": 9634,
+    "sha256": "91f2e84a877d404d7d63b30c6d9a4d8aebcee011d89ef694a23295c49df1fff3",
+    "source": "tests/Frontend/CommunityCalendar.test.mjs",
+    "originalSha256": "91f2e84a877d404d7d63b30c6d9a4d8aebcee011d89ef694a23295c49df1fff3"
+  },
+  {
+    "path": "codigo/tests/Frontend/PatientProfiles.test.mjs",
+    "bytes": 6745,
+    "sha256": "ba38d114e4bc1d532a21b319415be0d69a89b552def28e6fcbaf585eba6a9507",
+    "source": "tests/Frontend/PatientProfiles.test.mjs",
+    "originalSha256": "ba38d114e4bc1d532a21b319415be0d69a89b552def28e6fcbaf585eba6a9507"
+  },
+  {
+    "path": "codigo/tests/Frontend/PatientSocial.test.mjs",
+    "bytes": 10197,
+    "sha256": "fa6968da2eb057baa526ec687fca6b7352af4f76277aeffb2104ab2cb4723f0f",
+    "source": "tests/Frontend/PatientSocial.test.mjs",
+    "originalSha256": "fa6968da2eb057baa526ec687fca6b7352af4f76277aeffb2104ab2cb4723f0f"
+  },
+  {
+    "path": "codigo/tests/TestCase.php",
+    "bytes": 154,
+    "sha256": "9441fd8f79d9692ce26d026048938f082b17e97465be84a680abc2752d0c692c",
+    "source": "tests/TestCase.php",
+    "originalSha256": "9441fd8f79d9692ce26d026048938f082b17e97465be84a680abc2752d0c692c"
+  },
+  {
+    "path": "integracion/routes/mobile-patient.php",
+    "bytes": 3337,
+    "sha256": "4bb23f12ef471a0a2eab4b28064051ab36901952415ea80b4d440f6b98b8af91",
+    "generated": true
+  },
+  {
+    "path": "integracion/routes/patient.php",
+    "bytes": 1345,
+    "sha256": "7c146ed1374e4e6435e49fe3fef583e5368da6175a1bd5bd32db1cbb03ad01d6",
+    "generated": true
+  },
+  {
+    "path": "referencia/app/Providers/AppServiceProvider.php",
+    "bytes": 1342,
+    "sha256": "6c91964ad634589e6340f59052853ac64cca9971e81709a079b40e12d7858aff",
+    "source": "app/Providers/AppServiceProvider.php",
+    "originalSha256": "6c91964ad634589e6340f59052853ac64cca9971e81709a079b40e12d7858aff"
+  },
+  {
+    "path": "referencia/bootstrap/app.php",
+    "bytes": 4162,
+    "sha256": "a0fa744b9d90e1e4820308ed35a70ddb924c45d324ceed9a368670800718fa62",
+    "source": "bootstrap/app.php",
+    "originalSha256": "a0fa744b9d90e1e4820308ed35a70ddb924c45d324ceed9a368670800718fa62"
+  },
+  {
+    "path": "referencia/bootstrap/providers.php",
+    "bytes": 71,
+    "sha256": "7df467bd94ede844947f31971c5dca31ea35b8939449ee9b050b0c02731618d2",
+    "source": "bootstrap/providers.php",
+    "originalSha256": "7df467bd94ede844947f31971c5dca31ea35b8939449ee9b050b0c02731618d2"
+  },
+  {
+    "path": "referencia/config/app.php",
+    "bytes": 712,
+    "sha256": "2c1fba2ad42080d32faf51848f07e3ff293a1a3cf016644441221f963c0976c1",
+    "source": "config/app.php",
+    "originalSha256": "2c1fba2ad42080d32faf51848f07e3ff293a1a3cf016644441221f963c0976c1"
+  },
+  {
+    "path": "referencia/config/auth.php",
+    "bytes": 755,
+    "sha256": "4bddf539f6e595cc04370432c70d6962bc9b7f7ad9eebe6e9c7cc11a7ac1c9bf",
+    "source": "config/auth.php",
+    "originalSha256": "4bddf539f6e595cc04370432c70d6962bc9b7f7ad9eebe6e9c7cc11a7ac1c9bf"
+  },
+  {
+    "path": "referencia/config/drsam.php",
+    "bytes": 8587,
+    "sha256": "a9d1049b06d205002746eef8ac9a23ef2fadf9d6e3406e0d286d5cdb85213d49",
+    "source": "config/drsam.php",
+    "originalSha256": "a9d1049b06d205002746eef8ac9a23ef2fadf9d6e3406e0d286d5cdb85213d49"
+  },
+  {
+    "path": "referencia/config/session.php",
+    "bytes": 905,
+    "sha256": "1f59c8e9ba0120bc884398aa9274fe1a3ad13350054eb55d8fe18674a8ed50ee",
+    "source": "config/session.php",
+    "originalSha256": "1f59c8e9ba0120bc884398aa9274fe1a3ad13350054eb55d8fe18674a8ed50ee"
+  },
+  {
+    "path": "referencia/database/migrations/2026_06_30_000001_create_identity_and_support_tables.php",
+    "bytes": 3906,
+    "sha256": "2fd885a9faf4f8e6a3b311c4d3987c870a8a237c89d641375aecb1119651b469",
+    "source": "database/migrations/2026_06_30_000001_create_identity_and_support_tables.php",
+    "originalSha256": "2fd885a9faf4f8e6a3b311c4d3987c870a8a237c89d641375aecb1119651b469"
+  },
+  {
+    "path": "referencia/database/migrations/2026_06_30_000002_create_institution_unit_service_tables.php",
+    "bytes": 4967,
+    "sha256": "a5a7b592cc8a90c36d7fa5cd542ad200d02363eeedb28a740fed1997db6e155e",
+    "source": "database/migrations/2026_06_30_000002_create_institution_unit_service_tables.php",
+    "originalSha256": "a5a7b592cc8a90c36d7fa5cd542ad200d02363eeedb28a740fed1997db6e155e"
+  },
+  {
+    "path": "referencia/database/migrations/2026_06_30_000003_create_care_tables.php",
+    "bytes": 5174,
+    "sha256": "6f90241ac192c46fc41aa43d1bec34850b4231d3c737168f27d378bf81166e2f",
+    "source": "database/migrations/2026_06_30_000003_create_care_tables.php",
+    "originalSha256": "6f90241ac192c46fc41aa43d1bec34850b4231d3c737168f27d378bf81166e2f"
+  },
+  {
+    "path": "referencia/database/migrations/2026_06_30_000004_create_provider_pharmacy_order_tables.php",
+    "bytes": 6951,
+    "sha256": "692a0080e6d8d47cd01176b8405455037fa5dd5bb1666de17a7b0476fa78cfb5",
+    "source": "database/migrations/2026_06_30_000004_create_provider_pharmacy_order_tables.php",
+    "originalSha256": "692a0080e6d8d47cd01176b8405455037fa5dd5bb1666de17a7b0476fa78cfb5"
+  },
+  {
+    "path": "referencia/database/migrations/2026_06_30_000005_create_messaging_platform_audit_tables.php",
+    "bytes": 3831,
+    "sha256": "2867000e7cf0ad5fd29bcc764afa08230ef8d069bc160e4b94d05fbe4e6abc71",
+    "source": "database/migrations/2026_06_30_000005_create_messaging_platform_audit_tables.php",
+    "originalSha256": "2867000e7cf0ad5fd29bcc764afa08230ef8d069bc160e4b94d05fbe4e6abc71"
+  },
+  {
+    "path": "referencia/database/migrations/2026_07_05_000001_create_insurance_health_module_tables.php",
+    "bytes": 21743,
+    "sha256": "f7b4da3552dbb6acdbdc8224ef93bb447dc6007f9f769dacb3221cd654133d25",
+    "source": "database/migrations/2026_07_05_000001_create_insurance_health_module_tables.php",
+    "originalSha256": "f7b4da3552dbb6acdbdc8224ef93bb447dc6007f9f769dacb3221cd654133d25"
+  },
+  {
+    "path": "referencia/database/migrations/2026_07_20_000001_create_insurance_carriers_table.php",
+    "bytes": 968,
+    "sha256": "ccf3dde7c1904a499fa2f95451dccf431e6f2ff93ba16097911a0bede71fda7a",
+    "source": "database/migrations/2026_07_20_000001_create_insurance_carriers_table.php",
+    "originalSha256": "ccf3dde7c1904a499fa2f95451dccf431e6f2ff93ba16097911a0bede71fda7a"
+  },
+  {
+    "path": "referencia/database/migrations/2026_07_20_000002_create_medical_devices_table.php",
+    "bytes": 1058,
+    "sha256": "7717157c507c1e3ae65db22f754a604cba8248efa5cdfe3bfef8c5b712c8f4df",
+    "source": "database/migrations/2026_07_20_000002_create_medical_devices_table.php",
+    "originalSha256": "7717157c507c1e3ae65db22f754a604cba8248efa5cdfe3bfef8c5b712c8f4df"
+  },
+  {
+    "path": "referencia/database/migrations/2026_07_21_000001_create_procedure_area_and_appointment_event_tables.php",
+    "bytes": 2884,
+    "sha256": "999d512b00012dc4570416a7b289bc3ac6bd2df47d14e2a887c2d3616d2ec244",
+    "source": "database/migrations/2026_07_21_000001_create_procedure_area_and_appointment_event_tables.php",
+    "originalSha256": "999d512b00012dc4570416a7b289bc3ac6bd2df47d14e2a887c2d3616d2ec244"
+  },
+  {
+    "path": "referencia/database/migrations/2026_07_21_000002_create_doctor_availability_and_clinical_encounters.php",
+    "bytes": 4114,
+    "sha256": "b3c7039c39962c5bf4f7559222b4f8e1e47a64df2c56da44df883211addaf6d1",
+    "source": "database/migrations/2026_07_21_000002_create_doctor_availability_and_clinical_encounters.php",
+    "originalSha256": "b3c7039c39962c5bf4f7559222b4f8e1e47a64df2c56da44df883211addaf6d1"
+  },
+  {
+    "path": "referencia/database/migrations/2026_07_23_000001_create_external_pharmacy_inventory_management_tables.php",
+    "bytes": 1746,
+    "sha256": "1952c271bc6bf7b66d048dc8e599f07c305c3252ff90543d2d9d1f710bd63902",
+    "source": "database/migrations/2026_07_23_000001_create_external_pharmacy_inventory_management_tables.php",
+    "originalSha256": "1952c271bc6bf7b66d048dc8e599f07c305c3252ff90543d2d9d1f710bd63902"
+  },
+  {
+    "path": "referencia/database/migrations/2026_07_26_000001_rename_import_identifiers_to_external_identifiers.php",
+    "bytes": 3391,
+    "sha256": "3c26bd803b80255b3aa4ee74552bf2ba93004e170b0de1e9a64e93ec69953f8a",
+    "source": "database/migrations/2026_07_26_000001_rename_import_identifiers_to_external_identifiers.php",
+    "originalSha256": "3c26bd803b80255b3aa4ee74552bf2ba93004e170b0de1e9a64e93ec69953f8a"
+  },
+  {
+    "path": "referencia/database/migrations/2026_08_01_000001_create_insurance_advisor_notifications_table.php",
+    "bytes": 930,
+    "sha256": "9d70fc5a9dc334e9426c47fc3f2e638f7d69a43f0eb0502a39eb5b80eb51d962",
+    "source": "database/migrations/2026_08_01_000001_create_insurance_advisor_notifications_table.php",
+    "originalSha256": "9d70fc5a9dc334e9426c47fc3f2e638f7d69a43f0eb0502a39eb5b80eb51d962"
+  },
+  {
+    "path": "referencia/database/migrations/2026_08_05_000001_create_mixture_integrations_table.php",
+    "bytes": 1161,
+    "sha256": "79a66a914c09a5e5277be94916337d09beefe79169c99cdb7ad050c97f21ebe6",
+    "source": "database/migrations/2026_08_05_000001_create_mixture_integrations_table.php",
+    "originalSha256": "79a66a914c09a5e5277be94916337d09beefe79169c99cdb7ad050c97f21ebe6"
+  },
+  {
+    "path": "referencia/database/migrations/2026_08_05_000002_add_cbta_external_code_to_medical_units.php",
+    "bytes": 659,
+    "sha256": "f9b5633da4c86bf4fe88592616ca91b9e1df07da9561c4483e6bf747be2758c4",
+    "source": "database/migrations/2026_08_05_000002_add_cbta_external_code_to_medical_units.php",
+    "originalSha256": "f9b5633da4c86bf4fe88592616ca91b9e1df07da9561c4483e6bf747be2758c4"
+  },
+  {
+    "path": "referencia/database/migrations/2026_08_18_000001_add_retry_tracking_to_mixture_integrations_table.php",
+    "bytes": 780,
+    "sha256": "49e0cc8b4840119daaf6e6c04a69e3e3e06ad11113bea906786e6b0ebff32a9f",
+    "source": "database/migrations/2026_08_18_000001_add_retry_tracking_to_mixture_integrations_table.php",
+    "originalSha256": "49e0cc8b4840119daaf6e6c04a69e3e3e06ad11113bea906786e6b0ebff32a9f"
+  },
+  {
+    "path": "referencia/database/migrations/2026_08_28_000001_create_patient_profile_relationships.php",
+    "bytes": 4435,
+    "sha256": "60fc8bb2fd0ea3fc249fa4670e4d46ca68f235f69e5fb138c692bae578a234d4",
+    "source": "database/migrations/2026_08_28_000001_create_patient_profile_relationships.php",
+    "originalSha256": "60fc8bb2fd0ea3fc249fa4670e4d46ca68f235f69e5fb138c692bae578a234d4"
+  },
+  {
+    "path": "referencia/database/migrations/2026_09_14_000001_create_unit_medication_settings_table.php",
+    "bytes": 849,
+    "sha256": "af8dbf3465d09f88c4f887b20a70428f82047b3d78ec742df29f2ef189562d81",
+    "source": "database/migrations/2026_09_14_000001_create_unit_medication_settings_table.php",
+    "originalSha256": "af8dbf3465d09f88c4f887b20a70428f82047b3d78ec742df29f2ef189562d81"
+  },
+  {
+    "path": "referencia/database/migrations/2026_10_02_000001_create_personal_access_tokens_table.php",
+    "bytes": 806,
+    "sha256": "d8b23b2fe59b3ff001682c44aa6d723e9862a4521229624723e8943674e16062",
+    "source": "database/migrations/2026_10_02_000001_create_personal_access_tokens_table.php",
+    "originalSha256": "d8b23b2fe59b3ff001682c44aa6d723e9862a4521229624723e8943674e16062"
+  },
+  {
+    "path": "referencia/database/migrations/2026_10_04_000001_create_mobile_device_registrations_table.php",
+    "bytes": 990,
+    "sha256": "6f5956486593e58a845a6e81208096cd1491d1dd7ad78b50f73e00264d330ba3",
+    "source": "database/migrations/2026_10_04_000001_create_mobile_device_registrations_table.php",
+    "originalSha256": "6f5956486593e58a845a6e81208096cd1491d1dd7ad78b50f73e00264d330ba3"
+  },
+  {
+    "path": "referencia/docs/openapi/klini-mobile-v1.yaml",
+    "bytes": 24116,
+    "sha256": "32f134fbfa8c3a56144cf795c9e627df9751c20e4060f733c1672145baf361bd",
+    "source": "docs/openapi/klini-mobile-v1.yaml",
+    "originalSha256": "32f134fbfa8c3a56144cf795c9e627df9751c20e4060f733c1672145baf361bd"
+  },
+  {
+    "path": "referencia/originales-con-enlaces-remotos/public/js/communities.js",
+    "bytes": 316693,
+    "sha256": "6534e3535596dc58db410107647b690a510b27940b11d7401de50c5150a6631c",
+    "generated": true
+  }
+]

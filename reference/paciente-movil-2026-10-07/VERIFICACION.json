@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-07",
+  "frontend": {
+    "passed": 32,
+    "failed": 0,
+    "suites": [
+      "CommunityCalendar",
+      "PatientProfiles",
+      "PatientSocial"
+    ]
+  },
+  "php": {
+    "syntaxFiles": 71,
+    "failed": 0
+  },
+  "assets": {
+    "literalReferences": 108,
+    "missing": 0,
+    "remoteImagesPackaged": 67
+  },
+  "nativeAdapters": {
+    "compiled": false,
+    "note": "Ejemplos de integración; requieren SDK, dependencias, servidor HTTPS y validación en el proyecto destino."
+  },
+  "applicationChanges": "Ninguno. Exportación aislada en exports/.",
+  "documentation": [
+    "https://developer.android.com/develop/ui/views/layout/webapps/webview",
+    "https://pub.dev/packages/webview_flutter",
+    "https://github.com/react-native-webview/react-native-webview/blob/master/docs/Reference.md"
+  ]
+}

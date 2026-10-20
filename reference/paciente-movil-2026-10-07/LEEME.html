@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Módulo de paciente · Guía de integración móvil</title>
+<style>body{font:16px/1.65 system-ui,sans-serif;max-width:960px;margin:40px auto;padding:0 22px;color:#20364d;background:#f4faf9}h1,h2{line-height:1.25}h1{font-size:32px}h2{margin-top:36px;color:#078f89}section{padding:20px 26px;background:white;border:1px solid #dcebea;border-radius:16px;margin:20px 0}code,pre{font-family:ui-monospace,monospace;font-size:13px}pre{white-space:pre-wrap;background:#eff6f6;padding:16px;border-radius:10px}a{color:#008a85}table{border-collapse:collapse;width:100%}td,th{text-align:left;border-bottom:1px solid #dcebea;padding:10px;vertical-align:top}.note{border-left:4px solid #10b7ad;padding-left:16px}li{margin:7px 0}</style>
+<h1>Módulo de paciente<br>Interfaz adaptable a teléfono móvil</h1>
+<p>Entrega del 7 de octubre de 2026. Código de la rama de trabajo actual, incluidos los cambios de diseño pendientes de commit. Consulte <a href="VERSION.json">VERSION.json</a> para el commit de base y <a href="INVENTARIO.json">INVENTARIO.json</a> para la versión exacta de cada archivo.</p>
+<p class="note"><strong>Destino: Android nativo, Flutter o React Native.</strong> El módulo actual es una interfaz web en Laravel Blade + HTML + CSS + JavaScript. Para conservar su diseño y comportamiento, hospede el módulo en Laravel y abra <code>/patient</code> desde un WebView. Para una interfaz enteramente nativa, reutilice los recursos y la API, y traduzca las pantallas y sus estados a componentes de la tecnología elegida. Este paquete no es un APK ni un proyecto Flutter/React Native compilado.</p>
+<section><h2>Contenido</h2><table><tr><th>Carpeta / archivo</th><th>Uso</th></tr>
+<tr><td><a href="codigo/resources/views/patient/dashboard.blade.php">codigo/resources/views/patient/</a></td><td>Pantalla completa y parciales. Contiene también el JavaScript principal, los formularios y las variables inyectadas por Laravel.</td></tr>
+<tr><td>codigo/public/css/</td><td>Diseño actual, estilos base y ajustes de móvil.</td></tr>
+<tr><td>codigo/public/js/</td><td>Perfiles, panel de cuenta, actividad social, comunidades y filtros.</td></tr>
+<tr><td>codigo/public/images/, brand/ y vendor/klini-patient/assets/</td><td>Iconos, fotografías, avatares, marca y fuentes. Los iconos SVG que se generan en JavaScript o Blade permanecen en su código.</td></tr>
+<tr><td>codigo/app/</td><td>Controlador del portal, clases PHP de las que depende, modelos, servicios, middleware y API de paciente/autenticación móvil.</td></tr>
+<tr><td>adaptadores/</td><td>Ejemplos de conexión por WebView en Kotlin, Flutter y React Native. Se integran dentro de una aplicación existente.</td></tr>
+<tr><td>integracion/routes/</td><td>Rutas extraídas del paciente web y de la API móvil, sin registrar los otros portales.</td></tr>
+<tr><td>referencia/</td><td>Esquema compartido de base de datos, configuración, bootstrap/proveedor Laravel y contrato OpenAPI original. Son material de integración; no se deben reemplazar a ciegas los equivalentes de otra aplicación.</td></tr>
+<tr><td>codigo/tests/</td><td>Pruebas del portal, comunidades, perfiles, actividad y API móvil. Necesitan la infraestructura de pruebas Laravel del destino.</td></tr>
+<tr><td><a href="MAPA-DEL-MODULO.json">MAPA-DEL-MODULO.json</a></td><td>Entradas, orden de estilos/scripts, rutas y clases relacionadas.</td></tr>
+<tr><td><a href="RECURSOS-EXTERNOS.json">RECURSOS-EXTERNOS.json</a></td><td>Relación de imágenes públicas externas, archivo local cuando se descargó y origen. Los enlaces de mapas/videollamadas siguen requiriendo conexión.</td></tr>
+<tr><td>SHA256SUMS.txt</td><td>Huellas de integridad de los archivos del paquete.</td></tr></table></section>
+<section><h2>Qué incluye la pantalla actual</h2><ul>
+<li><strong>Inicio:</strong> publicaciones, historias y acciones sociales.</li>
+<li><strong>Comunidades:</strong> buscador, historias, directorio, detalle, clases, eventos y reservaciones.</li>
+<li><strong>Registro:</strong> parámetros de bienestar, entradas manuales, favoritos y archivos adjuntos.</li>
+<li><strong>Mi Salud:</strong> parámetros e historial clínico con el fondo abierto y los controles móviles actuales.</li>
+<li><strong>Calendario:</strong> Comunidades/Salud, Próximas/Anteriores y tarjetas compactas de reservaciones y citas.</li>
+<li><strong>Soporte:</strong> seguro, análisis, recetas, médicos, dispositivos, billetera/suscripción e interacciones.</li>
+<li><strong>Tu cuenta:</strong> perfiles, solicitudes de seguidores, actividad con filtros por iconos y cierre de sesión.</li>
+</ul><p>El buscador superior conserva el campo vacío. Se incluyen los últimos ajustes de navegación y de diseño del calendario.</p></section>
+<section><h2>Integración en Laravel</h2><ol>
+<li>Use PHP 8.2+ y Laravel 12. Revise las dependencias de <code>codigo/composer.json</code> y el lockfile; incorpórelas al proyecto destino, conservando su propio composer.json. La API móvil utiliza Laravel Sanctum.</li>
+<li>Copie los archivos activos de <code>codigo/resources/views/patient</code>, el componente <code>klini-icon</code> y los recursos públicos manteniendo las rutas. Incorpore los bloques del layout original en el layout del destino. Las clases <code>native-shell</code>, <code>patient-assistant-native-body</code> y <code>patient-portal-body</code> forman parte del diseño.</li>
+<li>Integre el controlador, servicios, modelos y middleware conservando o adaptando sus namespaces. Las relaciones de Patient/User enlazan con modelos compartidos: por eso se incluyó su cierre de dependencias PHP.</li>
+<li>Copie <code>integracion/routes/patient.php</code> a su carpeta de rutas y cárguelo desde <code>routes/web.php</code> mediante <code>require __DIR__.'/patient.php';</code>. Registre el alias <code>role</code> para <code>EnsureUserRole</code> y el middleware web de páginas de sesión según su aplicación.</li>
+<li>Conserve las rutas con nombre <code>patient.dashboard</code>, <code>patient.profile.update</code>, <code>patient.insurance.save</code>, <code>patient.appointments.store</code>, <code>patient.register_attachments.store</code> y <code>patient.register_attachments.download</code>. El layout selecciona los estilos de paciente usando <code>routeIs('patient.dashboard')</code>.</li>
+<li>El destino debe proporcionar <code>home</code>, <code>login</code> y <code>logout</code>. El cierre es POST con protección CSRF; termina la sesión y regresa a <code>home</code>. El acceso del destino debe autenticar un usuario relacionado con un Patient. No se entrega el acceso de revisión sin contraseña.</li>
+<li>Compare las migraciones de <code>referencia/database/migrations</code> con su esquema. Incluyen tablas compartidas de la plataforma y no son una migración autónoma del módulo. Adapte tablas, relaciones, archivos privados y auditoría antes de ejecutar las migraciones que correspondan.</li>
+<li>Después de integrar y configurar el entorno propio: ejecute <code>composer install</code>, <code>php artisan optimize:clear</code> y las pruebas enfocadas. Compruebe <code>/patient</code> con una sesión válida y un paciente de prueba.</li>
+</ol><p>Las rutas <code>/images/...</code>, <code>/brand/...</code> y <code>/vendor/...</code> son absolutas desde el origen del servidor. Si monta el módulo bajo un subdirectorio, adapte estos prefijos junto con las rutas de navegación y de carga/descarga.</p></section>
+<section><h2>Archivos que dan la versión móvil</h2><p>Conserve este orden de CSS; los ajustes móviles complementan la base compartida:</p>
+<pre>patient-portal-source.css
+patient-profile-panel.css
+communities.css
+policy-saved-overlay.css
+patient-history-mobile.css
+patient-bottom-nav-mobile.css
+patient-calendar-mobile.css
+patient-social.css</pre>
+<p>Scripts: <code>klini-profiles.js</code>, <code>patient-profile-panel.js</code>, <code>patient-social.js</code>, <code>communities.js</code>; después la lógica inline de <code>dashboard.blade.php</code>. <code>patient-portal-table-filters.js</code> se carga al final del layout con defer. No elimine los atributos <code>data-*</code> ni las directivas Blade <code>@json</code>, <code>@csrf</code> y <code>@method</code>.</p>
+<p><code>mobile-preview.html</code> es únicamente un marco de previsualización de 360×640 con un iframe a <code>/patient</code>. En Android cargue directamente <code>https://SU-SERVIDOR/patient</code>; la propia pantalla ya se adapta al ancho disponible. En un dispositivo, <code>127.0.0.1</code> apunta al propio teléfono, no a la computadora que ejecuta Laravel.</p>
+<p>Los CSS <code>drsam.css</code> y <code>klini-*.css</code> incluidos corresponden a la rama compartida del layout para otros módulos. La pantalla de paciente usa <code>patient-portal-source.css</code>, no esos estilos alternativos.</p></section>
+<section><h2>Android / Flutter / React Native</h2><p>Los adaptadores incluidos son puntos de entrada que abren el servidor existente. Configure su dominio HTTPS y el inicio de sesión web. El WebView necesita JavaScript y almacenamiento DOM para los controles actuales. Una sesión web usa cookies; un token Sanctum de la API no crea por sí mismo esa sesión.</p>
+<ul><li><strong>Android:</strong> <code>adaptadores/android/PatientWebViewActivity.kt</code>. Requiere una aplicación AndroidX, permiso INTERNET y registrar la Activity. Incluye navegación básica y selección de archivos; integre las descargas autenticadas con la infraestructura de su app.</li>
+<li><strong>Flutter:</strong> <code>adaptadores/flutter/patient_webview.dart</code>. Añada <code>webview_flutter</code> y <code>url_launcher</code>. Ajuste selección/descarga de archivos según Android/iOS y su plugin.</li>
+<li><strong>React Native:</strong> <code>adaptadores/react-native/PatientWebView.tsx</code>. Añada <code>react-native-webview</code> y <code>react-native-safe-area-context</code>, con SafeAreaProvider en la aplicación anfitriona. Ajuste permisos y la integración de selección/descarga de documentos del proyecto destino.</li></ul>
+<p>Los adaptadores no se compilaron en SDKs Android/Flutter/React Native en esta entrega. Verifique en dispositivos: inicio/cierre de sesión, botón Atrás, teclado, adjuntos, permisos, enlaces externos, cámara cuando corresponda y descarga de documentos. El código Laravel del portal y sus recursos sí proceden de la versión local actual.</p>
+<p>Fuentes oficiales: <a href="https://developer.android.com/develop/ui/views/layout/webapps/webview">Android WebView</a>, <a href="https://pub.dev/packages/webview_flutter">Flutter WebView</a>, <a href="https://github.com/react-native-webview/react-native-webview/blob/master/docs/Reference.md">React Native WebView</a>.</p></section>
+<section><h2>Si desea pantallas 100% nativas</h2><p>Reutilice imágenes, colores, iconos y comportamiento como especificación; convierta el HTML a Views/Compose, widgets Flutter o componentes React Native. Los SVG inline deben convertirse al sistema de iconos de la plataforma. Reemplace el DOM, los eventos <code>data-*</code>, <code>localStorage</code>, los diálogos web y las directivas Blade por estado y componentes nativos.</p>
+<p>La API opcional conserva el prefijo <code>/api/mobile/v1</code>. Sus rutas de paciente incluyen:</p>
+<pre>POST  auth/login
+GET   me
+GET   patient/dashboard
+GET   patient/profile
+PATCH patient/profile
+GET   patient/appointments
+GET   patient/appointments/{appointment}
+GET   patient/clinical-records
+GET   patient/prescriptions
+GET   patient/documents
+GET   patient/documents/{document}/download
+POST  auth/logout</pre>
+<p>Consulte el contrato original en <code>referencia/docs/openapi/klini-mobile-v1.yaml</code>. También contiene endpoints de otros roles que se conservan como referencia, pero el fragmento de rutas entregado registra únicamente paciente y autenticación/sesiones/dispositivos compartidos. Integre los aliases, limitadores <code>mobile-api</code>/<code>mobile-login</code>, Gate y manejo JSON del bootstrap/proveedor de referencia. La API actual no reemplaza todavía todas las funciones web: por ejemplo, reservar una cita se realiza por la ruta web y no existe en este paquete un CRUD de actividad social multiusuario.</p></section>
+<section><h2>Datos y recursos</h2><p>Perfil principal, citas médicas, seguro, prescripciones, historial y documentos se obtienen del backend. Comunidades, solicitudes sociales, perfiles alternos, favoritos y registros manuales contienen comportamiento local/demostración almacenado por perfil en el navegador. Cambiar de dominio o de WebView no traslada automáticamente ese almacenamiento.</p>
+<p>No se incluyen base de datos, .env, sesiones, cookies, logs, archivos clínicos cargados ni datos extraídos del navegador. Las fotos y catálogos de demostración definidos en código forman parte de los recursos visuales. <code>RECURSOS-EXTERNOS.json</code> registra las imágenes remotas y si están empaquetadas. Cuando se descargan, las copias exportadas apuntan a <code>/images/patient-export/</code>; los originales se conservan en <code>referencia/originales-con-enlaces-remotos/</code>.</p>
+<p>Se conservan las licencias de fuentes/iconos y la procedencia de los recursos existentes. El diseño funciona con datos del servidor: no abra una plantilla Blade como un HTML estático esperando obtener el módulo completo.</p></section>
+<section><h2>Comprobación</h2><p><code>INVENTARIO.json</code> indica tamaño, SHA-256 y archivo de origen. Los archivos exportados se comprueban contra el manifiesto al generar el ZIP. En esta entrega no se cambió la aplicación original para crear el paquete.</p>
+<pre>node --test tests/Frontend/CommunityCalendar.test.mjs tests/Frontend/PatientSocial.test.mjs tests/Frontend/PatientProfiles.test.mjs
+php artisan test --filter=PatientPortalTest</pre>
+<p>Adapte el bootstrap y la base de datos de pruebas al integrarlo. La API tiene sus pruebas propias en <code>tests/Feature/Api/Mobile</code>. Los archivos fuente quedan listos para revisión e integración; la compilación nativa requiere el proyecto destino.</p></section>
+</html>

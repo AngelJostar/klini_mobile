@@ -29,6 +29,7 @@ function RootNavigator() {
   return (
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
+        <Stack.Screen name="portal" />
         <Stack.Protected guard={!user}><Stack.Screen name="(auth)" /></Stack.Protected>
         <Stack.Protected guard={user?.role === 'patient'}><Stack.Screen name="(patient)" /></Stack.Protected>
         <Stack.Protected guard={user?.role === 'doctor'}><Stack.Screen name="(doctor)" /></Stack.Protected>

@@ -1,0 +1,114 @@
+@media (max-width: 720px) {
+  .native-shell .patient-history-table-wrap {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .native-shell .patient-history-table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .native-shell .patient-history-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .native-shell .patient-history-table tbody {
+    display: grid;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .native-shell .patient-history-table tbody tr {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid #d9e5e9;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 8px 20px rgba(16, 55, 67, 0.06);
+  }
+
+  .native-shell .patient-history-table tbody tr[hidden] {
+    display: none;
+  }
+
+  .native-shell .patient-history-table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 0;
+    border-bottom: 1px solid #e8f0f1;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .native-shell .patient-history-table td:last-child {
+    border-bottom: 0;
+  }
+
+  .native-shell .patient-history-table td::before {
+    display: block;
+    margin-bottom: 6px;
+    color: #637587;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.35;
+    text-transform: uppercase;
+    letter-spacing: 0;
+  }
+
+  .native-shell .patient-history-table td:nth-child(1)::before {
+    content: "Fecha";
+  }
+
+  .native-shell .patient-history-table td:nth-child(2)::before {
+    content: "Categoría";
+  }
+
+  .native-shell .patient-history-table td:nth-child(3)::before {
+    content: "Origen";
+  }
+
+  .native-shell .patient-history-table td:nth-child(4)::before {
+    content: "Especialidad o tipo de servicio";
+  }
+
+  .native-shell .patient-history-table td:nth-child(5)::before {
+    content: "Resumen clínico";
+  }
+
+  .native-shell .patient-history-table td:nth-child(6)::before {
+    content: "Receta / Indicaciones";
+  }
+
+  .native-shell .patient-history-table td[colspan]::before {
+    content: none;
+  }
+
+  .native-shell .patient-history-table td > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .native-shell .patient-history-indications {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+  }
+}

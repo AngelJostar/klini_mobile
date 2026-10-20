@@ -1,0 +1,25 @@
+{
+  "name": "Módulo de paciente · Web adaptable a móvil",
+  "version": "2026.10.07-export",
+  "exportedAt": "2026-10-08T02:49:25.650Z",
+  "timezone": "America/Mexico_City",
+  "branch": "ggh17",
+  "baseCommit": "98c87d59c02e2d622d996973e0cb1407a272b6da",
+  "includesWorkingTreeChanges": true,
+  "framework": "Laravel 12 / PHP 8.2+",
+  "assets": {
+    "remoteFound": 67,
+    "remoteIncluded": 67
+  },
+  "excludes": [
+    ".env",
+    "Git",
+    "vendor PHP",
+    "node_modules",
+    "Base de datos y SQL",
+    "Uploads clínicos",
+    "Sesiones",
+    "Logs",
+    "Datos del navegador"
+  ]
+}

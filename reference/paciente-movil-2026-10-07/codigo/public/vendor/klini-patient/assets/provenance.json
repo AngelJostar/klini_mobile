@@ -1,0 +1,103 @@
+{
+  "notes": "Recortes de las propuestas visuales creadas para Klini. Fotografías de demostración. No son perfiles ni publicaciones reales. Avatares extraídos dentro del retrato y recortados con canal alfa circular, sin controles de interfaz.",
+  "assets": [
+    {
+      "file": "assets/photos/yoga.png",
+      "source": "references/comunidades.png",
+      "source_crop": [
+        177,
+        612,
+        1110,
+        1024
+      ],
+      "crop_coordinate_width": 1368
+    },
+    {
+      "file": "assets/photos/running.png",
+      "source": "references/comunidades.png",
+      "source_crop": [
+        177,
+        1417,
+        1192,
+        1685
+      ],
+      "crop_coordinate_width": 1368
+    },
+    {
+      "file": "assets/avatars/perfil.png",
+      "source": "references/comunidades.png",
+      "source_crop": [
+        230,
+        129,
+        303,
+        202
+      ],
+      "crop_coordinate_width": 1368
+    },
+    {
+      "file": "assets/avatars/mariana.png",
+      "source": "references/comunidades.png",
+      "source_crop": [
+        381,
+        124,
+        466,
+        209
+      ],
+      "crop_coordinate_width": 1368
+    },
+    {
+      "file": "assets/avatars/diego.png",
+      "source": "references/comunidades.png",
+      "source_crop": [
+        543,
+        124,
+        628,
+        209
+      ],
+      "crop_coordinate_width": 1368
+    },
+    {
+      "file": "assets/avatars/ana.png",
+      "source": "references/comunidades.png",
+      "source_crop": [
+        704,
+        124,
+        789,
+        209
+      ],
+      "crop_coordinate_width": 1368
+    },
+    {
+      "file": "assets/avatars/carlos.png",
+      "source": "references/comunidades.png",
+      "source_crop": [
+        864,
+        124,
+        949,
+        209
+      ],
+      "crop_coordinate_width": 1368
+    },
+    {
+      "file": "assets/avatars/valeria.png",
+      "source": "references/comunidades.png",
+      "source_crop": [
+        1024,
+        124,
+        1109,
+        209
+      ],
+      "crop_coordinate_width": 1368
+    },
+    {
+      "file": "assets/photos/meditacion.png",
+      "source": "captura original de Comunidades",
+      "source_crop": [
+        94,
+        454,
+        719,
+        646
+      ]
+    }
+  ]
+}
