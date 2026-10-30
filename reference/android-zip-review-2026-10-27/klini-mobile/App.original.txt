@@ -1,0 +1,593 @@
+import React, {
+  Component,
+  PropsWithChildren,
+  useEffect,
+  useState,
+} from "react";
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
+import { LinearGradient } from "expo-linear-gradient";
+import { BlurView } from "expo-blur";
+import { AppProvider, useAppStore } from "./src/state/store";
+import { colors, Icon, notify, Button } from "./src/components/ui";
+import { dateLabel, localDateTime, todayISO } from "./src/domain/dates";
+import type { Mode } from "./src/domain/types";
+import DirectoryFlow from "./src/screens/DirectoryFlow";
+import AgendaScreen from "./src/screens/AgendaScreen";
+import TeleconsultScreen from "./src/screens/TeleconsultScreen";
+import InsuranceScreen from "./src/screens/InsuranceScreen";
+import ArchiveScreen from "./src/screens/ArchiveScreen";
+import ProfileScreen from "./src/screens/ProfileScreen";
+import { syncReminders } from "./src/services/reminders";
+
+type Route =
+  | { name: "directory"; doctorId?: string; mode?: Mode; rescheduleId?: string }
+  | { name: "agenda" }
+  | { name: "teleconsult"; appointmentId?: string }
+  | { name: "insurance" }
+  | { name: "archive" }
+  | { name: "profile" }
+  | null;
+function KliniApp() {
+  const { state, ready, storageError } = useAppStore();
+  const [route, setRoute] = useState<Route>(null);
+  const { width, height } = useWindowDimensions();
+  const compact = height < 740;
+  const contentWidth = Math.min(width, 540);
+  const iconSize = Math.min(63, (contentWidth - 100) / 5);
+  const close = () => setRoute(null);
+  const book = () => setRoute({ name: "directory" });
+  const next = state.appointments
+    .filter(
+      (a) =>
+        a.status === "scheduled" &&
+        localDateTime(a.date, a.time).getTime() >= Date.now(),
+    )
+    .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))[0];
+  const doctor = state.doctors.find((d) => d.id === next?.doctorId);
+  const initials = state.profile.name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((s) => s[0])
+    .join("");
+  const reminderKey = JSON.stringify({
+    enabled: state.settings.reminders,
+    appointments: state.appointments.map((a) => [
+      a.id,
+      a.date,
+      a.time,
+      a.status,
+    ]),
+  });
+  useEffect(() => {
+    if (ready)
+      syncReminders(state).catch((e) => {
+        if (state.settings.reminders)
+          notify(
+            "Recordatorios",
+            e instanceof Error
+              ? e.message
+              : "No se pudieron programar los avisos.",
+          );
+      });
+  }, [ready, reminderKey]);
+  if (!ready)
+    return (
+      <View style={s.loading}>
+        <Text style={s.logo}>
+          klini<Text style={{ color: colors.teal }}>.</Text>
+        </Text>
+        <ActivityIndicator color={colors.teal} />
+        <Text style={s.caption}>Preparando tu espacio</Text>
+      </View>
+    );
+  const modules = [
+    {
+      label: "Agenda",
+      name: "calendar",
+      gradient: ["#FFFFFF", "#F1F8FA"],
+      action: () => setRoute({ name: "agenda" }),
+    },
+    {
+      label: "Directorio\nmédico",
+      name: "doctor",
+      gradient: ["#193F62", "#082441"],
+      action: book,
+    },
+    {
+      label: "Teleconsulta",
+      name: "video",
+      gradient: ["#12C4C8", "#00989E"],
+      action: () => setRoute({ name: "teleconsult" }),
+    },
+    {
+      label: "Seguro\nmédico",
+      name: "shield",
+      gradient: ["#EAFFFC", "#CFF1EE"],
+      action: () => setRoute({ name: "insurance" }),
+    },
+  ];
+  return (
+    <View style={s.app}>
+      <StatusBar style="dark" />
+      <LinearGradient
+        colors={["#FFFFFF", "#FFFFFF", "#F8FCFD"]}
+        style={StyleSheet.absoluteFill}
+      />
+      <SafeAreaView style={s.safe} edges={["top", "bottom"]}>
+        <View style={[s.phone, { maxWidth: 540 }]}>
+          <ScrollView
+            contentContainerStyle={[
+              s.homeContent,
+              { minHeight: height - (Platform.OS === "web" ? 0 : 75) },
+            ]}
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={s.header}>
+              <Text accessibilityLabel="Klini" style={s.logo}>
+                klini<Text style={{ color: colors.teal }}>.</Text>
+              </Text>
+              <Pressable
+                onPress={() => setRoute({ name: "profile" })}
+                accessibilityRole="button"
+                accessibilityLabel="Abrir perfil"
+                style={s.profileButton}
+              >
+                <Text style={s.initials}>{initials}</Text>
+              </Pressable>
+            </View>
+            {storageError && (
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => setRoute({ name: "profile" })}
+              >
+                <Text style={s.storageError}>
+                  {storageError} · Exportar datos
+                </Text>
+              </Pressable>
+            )}
+            <View style={{ marginTop: compact ? 23 : 34 }}>
+              <Text style={s.eyebrow}>HOY / ATENCIÓN</Text>
+              <Text
+                accessibilityRole="header"
+                style={[
+                  s.hero,
+                  {
+                    fontSize: Math.min(
+                      compact ? 58 : 76,
+                      (contentWidth - 50) * 0.188,
+                    ),
+                    lineHeight: Math.min(
+                      compact ? 61 : 81,
+                      (contentWidth - 50) * 0.207,
+                    ),
+                  },
+                ]}
+              >
+                Tu{`\n`}atención<Text style={{ color: colors.teal }}>.</Text>
+              </Text>
+              <Text style={s.patient}>{state.profile.name}</Text>
+            </View>
+            <View style={[s.modules, { marginTop: compact ? 32 : 43 }]}>
+              {modules.map((m, i) => (
+                <Pressable
+                  key={m.label}
+                  accessibilityRole="button"
+                  accessibilityLabel={m.label.replace("\n", " ")}
+                  testID={
+                    [
+                      "menu-agenda",
+                      "menu-directory",
+                      "menu-teleconsult",
+                      "menu-insurance",
+                    ][i]
+                  }
+                  onPress={m.action}
+                  style={({ pressed }) => [
+                    s.module,
+                    { opacity: pressed ? 0.65 : 1 },
+                  ]}
+                >
+                  <LinearGradient
+                    colors={m.gradient as [string, string]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={[
+                      s.appIcon,
+                      {
+                        width: iconSize,
+                        height: iconSize,
+                        borderRadius: iconSize * 0.255,
+                      },
+                    ]}
+                  >
+                    {i === 0 ? (
+                      <View style={{ alignItems: "center" }}>
+                        <View
+                          style={{
+                            height: 9,
+                            backgroundColor: colors.teal,
+                            borderTopLeftRadius: 4,
+                            borderTopRightRadius: 4,
+                            width: 34,
+                            marginBottom: 1,
+                          }}
+                        />
+                        <Text
+                          style={{
+                            fontSize: 24,
+                            color: colors.navy,
+                            fontWeight: "700",
+                            lineHeight: 27,
+                          }}
+                        >
+                          {Number(todayISO().slice(-2))}
+                        </Text>
+                      </View>
+                    ) : (
+                      <Icon
+                        name={m.name}
+                        size={iconSize * 0.57}
+                        color={i === 1 || i === 2 ? "white" : colors.navy}
+                      />
+                    )}
+                  </LinearGradient>
+                  <Text
+                    style={[
+                      s.moduleLabel,
+                      contentWidth < 360 && { fontSize: 10, lineHeight: 15 },
+                    ]}
+                  >
+                    {m.label}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+            <View style={s.spacer} />
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Ver próxima cita en agenda"
+              onPress={() => setRoute({ name: "agenda" })}
+              style={s.nextAppointment}
+            >
+              <Text style={s.eyebrow}>PRÓXIMA CITA</Text>
+              <Text style={s.nextDate}>
+                {next
+                  ? `${dateLabel(next.date)} · ${next.time} h`
+                  : "Tu tiempo, a tu ritmo"}
+              </Text>
+              <Text style={s.nextDoctor}>
+                {next
+                  ? `${doctor?.name || "Tu especialista"} · ${next.mode}`
+                  : "Encuentra un especialista y reserva tu cita."}
+              </Text>
+            </Pressable>
+            <View style={s.homeBottom}>
+              <Text style={s.demo}>Datos de ejemplo</Text>
+              <View style={[s.dock, contentWidth < 360 && { marginRight: 60 }]}>
+                {[
+                  {
+                    title: "Hoy",
+                    active:
+                      !route ||
+                      [
+                        "agenda",
+                        "directory",
+                        "teleconsult",
+                        "insurance",
+                      ].includes(route.name),
+                    onPress: close,
+                  },
+                  {
+                    title: "Archivo",
+                    active: route?.name === "archive",
+                    onPress: () => setRoute({ name: "archive" }),
+                  },
+                  {
+                    title: "Tú",
+                    active: route?.name === "profile",
+                    onPress: () => setRoute({ name: "profile" }),
+                  },
+                ].map((t) => (
+                  <Pressable
+                    accessibilityRole="tab"
+                    accessibilityState={{ selected: t.active }}
+                    accessibilityLabel={t.title}
+                    key={t.title}
+                    onPress={t.onPress}
+                    style={s.dockTab}
+                  >
+                    <Text
+                      style={[s.dockText, t.active && { fontWeight: "700" }]}
+                    >
+                      {t.title}
+                    </Text>
+                    <View
+                      style={[s.activeDot, { opacity: t.active ? 1 : 0 }]}
+                    />
+                  </Pressable>
+                ))}
+              </View>
+              <Pressable
+                onPress={book}
+                accessibilityRole="button"
+                accessibilityLabel="Agendar nueva cita"
+                testID="quick-book"
+                style={s.fabGroup}
+              >
+                <Text style={s.fabLabel}>Agendar</Text>
+                <LinearGradient colors={["#06C0C6", "#00A2A7"]} style={s.fab}>
+                  <Icon name="plus" size={36} color="white" />
+                </LinearGradient>
+              </Pressable>
+            </View>
+          </ScrollView>
+        </View>
+      </SafeAreaView>
+      <Modal
+        visible={!!route}
+        transparent
+        animationType="fade"
+        statusBarTranslucent
+        onRequestClose={close}
+        accessibilityViewIsModal
+      >
+        <View style={s.modalRoot}>
+          <BlurView
+            intensity={Platform.OS === "ios" ? 22 : 0}
+            tint="dark"
+            style={StyleSheet.absoluteFill}
+          />
+          <View style={s.scrim} />
+          <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              style={{ flex: 1 }}
+            >
+              {route?.name === "directory" && (
+                <DirectoryFlow
+                  onClose={close}
+                  onBooked={() => setRoute({ name: "agenda" })}
+                  initialDoctorId={route.doctorId}
+                  initialMode={route.mode}
+                  rescheduleId={route.rescheduleId}
+                />
+              )}{" "}
+              {route?.name === "agenda" && (
+                <AgendaScreen
+                  onClose={close}
+                  onBook={book}
+                  onReschedule={(id) =>
+                    setRoute({ name: "directory", rescheduleId: id })
+                  }
+                  onTeleconsult={(id) =>
+                    setRoute({ name: "teleconsult", appointmentId: id })
+                  }
+                />
+              )}{" "}
+              {route?.name === "teleconsult" && (
+                <TeleconsultScreen
+                  onClose={close}
+                  onBook={() =>
+                    setRoute({ name: "directory", mode: "Teleconsulta" })
+                  }
+                  appointmentId={route.appointmentId}
+                />
+              )}{" "}
+              {route?.name === "insurance" && (
+                <InsuranceScreen onClose={close} />
+              )}{" "}
+              {route?.name === "archive" && <ArchiveScreen onClose={close} />}{" "}
+              {route?.name === "profile" && <ProfileScreen onClose={close} />}
+            </KeyboardAvoidingView>
+          </SafeAreaView>
+        </View>
+      </Modal>
+    </View>
+  );
+}
+class ErrorBoundary extends Component<PropsWithChildren, { error: boolean }> {
+  state = { error: false };
+  static getDerivedStateFromError() {
+    return { error: true };
+  }
+  render() {
+    return this.state.error ? (
+      <View style={s.loading}>
+        <Text style={s.patient}>Necesitamos volver a abrir Klini</Text>
+        <Text style={s.caption}>Tus datos locales permanecen guardados.</Text>
+        <Button
+          title="Reintentar"
+          onPress={() => this.setState({ error: false })}
+        />
+      </View>
+    ) : (
+      this.props.children
+    );
+  }
+}
+export default function App() {
+  return (
+    <ErrorBoundary>
+      <SafeAreaProvider>
+        <AppProvider>
+          <KliniApp />
+        </AppProvider>
+      </SafeAreaProvider>
+    </ErrorBoundary>
+  );
+}
+const s = StyleSheet.create({
+  app: { flex: 1, backgroundColor: "white" },
+  safe: { flex: 1 },
+  phone: { flex: 1, width: "100%", alignSelf: "center" },
+  homeContent: {
+    paddingHorizontal: 25,
+    paddingTop: 10,
+    paddingBottom: 18,
+    flexGrow: 1,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  logo: {
+    fontSize: 41,
+    letterSpacing: -2.7,
+    fontWeight: "700",
+    color: colors.navy,
+  },
+  profileButton: {
+    width: 44,
+    height: 44,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  initials: { fontSize: 15, letterSpacing: 1, color: "#315A7B" },
+  eyebrow: {
+    fontSize: 11,
+    letterSpacing: 1.6,
+    color: "#3D6587",
+    fontWeight: "500",
+  },
+  hero: {
+    color: colors.navy,
+    fontWeight: "800",
+    letterSpacing: -3.8,
+    marginTop: 15,
+  },
+  patient: {
+    fontSize: 22,
+    fontWeight: "700",
+    letterSpacing: -0.6,
+    color: colors.navy,
+    marginTop: 15,
+  },
+  modules: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    marginHorizontal: -4,
+  },
+  module: { width: "25%", alignItems: "center", gap: 10 },
+  appIcon: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(8,36,65,.08)",
+    boxShadow: "0 6px 12px rgba(8,36,65,0.10)",
+  },
+  moduleLabel: {
+    fontSize: 12,
+    fontWeight: "600",
+    lineHeight: 17,
+    textAlign: "center",
+    color: colors.navy,
+    letterSpacing: -0.3,
+  },
+  spacer: { flex: 1, minHeight: 48 },
+  nextAppointment: {
+    borderBottomWidth: 1,
+    borderColor: "#D7E2EA",
+    paddingBottom: 17,
+  },
+  nextDate: {
+    fontSize: 21,
+    fontWeight: "700",
+    color: colors.navy,
+    letterSpacing: -0.5,
+    marginTop: 9,
+  },
+  nextDoctor: { fontSize: 13, color: "#41698B", marginTop: 7, lineHeight: 20 },
+  homeBottom: {
+    height: 88,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    gap: 8,
+    paddingBottom: 3,
+  },
+  demo: {
+    fontSize: 9,
+    color: "#65768C",
+    position: "absolute",
+    left: 0,
+    bottom: 58,
+  },
+  dock: {
+    flexDirection: "row",
+    backgroundColor: colors.navy,
+    borderRadius: 30,
+    height: 49,
+    width: 217,
+    maxWidth: "70%",
+    alignItems: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    boxShadow: "0 4px 12px rgba(8,36,65,.09)",
+  },
+  dockTab: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 49,
+    paddingTop: 5,
+  },
+  dockText: { color: "white", fontSize: 13 },
+  activeDot: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: colors.teal,
+    marginTop: 5,
+  },
+  fabGroup: {
+    position: "absolute",
+    right: 0,
+    bottom: 0,
+    alignItems: "center",
+    gap: 5,
+  },
+  fabLabel: { fontSize: 11, color: colors.tealDark },
+  fab: {
+    width: 45,
+    height: 45,
+    borderRadius: 23,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalRoot: { flex: 1 },
+  scrim: { ...StyleSheet.absoluteFill, backgroundColor: "rgba(26,52,72,.31)" },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 16,
+    padding: 30,
+    backgroundColor: "white",
+  },
+  caption: { fontSize: 13, color: colors.muted, textAlign: "center" },
+  storageError: {
+    fontSize: 11,
+    lineHeight: 17,
+    color: colors.danger,
+    backgroundColor: "#FFF2F3",
+    padding: 10,
+    borderRadius: 12,
+    marginTop: 10,
+  },
+});

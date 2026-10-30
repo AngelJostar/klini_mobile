@@ -1,0 +1,61 @@
+/* One screen scale for text, controls and graphics across all platform profiles.
+   Keep viewport layouts full-height after zoom, and preserve print dimensions. */
+@media screen {
+  html body.native-shell[class] {
+    --platform-ui-scale: .9;
+    --platform-viewport-height: calc(100dvh / var(--platform-ui-scale));
+    zoom: var(--platform-ui-scale);
+    min-height: var(--platform-viewport-height);
+  }
+
+  html body.native-shell[class] > .shell > :is(
+    .bridge-screen, .formal-login-screen, .outpatient-module-screen,
+    .patient-portal, .patient-assistant-native-screen, .doctor-assistant-native-screen,
+    .orders-store-native-screen, .messenger-native-screen, .operational-native-screen,
+    .provider-native-screen, .provider-chemo-native-screen, .provider-import-native-screen,
+    .unit-native-screen, .institution-native-screen, .superadmin-native-screen,
+    .digital-pharmacy-native-screen, .external-pharmacy-native-screen,
+    .insurance-advisor-native-screen, .insurance-health-native-screen,
+    .insurance-health-native-screen--sidebar, .klini-communities
+  ) {
+    min-height: var(--platform-viewport-height);
+  }
+}
+
+@media screen and (min-width: 641px) {
+  html body.native-shell.superadmin-native-body,
+  html body.native-shell.superadmin-native-body > .shell > .superadmin-native-screen {
+    height: var(--platform-viewport-height);
+    min-height: 0;
+  }
+}
+
+@media screen and (min-width: 761px) {
+  /* Apply the same additional reduction to the already compact Unit profile. */
+  html body.native-shell.unit-native-body {
+    --platform-ui-scale: .765;
+    --unit-workspace-scale: var(--platform-ui-scale);
+  }
+}
+
+@media screen and (min-width: 901px) {
+  html body.native-shell.provider-import-native-body {
+    --platform-ui-scale: .765;
+  }
+
+  html body.native-shell[class] :is(
+    .messenger-native-sidebar, .operational-native-sidebar, .provider-native-sidebar,
+    .provider-chemo-native-sidebar, .provider-import-native-sidebar, .unit-native-sidebar,
+    .institution-native-sidebar, .digital-pharmacy-native-sidebar,
+    .external-pharmacy-native-sidebar, .insurance-advisor-native-sidebar,
+    .insurance-health-native-sidebar
+  ) {
+    min-height: 0;
+    align-self: stretch;
+  }
+
+  html body.native-shell[class] .provider-native-sidebar {
+    height: var(--platform-viewport-height);
+    max-height: var(--platform-viewport-height);
+  }
+}

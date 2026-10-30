@@ -1,0 +1,192 @@
+.native-shell dialog.patient-insurance-drawer {
+  position: fixed; inset: 0 auto 0 0; box-sizing: border-box;
+  width: min(940px, calc(100vw - 28px)); height: 100dvh;
+  max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+  border-radius: 0 26px 26px 0; overflow: hidden;
+  background: #f4fbfa; color: #10223d; box-shadow: 12px 0 60px #08244130;
+  transform: translateX(-102%);
+  transition: transform 480ms cubic-bezier(.22, .72, .18, 1);
+}
+.native-shell dialog.patient-insurance-drawer.is-open { transform: translateX(0); }
+.patient-insurance-drawer::backdrop { background: #08244100; backdrop-filter: blur(0); transition: background-color 480ms ease, backdrop-filter 480ms ease; }
+.patient-insurance-drawer.is-open::backdrop { background: #08244199; backdrop-filter: blur(3px); }
+.patient-insurance-drawer-sheet { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.patient-insurance-drawer-toolbar { flex: 0 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: max(12px, env(safe-area-inset-top)) 18px 12px; }
+.patient-insurance-drawer-toolbar span { color: #526b7c; font-size: 13px; font-weight: 700; }
+.native-shell .patient-insurance-drawer-toolbar button {
+  display: grid; place-items: center; width: 44px; height: 44px; min-height: 44px; padding: 0;
+  color: #10223d; font: 400 34px/1 sans-serif; background: transparent !important;
+  border: 0 !important; border-radius: 50%; box-shadow: none !important;
+}
+.patient-insurance-drawer-content { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 0 18px max(24px, env(safe-area-inset-bottom)); }
+.native-shell .patient-insurance-drawer .patient-insurance-shell { box-shadow: none; }
+.native-shell .patient-insurance-drawer .patient-insurance-overview { grid-template-columns: minmax(0, 1fr); }
+.native-shell .patient-insurance-drawer .patient-insurance-illustration { display: none; }
+.native-shell .patient-insurance-drawer .patient-insurance-hero { padding: 24px; min-height: 100px; }
+.native-shell .patient-insurance-drawer .patient-insurance-hero h1 { font-size: 32px; }
+.native-shell .patient-insurance-drawer .patient-insurance-hero-icon { width: 58px; height: 58px; flex-basis: 58px; }
+@media (max-width: 600px) {
+  .native-shell dialog.patient-insurance-drawer { width: calc(100vw - 20px); border-radius: 0 22px 22px 0; }
+  .patient-insurance-drawer-content { padding-inline: 10px; }
+  .patient-insurance-drawer-toolbar { padding-inline: 14px; }
+  .native-shell .patient-insurance-drawer .patient-insurance-hero { padding: 18px; }
+  .native-shell .patient-insurance-drawer .patient-insurance-hero h1 { font-size: 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .native-shell dialog.patient-insurance-drawer, .patient-insurance-drawer::backdrop { transition: none; }
+}
+
+/* Insurance choices and policy workspace share the existing sliding drawer. */
+.ki-flow [hidden], .patient-insurance-drawer [hidden] { display:none !important; }
+.ki-flow { color:#10284f; font-size:14px; line-height:1.5; }
+.ki-flow h2 { margin:24px 0 18px; font-size:26px; line-height:1.2; letter-spacing:-.5px; }
+.ki-flow h3 { margin:8px 0; font-size:19px; line-height:1.3; }
+.ki-flow p { color:#718097; }
+.ki-flow .ki-lead { margin-top:-6px; font-size:15px; }
+.ki-flow .ki-feature { margin:18px 0; padding:22px; border-radius:22px; background:#e8f7f4; border:1px solid #d8edeb; }
+.ki-flow .ki-center {text-align:center;}
+.ki-badge {display:inline-block;padding:5px 12px;border-radius:20px;background:#d3f1ed;color:#009b98;font-weight:700;}
+.ki-shield {display:grid;place-items:center;width:60px;height:70px;margin:20px auto;border:3px solid #00a7a5;border-radius:18px 18px 30px 30px;font-size:40px;color:#00a7a5;}
+.ki-flow-header {display:flex;align-items:center;gap:15px;border-bottom:1px solid #dce9e9;padding:8px 0 16px;}
+.ki-flow-header strong {font-size:28px;letter-spacing:-1px;}.ki-flow-header span{margin-left:auto;font-weight:700;}
+.native-shell .ki-flow button, .ki-flow a {font:inherit;box-sizing:border-box;cursor:pointer;}
+.native-shell .ki-flow .ki-primary,.native-shell .ki-flow .ki-outline {display:block;width:100%;min-height:46px;padding:12px 16px;margin:14px 0;border-radius:25px;border:1px solid #00a7a5!important;text-align:center;text-decoration:none;font-weight:700;box-shadow:none!important;}
+.native-shell .ki-flow .ki-primary{background:#12adb1!important;color:white!important;}
+.native-shell .ki-flow .ki-outline{background:#fff!important;color:#009e9d!important;}
+.ki-choice {padding:0 12px;}.ki-choice button span{display:block;font-size:12px;font-weight:400;margin-top:3px;}
+.ki-flow .ki-note{font-size:12px;text-align:center;margin:20px 4px;}
+.ki-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:20px 0;}
+.native-shell .ki-shortcuts button{min-width:0;min-height:90px;padding:8px 3px;border:0!important;border-radius:16px;background:#e8f7f4!important;color:#10284f;font-size:11px;}
+.ki-shortcuts span{display:block;font-size:30px;color:#00a7a5;}
+.ki-details{margin:18px 0;}.ki-details dt{color:#718097;font-size:12px;margin-top:14px;}.ki-details dd{margin:3px 0 12px;padding-bottom:12px;border-bottom:1px solid #d7e9e8;overflow-wrap:anywhere;}
+.ki-row{display:block;padding:16px 12px;border-bottom:1px solid #d7e9e8;}.ki-row summary{font-weight:700;cursor:pointer;}.ki-document{display:flex;align-items:center;gap:12px;color:#10284f;text-decoration:none;}.ki-document span{flex:1;}.ki-document small{display:block;color:#718097;font-size:12px;}
+.ki-flow label{display:block;margin:16px 0;font-size:12px;color:#64788d;}.ki-flow input:not([type=checkbox]),.ki-flow textarea{display:block;box-sizing:border-box;width:100%;margin-top:6px;border:1px solid #c8e3e2;border-radius:12px;background:white;padding:12px;font:inherit;color:#10284f;}.ki-flow textarea{min-height:100px;}.ki-flow .ki-consent{display:flex;gap:8px;align-items:flex-start;}
+.ki-steps{color:#009e9d;padding:10px 0;font-weight:700;}.ki-timeline{padding-left:22px;}.ki-timeline li{padding:10px 0;}
+.ki-section-nav{display:flex;position:sticky;bottom:0;background:#f8fdfc;overflow-x:auto;border-top:1px solid #dce9e9;padding:10px 0;gap:7px;margin-top:24px;}
+.native-shell .ki-section-nav button{flex:none;padding:8px 12px;border:1px solid #d3e7e5!important;border-radius:22px;background:white!important;color:#62778c;}.native-shell .ki-section-nav button.is-active{border-color:#00a7a5!important;color:#009e9d!important;}
+.native-shell .ki-flow-header button{width:40px;height:40px;border:1px solid #d3e7e5!important;border-radius:50%;background:white!important;color:#009e9d;font-size:28px;}
+.ki-flow button:focus-visible,.ki-flow a:focus-visible {outline:2px solid #009e9d;outline-offset:3px;}
+
+.ki-flow h2[tabindex='-1']:focus { outline: none; }
+
+/* Graphic system from the supplied insurance screen references. */
+.native-shell dialog.patient-insurance-drawer {background:#fafbf6;}
+.patient-insurance-drawer:has(.ki-flow-header:not([hidden])) .patient-insurance-drawer-toolbar {position:absolute;right:8px;top:8px;z-index:4;padding:0;}
+.patient-insurance-drawer:has(.ki-flow-header:not([hidden])) .patient-insurance-drawer-toolbar>span {display:none;}
+.patient-insurance-drawer:has(.ki-flow-header:not([hidden])) .patient-insurance-drawer-toolbar button {font-size:24px;width:36px;}
+.patient-insurance-drawer-content:has(.ki-flow-header:not([hidden])) {padding:0 20px 20px;}
+.ki-flow {--ki-ink:#0b1b4b;--ki-teal:#12adb4;--ki-muted:#858ba6;color:var(--ki-ink);font-family:Inter,'Segoe UI',sans-serif;}
+.ki-flow p,.ki-flow .ki-lead,.ki-flow .ki-note {color:var(--ki-muted);}
+.ki-flow h2 {font-size:28px;font-weight:800;letter-spacing:-.65px;line-height:1.18;margin:28px 0 22px;color:var(--ki-ink);}
+.ki-flow h3{font-size:19px;font-weight:750;color:var(--ki-ink);}
+.ki-flow-header {margin:0 -20px;padding:15px 46px 15px 12px;gap:14px;min-height:64px;border-bottom:1px solid #deeaed;}
+.ki-flow-header strong{font-size:30px;font-weight:850;color:var(--ki-ink);letter-spacing:-1.2px;}.ki-flow-header span{font-size:16px;margin-left:auto;}
+.native-shell .ki-flow-header button {width:32px;height:36px;padding:0;border:0!important;background:transparent!important;box-shadow:none!important;color:var(--ki-ink);}
+.ki-flow .ki-feature{background:#e9f6f3;border:0;border-radius:12px;padding:20px;margin:20px 0;box-shadow:none;}
+.ki-flow .ki-center{padding:16px 16px 18px;}
+.ki-center h3{font-size:23px;margin:12px 0 8px;}.ki-center p{font-size:14px;margin:12px 0;}
+.ki-flow .ki-badge{background:transparent;color:var(--ki-teal);font-size:14px;}.ki-badge::before{content:'';display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ki-teal);margin-right:7px;}
+.ki-icon{display:block;width:28px;height:30px;flex:none;stroke:var(--ki-teal);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.ki-shield{border:0;border-radius:0;width:54px;height:64px;margin:12px auto;}.ki-shield .ki-icon{width:50px;height:60px;stroke-width:1.15;}
+.ki-heading-icon{display:flex;justify-content:center;margin:20px 0 10px;}.ki-heading-icon .ki-icon{width:45px;height:50px;}.ki-heading-icon+h2{text-align:center;margin-top:12px;}
+.ki-assistance-icon .ki-icon{width:76px;height:82px;}
+.ki-shortcuts{gap:10px;margin:20px 0;}.native-shell .ki-shortcuts button{background:#e9f6f3!important;color:var(--ki-ink);border-radius:13px;box-shadow:none!important;font-size:11px;font-weight:500;min-height:88px;}
+.ki-shortcuts span{display:flex;justify-content:center;margin:4px 0 10px;}.ki-shortcuts .ki-icon{width:32px;height:34px;}
+.native-shell .ki-flow .ki-primary,.native-shell .ki-flow .ki-outline{font-size:15px;font-weight:700;min-height:43px;padding:11px 14px;border-radius:24px;border-color:var(--ki-teal)!important;box-shadow:none!important;}
+.native-shell .ki-flow .ki-primary{background:linear-gradient(105deg,#20adb5,#0fafb1)!important;color:white!important;}.native-shell .ki-flow .ki-outline{background:transparent!important;color:var(--ki-teal)!important;}
+.ki-flow .ki-details dt{display:flex;align-items:center;gap:14px;font-size:11px;text-transform:uppercase;letter-spacing:.25px;position:relative;min-height:26px;margin-top:12px;}
+.ki-details dt .ki-icon{position:absolute;top:6px;left:0;width:25px;height:28px;}.ki-details dt span{margin-left:40px;}
+.ki-flow .ki-details dd{margin:0 0 0 40px;padding:0 0 14px;color:var(--ki-ink);font-size:15px;font-weight:600;border-color:#cde5e7;}
+.ki-flow .ki-row{padding:16px 10px;border-color:#dde8ea;}.ki-flow .ki-document{font-weight:650;font-size:15px;gap:18px;}.ki-document .ki-icon{width:28px;height:35px;}.ki-document small{font-weight:400;margin-top:5px;font-size:12px;}
+.ki-flow .ki-row summary{color:var(--ki-ink);font-size:16px;list-style:none;}.ki-flow .ki-row summary:after{content:'›';float:right;color:var(--ki-muted);font-size:22px;}
+.ki-flow form>label,.ki-flow [data-insurance-step='1']>label{padding:12px 15px;border:1px solid #d5e5e9;border-radius:10px;margin:10px 0;font-size:11px;color:var(--ki-muted);}
+.ki-flow form>label input:not([type=checkbox]),.ki-flow [data-insurance-step='1'] input{padding:3px 0;border:0;border-radius:0;background:transparent;color:var(--ki-ink);font-size:15px;font-weight:650;}
+.ki-flow .ki-consent{border:0;font-size:12px;}.ki-flow .ki-steps{margin:18px 0 20px;}.ki-step-track{display:flex;align-items:center;gap:6px;width:190px;}.ki-step-track span{display:grid;place-items:center;width:23px;height:23px;flex:none;border:1.5px solid #c6dce3;border-radius:50%;color:#bdcfd7;font-size:12px;}.ki-step-track span.is-current{background:var(--ki-teal);border-color:var(--ki-teal);color:white;}.ki-step-track i{height:2px;flex:1;background:#cadde3;}.ki-steps p{font-size:13px;font-weight:400;margin:8px 0;}
+.ki-timeline{list-style:none;margin:22px 0;padding:0 0 0 32px;}.ki-timeline li{position:relative;padding:0 0 28px 5px;color:var(--ki-muted);font-size:14px;}.ki-timeline li:before{content:'';position:absolute;left:-30px;top:0;width:19px;height:19px;border:2px solid #c4cbd7;border-radius:50%;background:#fafbf6;}.ki-timeline li:first-child:before{content:'✓';display:grid;place-items:center;background:var(--ki-teal);border-color:var(--ki-teal);color:white;}.ki-timeline li:not(:last-child):after{content:'';position:absolute;left:-20px;top:24px;height:22px;width:1.5px;background:#bde4e4;}
+.ki-section-nav{background:#fafbf6;gap:7px;padding:9px 0;margin-top:20px;}.native-shell .ki-section-nav button{font-size:12px;padding:8px 11px;box-shadow:none!important;background:transparent!important;}
+.ki-flow .ki-note{font-size:11px;line-height:1.55;}
+@media(min-width:600px){.ki-flow{max-width:620px;margin:0 auto;}.ki-flow h2{font-size:34px;}.ki-center h3{font-size:28px;}.ki-shortcuts button{min-height:112px!important;font-size:14px!important;}}
+
+/* Entry screen matches the supplied two-choice insurance composition. */
+.ki-flow .ki-entry {text-align:center;}
+.ki-entry-heading {padding:12px 10px 20px;}
+.ki-flow .ki-entry-heading h2 {font-size:24px;line-height:1.2;margin:6px 0 10px;letter-spacing:-.5px;}
+.ki-entry-heading p {font-size:14px;line-height:1.45;margin:0;}
+.ki-entry-policy {margin:0 -10px;padding:18px 12px 6px;background:#eaf7f4;}
+.ki-entry .ki-heading-icon {margin:0 0 8px;}
+.ki-entry .ki-heading-icon .ki-icon {width:48px;height:52px;stroke-width:1.35;}
+.ki-flow .ki-entry .ki-badge {padding:0;font-size:11px;font-weight:650;}
+.ki-entry .ki-badge:before {width:6px;height:6px;margin-right:5px;}
+.ki-flow .ki-entry h3 {font-size:18px;margin:8px 0 6px;font-weight:750;}
+.ki-entry-policy p {font-size:12px;margin:4px 0;}
+.ki-entry-policy .ki-entry-validity {font-size:11px;margin:10px 0 15px;}
+.ki-entry-new {margin:16px -10px 0;padding:18px 12px 4px;border-top:1px solid #e4eded;}
+.ki-entry-new p {font-size:12px;line-height:1.45;margin:0 0 16px;}
+.native-shell .ki-entry .ki-primary,.native-shell .ki-entry .ki-outline {font-size:13px;min-height:40px;padding:10px 12px;margin:12px 0;border-radius:25px;}
+.patient-insurance-drawer:has(.ki-entry:not([hidden])) .patient-insurance-drawer-toolbar {padding-top:8px;padding-bottom:0;}
+.patient-insurance-drawer:has(.ki-entry:not([hidden])) .patient-insurance-drawer-toolbar>span {visibility:hidden;}
+
+/* One stationary brand header for every insurance screen. */
+.native-shell dialog.patient-insurance-drawer .patient-insurance-drawer-toolbar {
+  position:relative!important;top:auto!important;right:auto!important;
+  display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;
+  flex:0 0 64px;min-height:64px;padding:8px 12px!important;gap:12px;
+  background:#fafbf6;border-bottom:1px solid #e0ebec;box-sizing:border-box;
+}
+.native-shell dialog.patient-insurance-drawer .patient-insurance-drawer-toolbar button {
+  display:grid;place-items:center;width:44px;height:44px;min-height:44px;
+  padding:10px;font-size:0;border:0!important;background:transparent!important;
+  box-shadow:none!important;color:#0b1b4b;border-radius:50%;
+}
+.patient-insurance-drawer-toolbar svg {width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.patient-insurance-drawer-toolbar .patient-insurance-brand {display:block;justify-self:start;width:92px;height:38px;object-fit:contain;}
+.native-shell dialog.patient-insurance-drawer .patient-insurance-drawer-content {padding:0 20px 20px;}
+.ki-entry-policy,.ki-entry-new {margin-inline:-20px;}
+
+/* Matching compact actions on the insurance entry screen. */
+.native-shell .ki-entry .ki-primary,
+.native-shell .ki-entry .ki-outline {
+  width: min(240px, 80%);
+  min-height: 38px;
+  height: 38px;
+  padding: 9px 12px;
+  margin: 16px auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-size: 12px;
+  line-height: 18px;
+}
+.ki-entry-policy .ki-entry-validity,
+.ki-entry-new > p { margin-bottom: 0; }
+
+.ki-enroll-progress{margin:18px 0 6px;color:#64718c;font-size:12px}.ki-enroll-progress progress{display:block;width:100%;height:5px;margin-top:7px;border:0;border-radius:6px;overflow:hidden;appearance:none}.ki-enroll-progress progress::-webkit-progress-bar{background:#dff2f1}.ki-enroll-progress progress::-webkit-progress-value{background:#0baab1;transition:width 450ms ease}.ki-enroll .ki-enroll-demo{font-size:10px;color:#7b879b;margin:6px 0 18px}
+.ki-enroll h2{font-size:26px;margin:18px 0 12px}.ki-enroll h3{font-size:15px}.ki-enroll-brand{display:flex;align-items:center;gap:12px;margin:18px 0 24px}.ki-enroll-brand>.ki-icon{width:43px;height:46px;padding:10px;border-radius:50%;background:#e4f4f1;box-sizing:content-box}.ki-enroll-brand strong{font-size:17px}.ki-enroll-brand small{display:block;font-size:12px;color:#7e89a2}
+.ki-enroll .ki-enroll-option,.ki-enroll .ki-enroll-plan{display:flex;align-items:center;gap:12px;padding:16px 12px;border:1px solid #d2e1e6;border-radius:12px;margin:12px 0;cursor:pointer;background:#fafbf6}.ki-enroll-option>span{display:flex;align-items:center;gap:12px}.ki-enroll-option:has(input:checked),.ki-enroll-plan:has(input:checked){border-color:#29b8ba;background:#eaf8f5}.ki-enroll input[type=radio],.ki-enroll input[type=checkbox]{accent-color:#0bafb4;flex:none;width:18px;height:18px;margin:0}.ki-enroll-plan>div{flex:1;min-width:0}.ki-enroll-plan .ki-icon{float:left;margin-right:10px;width:27px;height:31px}.ki-enroll-plan strong{display:block;font-size:16px}.ki-enroll-plan b{display:block;font-size:20px;font-weight:600;margin:8px 0}.ki-enroll-plan small{font-size:12px;font-weight:400}.ki-enroll-plan p{margin:12px 0 0;font-size:10px;clear:both}
+.ki-enroll .ki-enroll-addon{display:flex;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid #dce8ea;font-size:13px}.ki-enroll-addon small{display:block;font-size:11px;color:#7e89a2;margin-top:4px}.ki-enroll .ki-enroll-addon input{appearance:none;width:36px;height:21px;border-radius:12px;background:#d7e1e5;position:relative}.ki-enroll-addon input:before{content:'';position:absolute;top:3px;left:3px;width:15px;height:15px;background:white;border-radius:50%;transition:transform 250ms}.ki-enroll-addon input:checked{background:#0aafb3}.ki-enroll-addon input:checked:before{transform:translateX(15px)}
+.ki-enroll-total{display:block;font-size:21px;margin:6px 0}.ki-enroll-benefits{list-style:none;padding:0;color:#74859d;font-size:12px}.ki-enroll-benefits li{margin:10px 0}.ki-enroll-benefits li:before{content:'✓';display:inline-block;text-align:center;width:19px;height:19px;margin-right:8px;border-radius:50%;background:#d1f3ee;color:#0aa9af}
+.ki-enroll-health{border:0;border-bottom:1px solid #dde8ea;padding:14px 0;margin:0;display:flex;gap:6px}.ki-enroll-health legend{font-size:12px;font-weight:650;padding-top:10px}.ki-enroll .ki-enroll-health label{display:flex;align-items:center;justify-content:center;gap:8px;flex:1;padding:9px 8px;border:1px solid #dce8ea;border-radius:22px;margin:0}.ki-enroll-health label:has(input:checked){color:white;background:#0aadb3;border-color:#0aadb3}
+.ki-enroll-signature{display:block;width:100%;height:160px;border:1px solid #14b0b7;border-radius:8px;background:#fff;touch-action:none}.ki-enroll video{display:block;width:100%;max-height:280px;border-radius:14px;background:#e4ecec}.ki-enroll blockquote{margin:16px 0;padding:18px;border-radius:12px;background:#e5f6f4;text-align:center;font-size:16px}.ki-enroll-error{color:#ad3b52!important;font-size:12px}.ki-enroll-comparison summary{color:#0aabb0;text-align:center;padding:16px;cursor:pointer}.ki-enroll-table{overflow:auto}.ki-enroll table{border-collapse:collapse;width:100%;font-size:11px}.ki-enroll td,.ki-enroll th{padding:9px 6px;border-bottom:1px solid #dce8ea;text-align:left}.ki-enroll caption{font-size:11px;padding:8px}
+.ki-enroll [data-enroll-step='4']>label{display:block;padding:10px 12px;border:1px solid #dce8ea;border-radius:8px;font-size:11px}.ki-enroll .ki-feature label input,.ki-enroll [data-enroll-step='4']>label input{font-size:13px}.ki-enroll .ki-feature small{font-size:10px;color:#7a8799}
+
+.native-shell .ki-enroll .ki-enroll-addon input[type=checkbox] {width:36px!important;min-width:36px;max-width:36px;height:21px!important;min-height:21px!important;max-height:21px;padding:0!important;border:0!important;box-sizing:border-box;flex:0 0 36px;}
+.ki-enroll .ki-enroll-addon strong{color:#10284f;font-size:13px;}
+.ki-enroll .ki-feature{padding:14px;margin:14px 0;}
+.ki-enroll .ki-feature p{font-size:12px;margin:6px 0;}
+.ki-enroll .ki-feature strong{font-size:15px;}
+.ki-enroll .ki-feature .ki-enroll-total{font-size:21px;}
+
+.native-shell .ki-enroll input[type=radio], .native-shell .ki-enroll input[data-enroll-confirm] { width:18px!important;min-width:18px;height:18px!important;min-height:18px!important;padding:0!important;box-sizing:border-box; }
+
+.ki-enroll button .ki-enroll-button-detail { font-size: 11px; font-weight: 500; }
+
+.ki-enroll-total-row { padding: 12px 0 4px; text-align: right; }
+.ki-enroll-total-row > small { color: #7e89a2; font-size: 11px; }
+.ki-enroll-total-row .ki-enroll-total { margin: 4px 0 0; color: #10284f; font-size: 21px; }
+
+.ki-enroll [data-plan-category][hidden] { display: none !important; }
+.ki-enroll [data-enroll-benefits] p, .ki-enroll [data-enroll-terms] p { white-space: pre-line; overflow-wrap: anywhere; }
+.ki-enroll [data-enroll-documents] a { display: block; margin: 8px 0; overflow-wrap: anywhere; }
+.ki-enroll .ki-enroll-plan > div > small { display: block; margin: 4px 0; }
+.ki-enroll [data-enroll-category] { max-width: 100%; width: 100%; margin: 6px 0 14px; }

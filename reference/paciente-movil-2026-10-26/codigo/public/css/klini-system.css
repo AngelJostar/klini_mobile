@@ -1,0 +1,67 @@
+/* Klini application design system. Presentation only; preserve data and interaction contracts. */
+.native-shell {
+  --klini-surface: #fff;
+  --klini-border: #d6e5e4;
+  --klini-radius: 16px;
+  background: radial-gradient(ellipse at 100% 0,#ddf3ef80,transparent 55%),#f5f9f8;
+}
+/* Consistent navigation, including the import module's form buttons. */
+.native-shell :is(.institution-native-sidebar,.unit-native-sidebar,.operational-native-sidebar,.provider-import-native-sidebar,.provider-native-sidebar,.provider-chemo-native-sidebar,.digital-pharmacy-native-sidebar,.messenger-native-sidebar,.insurance-advisor-native-sidebar,.insurance-health-native-sidebar,.superadmin-native-sidebar) {
+  background: #082441;
+  border-color: #163953;
+  color: #ddf3ef;
+}
+.native-shell :is(.institution-native-menu,.unit-native-menu,.operational-native-menu,.provider-import-native-menu,.provider-native-menu,.provider-chemo-native-menu,.digital-pharmacy-native-menu,.messenger-native-menu,.insurance-advisor-native-menu,.insurance-health-native-menu,.superadmin-native-menu) :is(a,button) {
+  color:#e0ecef;background:transparent;border-color:transparent;border-radius:10px;
+  transition:background .18s,color .18s,box-shadow .18s;
+}
+.native-shell :is(.institution-native-menu,.unit-native-menu,.operational-native-menu,.provider-import-native-menu,.provider-native-menu,.provider-chemo-native-menu,.digital-pharmacy-native-menu,.messenger-native-menu,.insurance-advisor-native-menu,.insurance-health-native-menu,.superadmin-native-menu) :is(a,button):hover {background:#ffffff12;color:white;}
+.native-shell :is(.institution-native-menu,.unit-native-menu,.operational-native-menu,.provider-import-native-menu,.provider-native-menu,.provider-chemo-native-menu,.digital-pharmacy-native-menu,.messenger-native-menu,.insurance-advisor-native-menu,.insurance-health-native-menu,.superadmin-native-menu) :is(a,button).is-active {background:#ddf3ef;color:#007d79;box-shadow:inset 3px 0 #00aaa5;border-color:transparent;}
+.native-shell :is(.institution-native-topbar,.unit-native-topbar,.operational-native-topbar,.import-account-header,.doctor-assistant-native-topbar,.patient-portal-topbar) {background:#ffffffef;border-bottom:1px solid #d6e5e4;box-shadow:0 3px 16px #08244105;}
+.native-shell :is(.institution-native-workspace,.unit-native-workspace,.operational-native-workspace,.provider-import-native-workspace,.provider-native-workspace,.provider-chemo-native-workspace,.digital-pharmacy-native-workspace,.messenger-native-workspace) {background:transparent;}
+/* Quiet branded hero behind text, never behind clinical rows. */
+.native-shell :is(.institution-native-header,.unit-native-header,.provider-native-topbar,.provider-chemo-native-topbar,.provider-import-native-topbar,.digital-pharmacy-native-header,.messenger-native-topbar,.import-section-banner) {
+  color:white;background:linear-gradient(100deg,#082441 0%,#082441f5 55%,#08244190),url('../brand/klini/system-art.png') right center/cover;
+  border:1px solid #082441;border-radius:18px;padding:22px 26px;box-shadow:0 12px 26px #0824410c;
+}
+.native-shell :is(.institution-native-header,.unit-native-header,.provider-native-topbar,.provider-chemo-native-topbar,.provider-import-native-topbar,.digital-pharmacy-native-header,.messenger-native-topbar,.import-section-banner) :is(h1,h2,strong) {color:white;}
+.native-shell :is(.institution-native-header,.unit-native-header,.provider-native-topbar,.provider-chemo-native-topbar,.provider-import-native-topbar,.digital-pharmacy-native-header,.messenger-native-topbar,.import-section-banner) :is(p,small,.eyebrow,time,label) {color:#ddf3ef;}
+.native-shell :is(.institution-native-header,.unit-native-header,.digital-pharmacy-native-header) h1 {font-size:clamp(24px,2.3vw,34px);letter-spacing:-1px;line-height:1.2;}
+.native-shell .import-section-banner {display:flex;align-items:center;gap:18px;min-height:86px;margin-bottom:16px;}
+.native-shell .import-section-banner>span {color:#ddf3ef;border-left:1px solid #ffffff40;padding-left:18px;}
+/* Service selectors as a single visual language. */
+.native-shell :is(.unit-service-carousel-card,.institution-service-carousel-card,.operational-oncology-carousel,.import-action-carousel) {background:#fff;border:1px solid #d6e5e4;border-radius:16px;box-shadow:0 6px 20px #08244105;}
+.native-shell :is(.unit-service-carousel,.institution-service-carousel,.operational-oncology-carousel-track,.import-carousel-track) :is(a,button) {border-radius:12px;border-color:#d6e5e4;box-shadow:none;}
+.native-shell :is(.unit-service-carousel,.institution-service-carousel,.operational-oncology-carousel-track,.import-carousel-track) :is(a,button).is-active {background:#ddf3ef;border-color:#00aaa5;color:#007d79;box-shadow:inset 0 -3px #00aaa5;}
+.native-shell :is(.unit-service-panel-header,.institution-service-panel-header) {border:1px solid #082441;border-radius:16px;background:linear-gradient(100deg,#082441 0%,#082441f5 55%,#08244190),url('../brand/klini/system-art.png') right center/cover;box-shadow:0 5px 18px #0824410c;color:white;}
+.native-shell :is(.unit-service-panel-header,.institution-service-panel-header) :is(h2,h3) {color:white;}
+.native-shell :is(.unit-service-panel-header,.institution-service-panel-header) :is(p,small) {color:#ddf3ef;}
+.native-shell :is(.unit-native-table-card,.institution-native-table-card,.operational-native-table-card,.outpatient-module-card,.unit-profile-card,.import-table-card,.provider-native-table-card,.provider-chemo-native-table-card,.digital-pharmacy-native-table-card,.messenger-native-table-card,.card,.panel) {border-color:#d6e5e4;border-radius:16px;box-shadow:0 6px 22px #08244105;background:#fff;}
+.native-shell :where(table) {border-color:#d6e5e4;}
+.native-shell :where(thead) {background:#f0f7f6;}
+.native-shell :where(th) {color:#082441;border-color:#d6e5e4;}
+.native-shell :where(tbody tr:hover) {background:#f4fbf9;}
+.native-shell :where(input:not([type=checkbox]):not([type=radio]):not([type=hidden]),select,textarea) {border-color:#cbdedc;border-radius:8px;}
+.native-shell :where(input,select,textarea):focus-visible {outline:2px solid #00aaa5;outline-offset:2px;}
+.native-shell :where(a,button,summary):focus-visible {outline:3px solid #00aaa5;outline-offset:3px;}
+.native-shell :is(.operational-modal-card,.unit-modal-card,.institution-modal-card,.import-modal-card) {border-radius:20px;border:1px solid #d6e5e4;box-shadow:0 24px 80px #08244130;}
+.native-shell :is(.doctor-assistant-native-sidebar,.patient-portal-sidebar) {border-color:#d6e5e4;background:#f0f8f6;}
+@media(max-width:640px) {
+  .native-shell :is(.institution-native-header,.unit-native-header,.provider-native-topbar,.provider-chemo-native-topbar,.provider-import-native-topbar,.digital-pharmacy-native-header,.messenger-native-topbar,.import-section-banner) {padding:18px;border-radius:14px;}
+}
+@media(prefers-reduced-motion:reduce) {.native-shell :is(a,button) {transition:none;}}
+.native-shell .unit-service-panel>.unit-service-panel-header {background:linear-gradient(100deg,#082441 0%,#082441f5 55%,#08244190),url(../brand/klini/system-art.png) right center/cover;color:white;border-color:#082441;}
+.native-shell .unit-service-panel.is-unified-service>.unit-service-panel-header,.native-shell .unit-service-panel.is-mixture-request-service>.unit-service-panel-header {background:linear-gradient(100deg,#082441 0%,#082441f5 55%,#08244190),url(../brand/klini/system-art.png) right center/cover;color:white;border-color:#082441;}
+.native-shell.provider-import-native-body .provider-import-native-sidebar {background:#082441;border-color:#163953;} .native-shell.provider-import-native-body .provider-import-native-menu button {background:transparent;border-color:transparent;color:#e0ecef;border-radius:10px;} .native-shell.provider-import-native-body .provider-import-native-menu button.is-active {background:#ddf3ef;color:#007d79;box-shadow:inset 3px 0 #00aaa5;} .native-shell .unit-service-panel-header small,.native-shell .unit-service-panel-header strong {color:#ddf3ef;}
+.native-shell :is(.outpatient-module-card-head,.operational-native-table-heading) {background:linear-gradient(100deg,#082441 0%,#082441f5 55%,#08244190),url(../brand/klini/system-art.png) right center/cover;color:white;border-radius:14px 14px 0 0;padding:18px 20px;} .native-shell :is(.outpatient-module-card-head,.operational-native-table-heading) :is(h2,h3) {color:white;} .native-shell :is(.outpatient-module-card-head,.operational-native-table-heading) :is(p,small,.eyebrow) {color:#ddf3ef;}
+.native-shell .unit-consultation-submenu-card {gap:12px;}
+.native-shell .unit-consultation-submenu {background:#e9f2f0;border:1px solid #d6e5e4;border-radius:14px;padding:5px;gap:4px;}
+.native-shell .unit-consultation-submenu .unit-consultation-submenu-button {background:transparent;border:0;border-radius:10px;box-shadow:none;color:#536575;min-height:38px;padding:10px 14px;}
+.native-shell .unit-consultation-submenu .unit-consultation-submenu-button.is-active {background:#082441;color:#ddf3ef;box-shadow:0 4px 10px #08244120;}
+.native-shell .unit-consultation-submenu .unit-consultation-submenu-button:hover {background:#ddf3ef;color:#007d79;}
+.native-shell .unit-consultation-submenu-action {border-radius:12px;background:linear-gradient(120deg,#007d79,#00aaa5);color:white;border:1px solid #007d79;box-shadow:0 6px 16px #007d7920;min-height:42px;}
+.native-shell .unit-consultation-calendar-modes {background:#e9f2f0;border:1px solid #d6e5e4;border-radius:12px;padding:4px;gap:3px;}
+.native-shell .unit-consultation-calendar-modes button {border:0;background:transparent;border-radius:8px;box-shadow:none;color:#536575;}
+.native-shell .unit-consultation-calendar-modes button.is-active {background:#fff;color:#007d79;box-shadow:0 2px 8px #08244112;}
+.native-shell .unit-consultation-calendar-date-nav>button {border-radius:10px;background:#fff;border-color:#d6e5e4;color:#007d79;}
+@media(prefers-reduced-motion:reduce) {.native-shell .unit-service-carousel .unit-service-carousel-button {transition:none;transform:none;}}

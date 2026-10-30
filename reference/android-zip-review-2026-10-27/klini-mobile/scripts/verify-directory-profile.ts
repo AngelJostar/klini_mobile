@@ -1,0 +1,63 @@
+import {chromium,expect} from '@playwright/test';
+import assert from 'node:assert/strict';
+async function main(){
+const browser=await chromium.launch({executablePath:process.env.KLINI_CHROMIUM_EXECUTABLE_PATH});const page=await browser.newPage({viewport:{width:390,height:844}});const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+try{
+await page.goto('http://127.0.0.1:8096');
+await page.getByTestId('menu-directory').click();
+await page.getByTestId('directory-popup').waitFor();
+await page.waitForTimeout(500);
+await page.screenshot({path:'test-results/directory-search.png'});
+await page.getByTestId('booking-search-submit').click();
+await expect(page.getByText('Tus médicos.')).toBeVisible();
+await expect(page.locator('[data-testid^="booking-doctor-"]')).toHaveCount(6);
+const previousFavorite = await page.getByTestId('directory-favorite-doctor-elena').getAttribute('aria-label');
+await page.getByTestId('directory-favorite-doctor-elena').click();
+await expect(page.getByTestId('directory-favorite-doctor-elena')).not.toHaveAttribute('aria-label',previousFavorite!);
+await page.screenshot({path:'test-results/directory-results.png'});
+await page.getByTestId('booking-doctor-doctor-elena').click();
+await expect(page.getByText('Conoce a tu médico.')).toBeVisible();
+await page.getByTestId('directory-detail-back').click();
+await page.getByTestId('directory-edit-filters').click();
+await page.getByTestId('booking-search').fill('Elena');
+await page.getByTestId('booking-search-submit').click();
+await expect(page.locator('[data-testid^="booking-doctor-"]')).toHaveCount(1);
+await page.setViewportSize({width:320,height:640});await page.screenshot({path:'test-results/directory-results-320.png'});
+assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+await page.getByTestId('directory-close').click();
+await page.setViewportSize({width:390,height:844});
+await page.getByTestId('header-profile').click();
+await expect(page.getByText('Tu cuenta',{exact:true})).toBeVisible();
+await page.screenshot({path:'test-results/social-profile.png'});
+await page.getByTestId('profile-edit').click();
+await page.getByTestId('profile-name').fill('Sofía Prueba');
+await page.getByTestId('profile-save').click();
+await expect(page.getByTestId('social-profile').getByText('Sofía Prueba',{exact:true})).toBeVisible();
+await page.getByTestId('profile-load-demo').click();
+await page.getByTestId('profile-requests').click();
+await page.getByTestId('profile-accept-demo-mariana').click();
+await page.getByTestId('profile-remove-demo-diego').click();
+await expect(page.getByText('No tienes solicitudes pendientes')).toBeVisible();
+await page.getByTestId('profile-filter-message').click();
+await expect(page.getByTestId('profile-event-demo-message')).toBeVisible();
+await expect(page.getByTestId('profile-event-demo-like')).toHaveCount(0);
+await page.getByTestId('profile-event-demo-message').click();
+await expect(page.getByText('Actividad de ejemplo. La publicación del feed original no está disponible en esta app.')).toBeVisible();
+await page.getByTestId('profile-back').click();
+await page.getByTestId('profile-logout').click();
+await page.getByTestId('profile-cancel-logout').click();
+await page.getByTestId('profile-logout').click();
+await page.getByTestId('profile-confirm-logout').click();
+await expect(page.getByRole('alert')).toContainText('no tiene una sesión de Laravel');
+await page.getByTestId('profile-cancel-logout').click();
+await page.getByTestId('profile-close').click();
+await page.getByTestId('header-profile').click();
+await expect(page.getByTestId('social-profile').getByText('Sofía Prueba',{exact:true})).toBeVisible();
+await expect(page.getByTestId('profile-load-demo')).toHaveCount(0);
+await page.setViewportSize({width:320,height:640});await page.screenshot({path:'test-results/social-profile-320.png'});
+assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);assert.deepEqual(errors,[]);
+console.log('PASS directory results, filters, favorite, profile navigation; social profile edit, requests, filters, event, logout cancel/limitation, persistence and 320px.');
+}finally{await browser.close();}}
+main().catch(e=>{console.error(e);process.exitCode=1;});
+
+

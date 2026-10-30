@@ -1,0 +1,45 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Klini · Perfil</title><link rel="stylesheet" href="css/patient-profile-panel.css"><link rel="stylesheet" href="css/patient-social.css"><style>body{font-family:system-ui,sans-serif;margin:0;color:#10284f;background:#f5fafb}button{font:inherit}main{padding:24px} [hidden]{display:none!important}</style></head><body><main><button type="button" data-profile-panel-open>Abrir perfil</button></main><div class="patient-profile-shade" data-patient-profile-shade hidden></div>
+<aside
+  class="patient-profile-panel"
+  data-patient-profile-panel
+  data-storage-key="klini-profile-export-demo"
+  data-profile-name="Sofía Martínez"
+  data-profile-id="DEMO-001"
+  data-profile-curp="No registrado"
+  data-profile-email="demo@example.com"
+  data-profile-phone="No registrado"
+  data-profile-status="Activo"
+  data-profile-doctor="Sin asignar"
+  data-profile-completed="Pendiente"
+  data-logout-url="/logout"
+  data-home-url="/"
+  data-csrf-token=""
+  aria-label="Perfil del paciente"
+  aria-hidden="true"
+  hidden>
+  <div class="patient-profile-scroll">
+    <section class="patient-profile-selector" aria-label="Cuentas del paciente">
+      <header class="patient-profile-selector-heading">
+        <strong>Tu cuenta</strong>
+        <button class="patient-profile-icon-button" type="button" data-profile-panel-close aria-label="Cerrar perfil">
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </header>
+      <klini-profiles data-patient-profile-selector aria-label="Selector de perfiles"></klini-profiles>
+    </section>
+    <section class="patient-social" data-patient-social data-storage-key="klini-profile-export-demo" data-demo="true" aria-label="Solicitudes de seguidores y actividad social"></section>
+  </div>
+</aside>
+
+<div class="patient-profile-modal" data-patient-profile-modal aria-hidden="true" hidden>
+  <section class="patient-profile-dialog" data-patient-profile-dialog role="dialog" aria-modal="true" aria-labelledby="patient-profile-modal-title">
+    <header class="patient-profile-modal-header">
+      <div><small data-patient-profile-modal-eyebrow>PERFIL DEL PACIENTE</small><h2 id="patient-profile-modal-title" data-patient-profile-modal-title>Detalle</h2></div>
+      <button class="patient-profile-icon-button" type="button" data-profile-close-modal aria-label="Cerrar ventana"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </header>
+    <div class="patient-profile-modal-body" data-patient-profile-modal-body></div>
+  </section>
+</div>
+<input type="file" accept="image/*" data-patient-profile-photo hidden>
+
+<script src="js/klini-profiles.js"></script><script src="js/patient-profile-panel.js"></script><script src="js/patient-social.js"></script><script>window.DrSamPatientProfilePanel.open();</script></body></html>

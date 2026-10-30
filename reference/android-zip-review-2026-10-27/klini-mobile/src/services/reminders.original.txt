@@ -1,0 +1,63 @@
+import { Platform } from "react-native";
+import type { AppState } from "../domain/types";
+import { localDateTime } from "../domain/dates";
+
+let queue = Promise.resolve();
+/** Serial sync prevents a stale scheduling pass from reinstating a cancelled visit. */
+export function syncReminders(state: AppState): Promise<void> {
+  queue = queue
+    .catch(() => undefined)
+    .then(async () => {
+      if (Platform.OS === "web") return;
+      const N = await import("expo-notifications");
+      N.setNotificationHandler({
+        handleNotification: async () => ({
+          shouldShowBanner: true,
+          shouldShowList: true,
+          shouldPlaySound: false,
+          shouldSetBadge: false,
+        }),
+      });
+      const previous = await N.getAllScheduledNotificationsAsync();
+      for (const n of previous)
+        if (n.identifier.startsWith("klini-"))
+          await N.cancelScheduledNotificationAsync(n.identifier);
+      if (!state.settings.reminders) return;
+      if (Platform.OS === "android")
+        await N.setNotificationChannelAsync("appointments", {
+          name: "Citas de Klini",
+          importance: N.AndroidImportance.DEFAULT,
+        });
+      let permission = await N.getPermissionsAsync();
+      if (!permission.granted) permission = await N.requestPermissionsAsync();
+      if (!permission.granted)
+        throw new Error(
+          "Los avisos están desactivados por el sistema. Activa el permiso de notificaciones de Klini en los ajustes de Android.",
+        );
+      const upcoming = state.appointments
+        .filter((a) => a.status === "scheduled")
+        .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
+        .slice(0, 50);
+      for (const a of upcoming) {
+        const date = new Date(
+          localDateTime(a.date, a.time).getTime() - 15 * 60000,
+        );
+        if (date.getTime() <= Date.now()) continue;
+        // Lock-screen notification deliberately omits clinical details and patient names.
+        await N.scheduleNotificationAsync({
+          identifier: `klini-${a.id}`,
+          content: {
+            title: "Tu cita comienza en 15 minutos",
+            body: "Abre Klini para ver los detalles.",
+            data: { appointmentId: a.id },
+          },
+          trigger: {
+            type: N.SchedulableTriggerInputTypes.DATE,
+            date,
+            channelId: "appointments",
+          },
+        });
+      }
+    });
+  return queue;
+}

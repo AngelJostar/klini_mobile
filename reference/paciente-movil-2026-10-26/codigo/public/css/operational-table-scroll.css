@@ -1,0 +1,9 @@
+body.operational-native-body [data-operational-table-scroll] { max-width: 100%; min-width: 0; overflow-x: auto; }
+body.operational-native-body .operational-fixed-table-scroll { position: fixed; z-index: 80; box-sizing: border-box; width: 100px; height: 22px; overflow-x: scroll; overflow-y: hidden; overscroll-behavior: contain; border-top: 1px solid #dfe6ef; background: #f2f7f6; scrollbar-color: #8dafac #f2f7f6; scrollbar-width: auto; }
+body.operational-native-body .operational-fixed-table-scroll[hidden] { display: none !important; }
+body.operational-native-body .operational-fixed-table-scroll::-webkit-scrollbar { height: 16px; }
+body.operational-native-body .operational-fixed-table-scroll::-webkit-scrollbar-track { background: #f2f7f6; }
+body.operational-native-body .operational-fixed-table-scroll::-webkit-scrollbar-thumb { border: 3px solid #f2f7f6; border-radius: 8px; background: #8dafac; }
+body.operational-native-body .operational-fixed-table-scroll:focus-visible { outline: 2px solid #00a1ad; outline-offset: -2px; }
+body.operational-native-body .operational-fixed-table-track { height: 1px; pointer-events: none; }
+@media print { .operational-fixed-table-scroll { display: none !important; } }

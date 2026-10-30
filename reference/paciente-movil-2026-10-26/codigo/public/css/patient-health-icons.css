@@ -1,0 +1,13 @@
+/* Original PNG canvases include transparent margins; fit the glyph to its existing slot. */
+.native-shell img[src*="/images/health-icons/"] {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+  transform: scale(1.7);
+  filter: none !important;
+  pointer-events: none;
+}
+.native-shell :is(.patient-health-parameter-image, .patient-health-detail-image, .patient-register-metric-image, .patient-register-history-image):has(> img[src*="/images/health-icons/"]) {
+  overflow: hidden;
+  background: transparent !important;
+}

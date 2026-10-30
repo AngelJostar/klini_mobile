@@ -1,0 +1,63 @@
+/* Mobile subscription carousel */
+.drsam-subscriptions-mobile,
+.drsam-subscriptions-mobile * {
+    box-sizing: border-box;
+}
+
+.drsam-subscriptions-pan {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.drsam-subscriptions-pan::-webkit-scrollbar {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .drsam-subscriptions-mobile {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .drsam-subscriptions-pan {
+        display: flex !important;
+        flex-flow: row nowrap !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 4px 16px 16px !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        scroll-behavior: auto !important;
+        scroll-snap-type: none !important;
+        overscroll-behavior-inline: contain;
+        touch-action: pan-x pan-y;
+        -webkit-overflow-scrolling: touch;
+        cursor: grab;
+    }
+
+    .drsam-subscriptions-pan.is-dragging {
+        cursor: grabbing;
+        user-select: none;
+    }
+
+    .drsam-subscriptions-pan > .drsam-subscription-card {
+        flex: 0 0 min(82vw, 320px) !important;
+        width: min(82vw, 320px) !important;
+        min-width: min(82vw, 320px) !important;
+        max-width: min(82vw, 320px) !important;
+        height: auto !important;
+        margin: 0 !important;
+        scroll-snap-align: none !important;
+    }
+
+    .drsam-subscription-card button,
+    .drsam-subscription-card a[role="button"] {
+        max-width: 100%;
+    }
+}

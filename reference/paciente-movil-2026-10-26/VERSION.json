@@ -1,0 +1,2417 @@
+{
+  "exported_at": "2026-10-27T01:32:50.168Z",
+  "source": "C:/laragon/www/klini_mobile/reference/paciente-movil-2026-10-26/codigo",
+  "upstream": "C:/laragon/www/dr-sam",
+  "provenance": "Current Laravel /patient dependency of klini_mobile, identified by its README and docs/patient-portal-2026-10-07.md; copied from the current working files, including changes after the last commit.",
+  "branding": "Standalone Klini/KLINI display text -> Blyo/BLYO; existing Blyo logos preserved. Internal paths, CSS, JS globals and PHP identifiers retained.",
+  "database": "Existing Blyo SQLite database preserved; only schema migrations copied. No source credentials, sessions, uploads or patient records copied.",
+  "adapters": [
+    "routes/web.php (Blyo identity exchange)",
+    "routes/patient.php (patient-scoped route registration)",
+    "bootstrap/app.php",
+    "config/services.php"
+  ],
+  "resources": [
+    {
+      "path": "app/Enums/UserRole.php",
+      "source_sha256": "973a588f4511fc965f7b7ea1d013a781d28953fcd9f9a9cc8da39d6e182fee10",
+      "copy_sha256": "973a588f4511fc965f7b7ea1d013a781d28953fcd9f9a9cc8da39d6e182fee10",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Http/Controllers/Api/Mobile/V1/AuthController.php",
+      "source_sha256": "a34332a8d25fcd902c46b7b2ba5d993ca0035cc08dd1e0315ada09200ee6bf0d",
+      "copy_sha256": "fcc04debc362c9936dca065ed24321219cb60fbaf7253f5b42c154b7a479f9cd",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Http/Controllers/Api/Mobile/V1/MobileDeviceController.php",
+      "source_sha256": "fa52fa605fd81f6717d9fbd16479f490b6310dcf6effe07bdda3a2c25773cc88",
+      "copy_sha256": "fa52fa605fd81f6717d9fbd16479f490b6310dcf6effe07bdda3a2c25773cc88",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Http/Controllers/Api/Mobile/V1/PasswordController.php",
+      "source_sha256": "10218df048a75c87dd9e8116c5d5693ae543ca6219eebb181226e4b2296f82bd",
+      "copy_sha256": "10218df048a75c87dd9e8116c5d5693ae543ca6219eebb181226e4b2296f82bd",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Http/Controllers/Api/Mobile/V1/PatientReadController.php",
+      "source_sha256": "0344b299fc2f7d4e558284f9e9d442c3b5180f3f92521a16a74f087e4f4a7123",
+      "copy_sha256": "0344b299fc2f7d4e558284f9e9d442c3b5180f3f92521a16a74f087e4f4a7123",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Http/Controllers/Community/CommunityActivityController.php",
+      "source_sha256": "13351ef5cd7518c35b4dbc8d39332d249e860e011fa56b83d6d1863a251e8a05",
+      "copy_sha256": "13351ef5cd7518c35b4dbc8d39332d249e860e011fa56b83d6d1863a251e8a05",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Http/Controllers/Controller.php",
+      "source_sha256": "9c2dca00ce3fd784c2dc7b3143650183ddd7224896e766c2a2f50ab6420f4603",
+      "copy_sha256": "9c2dca00ce3fd784c2dc7b3143650183ddd7224896e766c2a2f50ab6420f4603",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Http/Controllers/Patient/InsurancePlanFeedController.php",
+      "source_sha256": "1cdef8523f0c0cb9ef1caff8b6758c8545e68961e88fb587cf1be4d6d7cd83bb",
+      "copy_sha256": "1cdef8523f0c0cb9ef1caff8b6758c8545e68961e88fb587cf1be4d6d7cd83bb",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Http/Controllers/Patient/PatientPortalController.php",
+      "source_sha256": "802b6e89fb2a5a2aa36f17ba19b3c6311343a5f351d127f38a2e7382367be96f",
+      "copy_sha256": "39becc2db1d6b87204ef0f97c1ccfe20e57736f8c307c644bba8e0bf6e4f0b64",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Http/Controllers/Patient/PatientStoryController.php",
+      "source_sha256": "ea5c321dda5c4951f3995a30ae348d7a17a20100cbd897325524f9d967dbd328",
+      "copy_sha256": "ea5c321dda5c4951f3995a30ae348d7a17a20100cbd897325524f9d967dbd328",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Http/Controllers/Wallet/TokenWalletController.php",
+      "source_sha256": "dc300a7898d4b8b8393795bcee1647fa2f1537a2ed10df0380badc1f4607e7fa",
+      "copy_sha256": "dc300a7898d4b8b8393795bcee1647fa2f1537a2ed10df0380badc1f4607e7fa",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Http/Middleware/EnsureMobileRole.php",
+      "source_sha256": "a66bdd4973d3e5e91594142c8223f28cdd07d72d2b173877ced584a6b55196d3",
+      "copy_sha256": "31b74d034d1bc8a234b22a471e25929edf480ea4413d2d4c3d2bada164252b70",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Http/Middleware/EnsureUserRole.php",
+      "source_sha256": "c14d59e475003e23bc7bebbbb470fb09a82ed86278ce395cd7c2ecffd2ab013c",
+      "copy_sha256": "c14d59e475003e23bc7bebbbb470fb09a82ed86278ce395cd7c2ecffd2ab013c",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Http/Middleware/PreventStaleSessionPages.php",
+      "source_sha256": "b2795061dc1fb89531ddc26260d2981f5c9eca5229eeb060b9b5d57802701123",
+      "copy_sha256": "b2795061dc1fb89531ddc26260d2981f5c9eca5229eeb060b9b5d57802701123",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Http/Requests/Api/Mobile/V1/LoginRequest.php",
+      "source_sha256": "30b17ca74db25df1c03c509d549bc7f32adf613ff21a70592dbb6c8700d6baf9",
+      "copy_sha256": "30b17ca74db25df1c03c509d549bc7f32adf613ff21a70592dbb6c8700d6baf9",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/Appointment.php",
+      "source_sha256": "3f697b484386232e4745b5f53c8ee6867d4ca4451ec29dad1efd32289e309302",
+      "copy_sha256": "3f697b484386232e4745b5f53c8ee6867d4ca4451ec29dad1efd32289e309302",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/AppointmentStatusEvent.php",
+      "source_sha256": "a5bc5bbf36be21365511cd94cf7da2d8d7a08f082fcc3c4448bf27275bcf73da",
+      "copy_sha256": "a5bc5bbf36be21365511cd94cf7da2d8d7a08f082fcc3c4448bf27275bcf73da",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/AuditLog.php",
+      "source_sha256": "c732876cb95e4f90e191fce0d5317fe8d61aab13f4045784756c4c9d6c327058",
+      "copy_sha256": "c732876cb95e4f90e191fce0d5317fe8d61aab13f4045784756c4c9d6c327058",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/Authorization.php",
+      "source_sha256": "93c2e327c0c4235743f9a3699f84f7a94cab3369d1c9d079c75dcf90c0368f54",
+      "copy_sha256": "93c2e327c0c4235743f9a3699f84f7a94cab3369d1c9d079c75dcf90c0368f54",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/BaseModel.php",
+      "source_sha256": "01a2b6f52795d42eda3a1d01aee1127597aff01a0b867f4ea7f0877fed5299df",
+      "copy_sha256": "01a2b6f52795d42eda3a1d01aee1127597aff01a0b867f4ea7f0877fed5299df",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/ChronicCondition.php",
+      "source_sha256": "fa192357b98d04c9a05b731c94dd2ec678185c8f14709a010005ef633d8ecc13",
+      "copy_sha256": "fa192357b98d04c9a05b731c94dd2ec678185c8f14709a010005ef633d8ecc13",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/ClinicalEncounter.php",
+      "source_sha256": "747e34f9b769d4b2268b5f4e6c2efaf3c58bf78d8cfe0ac18a37173bb3e6dda0",
+      "copy_sha256": "747e34f9b769d4b2268b5f4e6c2efaf3c58bf78d8cfe0ac18a37173bb3e6dda0",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/ClinicalRecord.php",
+      "source_sha256": "57baf05ca0075aa1d932f3533a6c33eb2d51a69a483990560f72998571eef437",
+      "copy_sha256": "57baf05ca0075aa1d932f3533a6c33eb2d51a69a483990560f72998571eef437",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/ContractedService.php",
+      "source_sha256": "4583c935f749190e37473a05ffb8e61dcc2f75e41b6cb9403f93a060fe33b20b",
+      "copy_sha256": "4583c935f749190e37473a05ffb8e61dcc2f75e41b6cb9403f93a060fe33b20b",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/DeliveryReport.php",
+      "source_sha256": "57a18f9602c12e49fcc02449f05c7b77b1c7f506c59e705657b3fc6e9122c7e0",
+      "copy_sha256": "57a18f9602c12e49fcc02449f05c7b77b1c7f506c59e705657b3fc6e9122c7e0",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/DeliveryRoute.php",
+      "source_sha256": "7ca509dfc2bbaa7c6e4f04127b70276b443948d009fc455e6ca3fa6a25278995",
+      "copy_sha256": "7ca509dfc2bbaa7c6e4f04127b70276b443948d009fc455e6ca3fa6a25278995",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/Doctor.php",
+      "source_sha256": "fff2e24fd790a0b380aa284ae1b8e50e8ab2ab9354f06939df9e3548d254b228",
+      "copy_sha256": "fff2e24fd790a0b380aa284ae1b8e50e8ab2ab9354f06939df9e3548d254b228",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/DoctorAvailabilityException.php",
+      "source_sha256": "ab17863b56ee85bdd5d348954fe1ebdf664408d9a4204193065b8e6747f10fc2",
+      "copy_sha256": "ab17863b56ee85bdd5d348954fe1ebdf664408d9a4204193065b8e6747f10fc2",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/DoctorAvailabilityRule.php",
+      "source_sha256": "6ced7c94a8f297a708168a4de441f9a2488b54a388be8c10e10f098732eb2fc9",
+      "copy_sha256": "6ced7c94a8f297a708168a4de441f9a2488b54a388be8c10e10f098732eb2fc9",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/DoctorClinic.php",
+      "source_sha256": "a211f3cd62d3e5068bf9c40146f740eb297886ce7ae561ae2143147301811d35",
+      "copy_sha256": "a211f3cd62d3e5068bf9c40146f740eb297886ce7ae561ae2143147301811d35",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/Document.php",
+      "source_sha256": "1027562d543468ef9ddcf055859a5538e13bf6baacc213e3a396996b58d37753",
+      "copy_sha256": "1027562d543468ef9ddcf055859a5538e13bf6baacc213e3a396996b58d37753",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/Hospital.php",
+      "source_sha256": "2520d540f4b41b10e7ac85bffbe6734acdaa982a826ee3ac8bd054f5447e7df7",
+      "copy_sha256": "2520d540f4b41b10e7ac85bffbe6734acdaa982a826ee3ac8bd054f5447e7df7",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/Hospitalization.php",
+      "source_sha256": "b8610fbcaf45681cae6803c5eb98990c28aa14db537e5a7c3956d0ce8a871b66",
+      "copy_sha256": "b8610fbcaf45681cae6803c5eb98990c28aa14db537e5a7c3956d0ce8a871b66",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/HospitalizationDailyNote.php",
+      "source_sha256": "42afa64b5a11f17ca10ec9dbee7fbcefec74f47b73406d75982488c45fb4da2a",
+      "copy_sha256": "42afa64b5a11f17ca10ec9dbee7fbcefec74f47b73406d75982488c45fb4da2a",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/HospitalizationProcedure.php",
+      "source_sha256": "0c097a8cc81424174b2f464607860a16e9cd69165392327e4f5967220624c8b1",
+      "copy_sha256": "0c097a8cc81424174b2f464607860a16e9cd69165392327e4f5967220624c8b1",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/Institution.php",
+      "source_sha256": "036a3dd80f879025284d696b9b4db2318aded7e2ecf0416d419260808d3121d8",
+      "copy_sha256": "036a3dd80f879025284d696b9b4db2318aded7e2ecf0416d419260808d3121d8",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/InsuranceCarrier.php",
+      "source_sha256": "bca4b367865241504d15f13ba4494830e5a896ce1a751a3de8b40f65b940bd95",
+      "copy_sha256": "bca4b367865241504d15f13ba4494830e5a896ce1a751a3de8b40f65b940bd95",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Models/InsurancePlan.php",
+      "source_sha256": "49e7725e9a1e4a5b5bcdd8f8a1c85468153a1b11f533f52414142b727cf60088",
+      "copy_sha256": "49e7725e9a1e4a5b5bcdd8f8a1c85468153a1b11f533f52414142b727cf60088",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Models/InsurancePlanDocument.php",
+      "source_sha256": "cbac8fb1cdc507ffaac364c5ab66638dcd486d779ccdbd689105d313aba36a96",
+      "copy_sha256": "cbac8fb1cdc507ffaac364c5ab66638dcd486d779ccdbd689105d313aba36a96",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Models/InsurancePolicy.php",
+      "source_sha256": "5bddb908a91f489a81a7568f188486acc23874b66b12def39e5384ed5225c54f",
+      "copy_sha256": "5bddb908a91f489a81a7568f188486acc23874b66b12def39e5384ed5225c54f",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/InventoryItem.php",
+      "source_sha256": "e53c47c958d630af4d78cb42b65da646eb26eaa0cb9700fb10e4ad8badbc0cf3",
+      "copy_sha256": "e53c47c958d630af4d78cb42b65da646eb26eaa0cb9700fb10e4ad8badbc0cf3",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/InventoryMovement.php",
+      "source_sha256": "5e781502f8f3f37e36a885242055c2270fefce09983cc3f80fa0640a120ce354",
+      "copy_sha256": "5e781502f8f3f37e36a885242055c2270fefce09983cc3f80fa0640a120ce354",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/Invoice.php",
+      "source_sha256": "a4a581db89068468b236684dc7b96ffc714b5198c7fb41344382e03bd2f525ff",
+      "copy_sha256": "a4a581db89068468b236684dc7b96ffc714b5198c7fb41344382e03bd2f525ff",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/InvoiceItem.php",
+      "source_sha256": "b9398a41b1058205cc15f588e166e2b26860207a12d70dc1a4dec1747bc662e2",
+      "copy_sha256": "b9398a41b1058205cc15f588e166e2b26860207a12d70dc1a4dec1747bc662e2",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/MedicalUnit.php",
+      "source_sha256": "d5759d2d0574db7acb7914d7445e690ef3150380ba339ad7f2f65b79ea3f3b50",
+      "copy_sha256": "d5759d2d0574db7acb7914d7445e690ef3150380ba339ad7f2f65b79ea3f3b50",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/Medication.php",
+      "source_sha256": "d5db860753dd33071a53c81a1901ecf1b1ecf5b70b11617f2516d87e716e0f80",
+      "copy_sha256": "d5db860753dd33071a53c81a1901ecf1b1ecf5b70b11617f2516d87e716e0f80",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/MedicationCatalogItem.php",
+      "source_sha256": "034a3a0ba0666a3f9424aa9c7ab26485a9e3212004d5590bf80de47b1172f7ee",
+      "copy_sha256": "034a3a0ba0666a3f9424aa9c7ab26485a9e3212004d5590bf80de47b1172f7ee",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/MedicationDelivery.php",
+      "source_sha256": "535edc4cf4a9df43aeddfcd8f6aa10431245b792a236f9959e9512020765ef62",
+      "copy_sha256": "535edc4cf4a9df43aeddfcd8f6aa10431245b792a236f9959e9512020765ef62",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/MessengerProfile.php",
+      "source_sha256": "bdc52771c796c10e1cf09f2f37f88d82d65478b562deaa63222b114d544dccac",
+      "copy_sha256": "bdc52771c796c10e1cf09f2f37f88d82d65478b562deaa63222b114d544dccac",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/MixtureIntegration.php",
+      "source_sha256": "f3d7bee13caab1bc28ced6eeec2a8f90b408bd29e7ea855de01423c3897f9ee4",
+      "copy_sha256": "f3d7bee13caab1bc28ced6eeec2a8f90b408bd29e7ea855de01423c3897f9ee4",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/MobileDeviceRegistration.php",
+      "source_sha256": "66196c2c613fd80dbd7f13c4bd739ffd69f6dc91e243d0e591792e5d4a355926",
+      "copy_sha256": "66196c2c613fd80dbd7f13c4bd739ffd69f6dc91e243d0e591792e5d4a355926",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/OperationalArea.php",
+      "source_sha256": "88e64cb18d2a86cf931d4a73e9e6c2585835dd25f6dcf49be35bccd1d55eea3c",
+      "copy_sha256": "88e64cb18d2a86cf931d4a73e9e6c2585835dd25f6dcf49be35bccd1d55eea3c",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/OperationalProfile.php",
+      "source_sha256": "1897adba4e008adc0f295142c0a46755085ea92343ef0fc08983869fc35418c0",
+      "copy_sha256": "1897adba4e008adc0f295142c0a46755085ea92343ef0fc08983869fc35418c0",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/Patient.php",
+      "source_sha256": "bbe781497cd450998d3df2b8e39ad557787bb0289c7a79ad981cce8d1607aa6a",
+      "copy_sha256": "bbe781497cd450998d3df2b8e39ad557787bb0289c7a79ad981cce8d1607aa6a",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/PatientDiagnosis.php",
+      "source_sha256": "2c386bfdc01086f5e72cc7c0492ec362b3b2d9c6964797cbba110daff382a8e7",
+      "copy_sha256": "2c386bfdc01086f5e72cc7c0492ec362b3b2d9c6964797cbba110daff382a8e7",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/PatientOrder.php",
+      "source_sha256": "609ae98107922cb86dc61f00caff97d93b03b436f4479adc1b7faad65196538b",
+      "copy_sha256": "609ae98107922cb86dc61f00caff97d93b03b436f4479adc1b7faad65196538b",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/PatientOrderItem.php",
+      "source_sha256": "5f4a3dbfa3559f8bd9c02a5b3fe7b527d7bf67adf57632b1ba50e6eed12045b2",
+      "copy_sha256": "5f4a3dbfa3559f8bd9c02a5b3fe7b527d7bf67adf57632b1ba50e6eed12045b2",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/PatientProfileRelationship.php",
+      "source_sha256": "fe22058692fe8d0a165245ff07b70059d6ae07287a465a81fd8d427636944ab2",
+      "copy_sha256": "fe22058692fe8d0a165245ff07b70059d6ae07287a465a81fd8d427636944ab2",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/PatientProfileRelationshipType.php",
+      "source_sha256": "52300bb409bd7a5421bc34762c02801b6ffe21bc21694b018d91ed18153455e6",
+      "copy_sha256": "52300bb409bd7a5421bc34762c02801b6ffe21bc21694b018d91ed18153455e6",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/PatientStory.php",
+      "source_sha256": "ba292fca50174d5285ef939660c186bb6243ac3ed0d1809f05c2dbeaf1f0a535",
+      "copy_sha256": "ba292fca50174d5285ef939660c186bb6243ac3ed0d1809f05c2dbeaf1f0a535",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Models/PharmacyProduct.php",
+      "source_sha256": "f3aab8406826b1e3e9350e631b09a6378f0a808dbd33fe3a86e7fcf17f5ccbc2",
+      "copy_sha256": "f3aab8406826b1e3e9350e631b09a6378f0a808dbd33fe3a86e7fcf17f5ccbc2",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/PlatformModule.php",
+      "source_sha256": "cac43e8985b3b1ca16f4c140b9299fa3c55b0cf42a24622c9a0e4d039ca4a27b",
+      "copy_sha256": "cac43e8985b3b1ca16f4c140b9299fa3c55b0cf42a24622c9a0e4d039ca4a27b",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Models/Prescription.php",
+      "source_sha256": "2a7176fff4cd962a12b7e615b8842dbe4f436effb570eb224d5464387a26a77c",
+      "copy_sha256": "2a7176fff4cd962a12b7e615b8842dbe4f436effb570eb224d5464387a26a77c",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/PrescriptionItem.php",
+      "source_sha256": "0fdfa443a030f4a2f89dd619ed368c364128355d29e36fe67fa5f33809f1ae8c",
+      "copy_sha256": "0fdfa443a030f4a2f89dd619ed368c364128355d29e36fe67fa5f33809f1ae8c",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/ProcedureArea.php",
+      "source_sha256": "f98f48c05d891ea6804687c2d8124be6f6d9adad458a45a6a29afd33dcff99b9",
+      "copy_sha256": "f98f48c05d891ea6804687c2d8124be6f6d9adad458a45a6a29afd33dcff99b9",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/ProcedureAreaSchedule.php",
+      "source_sha256": "0737d2bd59fc1e7fa0032aab71053bd5aa94f9543b94fa55480df70dd168f630",
+      "copy_sha256": "0737d2bd59fc1e7fa0032aab71053bd5aa94f9543b94fa55480df70dd168f630",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/Provider.php",
+      "source_sha256": "978356f6b17354171298e5c1b13c481a22b11267a1955d96dc8275dbfa7de046",
+      "copy_sha256": "978356f6b17354171298e5c1b13c481a22b11267a1955d96dc8275dbfa7de046",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/ProviderRequest.php",
+      "source_sha256": "a7481f91d33eb39d1a3a90186ed2da5db0379557551615ca737622d8cce71c06",
+      "copy_sha256": "a7481f91d33eb39d1a3a90186ed2da5db0379557551615ca737622d8cce71c06",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Models/ProviderRequestInteraction.php",
+      "source_sha256": "8eb4cdf9fdbca1673c41fe834e15ee89abd90202cb574bf5a803e852b69ba103",
+      "copy_sha256": "8eb4cdf9fdbca1673c41fe834e15ee89abd90202cb574bf5a803e852b69ba103",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Models/ProviderRequestStatusEvent.php",
+      "source_sha256": "b3f3e0ff476cdc25914203e28e616115d389c82d721d2f70f1ece3228e9bb128",
+      "copy_sha256": "b3f3e0ff476cdc25914203e28e616115d389c82d721d2f70f1ece3228e9bb128",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/Service.php",
+      "source_sha256": "312863f5ee131ab905f3a3ba8826c77317ab68a8be1035a17d5eabf6af99883e",
+      "copy_sha256": "312863f5ee131ab905f3a3ba8826c77317ab68a8be1035a17d5eabf6af99883e",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/Treatment.php",
+      "source_sha256": "0d400e50f460240dbcf4bc67254a6ac5078a6622c7b9ce49747e9fa7ee15e0ea",
+      "copy_sha256": "0d400e50f460240dbcf4bc67254a6ac5078a6622c7b9ce49747e9fa7ee15e0ea",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/TreatmentChangeLog.php",
+      "source_sha256": "c3321f2864e41236c2e393ed56fccdc28eb4cbd1e70811ef9c91018b93bd8382",
+      "copy_sha256": "c3321f2864e41236c2e393ed56fccdc28eb4cbd1e70811ef9c91018b93bd8382",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/UnitMedicationSetting.php",
+      "source_sha256": "16e46ed76c51fe4d65b6acfe884f83c2da74007d5ab7a5333e47b1b23f052969",
+      "copy_sha256": "16e46ed76c51fe4d65b6acfe884f83c2da74007d5ab7a5333e47b1b23f052969",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Models/User.php",
+      "source_sha256": "a4c7d5bf227c470340541e94995f804d30156f0edccbe8911de741ac93432130",
+      "copy_sha256": "a4c7d5bf227c470340541e94995f804d30156f0edccbe8911de741ac93432130",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Notifications/MobileResetPasswordNotification.php",
+      "source_sha256": "f777d3d4c1515c1a32da719c7e9172261d8f9f5f7faf3fb85695475129fdc55a",
+      "copy_sha256": "8a02da638767c8751e4ddaf569bac18e9d207a6f172a1fa6e20a149a7912c8c9",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Services/AppointmentSchedulingService.php",
+      "source_sha256": "0c1b89e7e7f83f2702cb6de5c95cd4e67018364b47a60ac3649040c6ee3d0a4b",
+      "copy_sha256": "0c1b89e7e7f83f2702cb6de5c95cd4e67018364b47a60ac3649040c6ee3d0a4b",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Services/Insurance/InsurancePlanCatalog.php",
+      "source_sha256": "cb546ef4c3488517e354f5435cdd0071592ef7d2324724b3a7c1669c1f64bfdb",
+      "copy_sha256": "cb546ef4c3488517e354f5435cdd0071592ef7d2324724b3a7c1669c1f64bfdb",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Services/Platform/DashboardRegistry.php",
+      "source_sha256": "eee6dc554891e3f1d22765bcc504dd243f99673ae0f216f051e8d7e2c01c26cf",
+      "copy_sha256": "eee6dc554891e3f1d22765bcc504dd243f99673ae0f216f051e8d7e2c01c26cf",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Services/Platform/PlatformAuditService.php",
+      "source_sha256": "a2544b1eddeb128e14a1c648374574a2404e540e390c2648a0f5591b04d0859b",
+      "copy_sha256": "a2544b1eddeb128e14a1c648374574a2404e540e390c2648a0f5591b04d0859b",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "app/Services/Wallet/TokenWallet.php",
+      "source_sha256": "1d8cae20bda7a31529b050594da87c11d92d529da680f912787bb4a56842c1f1",
+      "copy_sha256": "1d8cae20bda7a31529b050594da87c11d92d529da680f912787bb4a56842c1f1",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "app/Support/MobileApiResponse.php",
+      "source_sha256": "5b695114ea203a3e2603fdd9a79fda9f443c4fd13407ab62c671b427506f2feb",
+      "copy_sha256": "5b695114ea203a3e2603fdd9a79fda9f443c4fd13407ab62c671b427506f2feb",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_06_30_000001_create_identity_and_support_tables.php",
+      "source_sha256": "2fd885a9faf4f8e6a3b311c4d3987c870a8a237c89d641375aecb1119651b469",
+      "copy_sha256": "2fd885a9faf4f8e6a3b311c4d3987c870a8a237c89d641375aecb1119651b469",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_06_30_000002_create_institution_unit_service_tables.php",
+      "source_sha256": "a5a7b592cc8a90c36d7fa5cd542ad200d02363eeedb28a740fed1997db6e155e",
+      "copy_sha256": "a5a7b592cc8a90c36d7fa5cd542ad200d02363eeedb28a740fed1997db6e155e",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_06_30_000003_create_care_tables.php",
+      "source_sha256": "6f90241ac192c46fc41aa43d1bec34850b4231d3c737168f27d378bf81166e2f",
+      "copy_sha256": "6f90241ac192c46fc41aa43d1bec34850b4231d3c737168f27d378bf81166e2f",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_06_30_000004_create_provider_pharmacy_order_tables.php",
+      "source_sha256": "692a0080e6d8d47cd01176b8405455037fa5dd5bb1666de17a7b0476fa78cfb5",
+      "copy_sha256": "692a0080e6d8d47cd01176b8405455037fa5dd5bb1666de17a7b0476fa78cfb5",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_06_30_000005_create_messaging_platform_audit_tables.php",
+      "source_sha256": "2867000e7cf0ad5fd29bcc764afa08230ef8d069bc160e4b94d05fbe4e6abc71",
+      "copy_sha256": "2867000e7cf0ad5fd29bcc764afa08230ef8d069bc160e4b94d05fbe4e6abc71",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_07_05_000001_create_insurance_health_module_tables.php",
+      "source_sha256": "f7b4da3552dbb6acdbdc8224ef93bb447dc6007f9f769dacb3221cd654133d25",
+      "copy_sha256": "f7b4da3552dbb6acdbdc8224ef93bb447dc6007f9f769dacb3221cd654133d25",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_07_20_000001_create_insurance_carriers_table.php",
+      "source_sha256": "ccf3dde7c1904a499fa2f95451dccf431e6f2ff93ba16097911a0bede71fda7a",
+      "copy_sha256": "ccf3dde7c1904a499fa2f95451dccf431e6f2ff93ba16097911a0bede71fda7a",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_07_20_000002_create_medical_devices_table.php",
+      "source_sha256": "7717157c507c1e3ae65db22f754a604cba8248efa5cdfe3bfef8c5b712c8f4df",
+      "copy_sha256": "7717157c507c1e3ae65db22f754a604cba8248efa5cdfe3bfef8c5b712c8f4df",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_07_21_000001_create_procedure_area_and_appointment_event_tables.php",
+      "source_sha256": "999d512b00012dc4570416a7b289bc3ac6bd2df47d14e2a887c2d3616d2ec244",
+      "copy_sha256": "999d512b00012dc4570416a7b289bc3ac6bd2df47d14e2a887c2d3616d2ec244",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_07_21_000002_create_doctor_availability_and_clinical_encounters.php",
+      "source_sha256": "b3c7039c39962c5bf4f7559222b4f8e1e47a64df2c56da44df883211addaf6d1",
+      "copy_sha256": "b3c7039c39962c5bf4f7559222b4f8e1e47a64df2c56da44df883211addaf6d1",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_07_23_000001_create_external_pharmacy_inventory_management_tables.php",
+      "source_sha256": "1952c271bc6bf7b66d048dc8e599f07c305c3252ff90543d2d9d1f710bd63902",
+      "copy_sha256": "1952c271bc6bf7b66d048dc8e599f07c305c3252ff90543d2d9d1f710bd63902",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_07_26_000001_rename_import_identifiers_to_external_identifiers.php",
+      "source_sha256": "3c26bd803b80255b3aa4ee74552bf2ba93004e170b0de1e9a64e93ec69953f8a",
+      "copy_sha256": "3c26bd803b80255b3aa4ee74552bf2ba93004e170b0de1e9a64e93ec69953f8a",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_08_01_000001_create_insurance_advisor_notifications_table.php",
+      "source_sha256": "9d70fc5a9dc334e9426c47fc3f2e638f7d69a43f0eb0502a39eb5b80eb51d962",
+      "copy_sha256": "9d70fc5a9dc334e9426c47fc3f2e638f7d69a43f0eb0502a39eb5b80eb51d962",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_08_05_000001_create_mixture_integrations_table.php",
+      "source_sha256": "79a66a914c09a5e5277be94916337d09beefe79169c99cdb7ad050c97f21ebe6",
+      "copy_sha256": "79a66a914c09a5e5277be94916337d09beefe79169c99cdb7ad050c97f21ebe6",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_08_05_000002_add_cbta_external_code_to_medical_units.php",
+      "source_sha256": "f9b5633da4c86bf4fe88592616ca91b9e1df07da9561c4483e6bf747be2758c4",
+      "copy_sha256": "f9b5633da4c86bf4fe88592616ca91b9e1df07da9561c4483e6bf747be2758c4",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_08_18_000001_add_retry_tracking_to_mixture_integrations_table.php",
+      "source_sha256": "49e0cc8b4840119daaf6e6c04a69e3e3e06ad11113bea906786e6b0ebff32a9f",
+      "copy_sha256": "49e0cc8b4840119daaf6e6c04a69e3e3e06ad11113bea906786e6b0ebff32a9f",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_08_28_000001_create_patient_profile_relationships.php",
+      "source_sha256": "60fc8bb2fd0ea3fc249fa4670e4d46ca68f235f69e5fb138c692bae578a234d4",
+      "copy_sha256": "60fc8bb2fd0ea3fc249fa4670e4d46ca68f235f69e5fb138c692bae578a234d4",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_09_14_000001_create_unit_medication_settings_table.php",
+      "source_sha256": "af8dbf3465d09f88c4f887b20a70428f82047b3d78ec742df29f2ef189562d81",
+      "copy_sha256": "af8dbf3465d09f88c4f887b20a70428f82047b3d78ec742df29f2ef189562d81",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_10_02_000001_create_personal_access_tokens_table.php",
+      "source_sha256": "d8b23b2fe59b3ff001682c44aa6d723e9862a4521229624723e8943674e16062",
+      "copy_sha256": "d8b23b2fe59b3ff001682c44aa6d723e9862a4521229624723e8943674e16062",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_10_04_000001_create_mobile_device_registrations_table.php",
+      "source_sha256": "6f5956486593e58a845a6e81208096cd1491d1dd7ad78b50f73e00264d330ba3",
+      "copy_sha256": "6f5956486593e58a845a6e81208096cd1491d1dd7ad78b50f73e00264d330ba3",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": false
+    },
+    {
+      "path": "database/migrations/2026_10_12_000001_create_patient_stories_table.php",
+      "source_sha256": "26be7db8c801bcec109dbc999dc2ab0a85b8ae064115d4a45cfc9a8eb95b7853",
+      "copy_sha256": "26be7db8c801bcec109dbc999dc2ab0a85b8ae064115d4a45cfc9a8eb95b7853",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "database/migrations/2026_10_13_000001_add_klini_membership_to_users.php",
+      "source_sha256": "d85f1870ab6ec3576b896f647fd572eaac614bee2e8f448c1c7c84f8e95754d0",
+      "copy_sha256": "d85f1870ab6ec3576b896f647fd572eaac614bee2e8f448c1c7c84f8e95754d0",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "database/migrations/2026_10_13_000002_assign_existing_klini_members.php",
+      "source_sha256": "271e93d2f182d5bac2bfe07e0f751e82f3a552eb756dd93fc3e7757a7d7795a2",
+      "copy_sha256": "271e93d2f182d5bac2bfe07e0f751e82f3a552eb756dd93fc3e7757a7d7795a2",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "database/migrations/2026_10_13_000003_use_numeric_klini_member_ids.php",
+      "source_sha256": "13d8c1aa6a7ff61f5abe2690820e9a13ac78e63b31cffa24378c0ba0a0b86f73",
+      "copy_sha256": "13d8c1aa6a7ff61f5abe2690820e9a13ac78e63b31cffa24378c0ba0a0b86f73",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "database/migrations/2026_10_13_000004_create_insurance_plan_catalog.php",
+      "source_sha256": "e5530c88c97ec7896c3b991f056416c9afaab8b72bd92d41566609b0d8cb1f4b",
+      "copy_sha256": "950033f1061a8554d998a42b057df847a24ca743cb49b94d831185bda38a1a08",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "database/migrations/2026_10_20_100000_create_provider_request_interactions_table.php",
+      "source_sha256": "e289a957445bc9aa757aee5610103b95385ede4aafa53971521d4512395e7468",
+      "copy_sha256": "e289a957445bc9aa757aee5610103b95385ede4aafa53971521d4512395e7468",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "database/migrations/2026_10_23_100000_create_community_activities.php",
+      "source_sha256": "dd51725e91eb2cc694d6da61f6687b42eb6b76eb2f06277df1c4f0ddccbe1de5",
+      "copy_sha256": "dd51725e91eb2cc694d6da61f6687b42eb6b76eb2f06277df1c4f0ddccbe1de5",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "database/migrations/2026_10_23_180000_add_source_key_to_community_activities.php",
+      "source_sha256": "acad8d4927ad2a0f915778204ef176f754abbf9a512319ffd1d7ec7f7f976b6c",
+      "copy_sha256": "acad8d4927ad2a0f915778204ef176f754abbf9a512319ffd1d7ec7f7f976b6c",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "database/migrations/2026_10_23_190000_create_wallet_token_entries.php",
+      "source_sha256": "3baf319ae6cb77d62e2c693ea574a4a4ffe092eed56c25b8596a56f764e7d91f",
+      "copy_sha256": "3baf319ae6cb77d62e2c693ea574a4a4ffe092eed56c25b8596a56f764e7d91f",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/brand/klini/brand-still-life.webp",
+      "source_sha256": "86b6f6cac48fa9366998e5d73247fc4b4308f23fc5448ab647074ff62da0a74e",
+      "copy_sha256": "86b6f6cac48fa9366998e5d73247fc4b4308f23fc5448ab647074ff62da0a74e",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/carousel/01_catalogo.png",
+      "source_sha256": "c06b3bcd2dec64aa1dfd90fc113937744e88c338d9ec4869ea2796eff85887a6",
+      "copy_sha256": "c06b3bcd2dec64aa1dfd90fc113937744e88c338d9ec4869ea2796eff85887a6",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/carousel/02_consulta_externa.png",
+      "source_sha256": "a9987475947d2cc18450e36278c655a4bece39b5d6618ef589e3329eb7085aa2",
+      "copy_sha256": "a9987475947d2cc18450e36278c655a4bece39b5d6618ef589e3329eb7085aa2",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/carousel/03_nutricion_parenteral.png",
+      "source_sha256": "de39e5a5940a4878bb4c0c0b21c0ab7418b10d33fbf3148944021d60d7ca46e4",
+      "copy_sha256": "de39e5a5940a4878bb4c0c0b21c0ab7418b10d33fbf3148944021d60d7ca46e4",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/carousel/04_quimioterapia.png",
+      "source_sha256": "dfab9a33425df11987a1d1b79facd58fe4d069e3488341df870ed1482497c2b2",
+      "copy_sha256": "dfab9a33425df11987a1d1b79facd58fe4d069e3488341df870ed1482497c2b2",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/carousel/05_importacion_medicamentos.png",
+      "source_sha256": "898d4cc2a75a668104e0d2f0d332c268088a6d078c4c5b63d96a17d347ec85be",
+      "copy_sha256": "898d4cc2a75a668104e0d2f0d332c268088a6d078c4c5b63d96a17d347ec85be",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/carousel/06_pedido_entrega_medicamentos.png",
+      "source_sha256": "41ba223c6eccb80fde04c572d80f5414867c2c9d17e556a0ca063d5ac306b55d",
+      "copy_sha256": "41ba223c6eccb80fde04c572d80f5414867c2c9d17e556a0ca063d5ac306b55d",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/carousel/navy-waves.png",
+      "source_sha256": "08446fcb8e3bef734bda2e7523440dfd806673b166c272264a06cc19127fb64b",
+      "copy_sha256": "08446fcb8e3bef734bda2e7523440dfd806673b166c272264a06cc19127fb64b",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/dejavu-bold.woff",
+      "source_sha256": "6628c9ae4c3c7b6c239cd2fef05e0bcfef03b3182875c94bae217aa230bb6fc2",
+      "copy_sha256": "6628c9ae4c3c7b6c239cd2fef05e0bcfef03b3182875c94bae217aa230bb6fc2",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/dejavu.woff",
+      "source_sha256": "92744b3299377f9f002dd3ccb6a077b313c0c26dca949f989f741c2b80e4800c",
+      "copy_sha256": "92744b3299377f9f002dd3ccb6a077b313c0c26dca949f989f741c2b80e4800c",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/favicon.svg",
+      "source_sha256": "b0694f53433bf2a7a3ea476d210823cc4ff88db5bbf90b75ae082192fa95e9cc",
+      "copy_sha256": "b0694f53433bf2a7a3ea476d210823cc4ff88db5bbf90b75ae082192fa95e9cc",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/font-license.txt",
+      "source_sha256": "baa2e5e5cdb29e9052bbe4e171b2feb4b3314116ef9032fe11bd874c803cc815",
+      "copy_sha256": "baa2e5e5cdb29e9052bbe4e171b2feb4b3314116ef9032fe11bd874c803cc815",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/klini-white.svg",
+      "source_sha256": "6b8b133bb7b5b0f58a356afbc984a738e7f84d6b877b665d00dfb3e141de738b",
+      "copy_sha256": "cc978b5d531ff0a1fa843ace5e8fae463ee99d2f033df58367df1685b3b88241",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/klini.svg",
+      "source_sha256": "1ed6b9af3ce71101b09b74ea1c7a6b80b04fbbce700961886f26279891a317e2",
+      "copy_sha256": "44db2bd647d4077126a8439a96d37532092c4adecf9a9a5b641c4bb30e031a5e",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/system-art.png",
+      "source_sha256": "ed2e5d7b76b35d58e603bca5fa1bea4a1495ab8707a78f8355e3e38ab283fbe9",
+      "copy_sha256": "ed2e5d7b76b35d58e603bca5fa1bea4a1495ab8707a78f8355e3e38ab283fbe9",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/wellness-running.webp",
+      "source_sha256": "b7d6dc43e55e49ab36d4d98de4c2a65626d175ab2e9520506c27026dc37901bb",
+      "copy_sha256": "b7d6dc43e55e49ab36d4d98de4c2a65626d175ab2e9520506c27026dc37901bb",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/wellness-watch.webp",
+      "source_sha256": "2b47442beb45bb88421cdfe4a8482bcf75797552b5cd8229e228519caf423375",
+      "copy_sha256": "2b47442beb45bb88421cdfe4a8482bcf75797552b5cd8229e228519caf423375",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/wellness-yoga.webp",
+      "source_sha256": "5e5724dbc2a1f7d45e0fc30a50fa2c3dc7be55c01fb436d88851d1e364188529",
+      "copy_sha256": "5e5724dbc2a1f7d45e0fc30a50fa2c3dc7be55c01fb436d88851d1e364188529",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/brand/klini/workspace-art.webp",
+      "source_sha256": "db5ce99d0e77b6c3d88957946ce402bf6c16aa2c5bb12b2e2147f7c84ae3af92",
+      "copy_sha256": "db5ce99d0e77b6c3d88957946ce402bf6c16aa2c5bb12b2e2147f7c84ae3af92",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/css/communities.css",
+      "source_sha256": "8620babeb69f04ca2d356572297d916c70f4b0855c0c652928f8fac66fb70df3",
+      "copy_sha256": "8620babeb69f04ca2d356572297d916c70f4b0855c0c652928f8fac66fb70df3",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/css/community-activities.css",
+      "source_sha256": "36abc99be0220ca9f9f56cb032133250747d1bea6871b2679d1eda6e89d7ceff",
+      "copy_sha256": "36abc99be0220ca9f9f56cb032133250747d1bea6871b2679d1eda6e89d7ceff",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/css/drsam.css",
+      "source_sha256": "7a4c6496dce1e8023af713375bb8e6924f93c1c7f1c5a5ab60937521840b05e7",
+      "copy_sha256": "7a4c6496dce1e8023af713375bb8e6924f93c1c7f1c5a5ab60937521840b05e7",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/css/klini-brand.css",
+      "source_sha256": "2298f5065c6781414680216bdad0fc2dac1785e63709658037b98f38b776e9e9",
+      "copy_sha256": "def76560f4a42524271d04520c84a4bf73bf0df302ad15a454671f0e5ab6514b",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/css/klini-carousels.css",
+      "source_sha256": "f9d2b09fd3ebd30eac05c7295eb4494a91475a31901f998bd43a7eba89771c91",
+      "copy_sha256": "0057ddc707c7e5c0082a8dad81d36d6e3b442870b59ce55bd08c251494f77253",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/css/klini-system.css",
+      "source_sha256": "39f88c383671ba56b2fe7ebbb36a18b1723eb451e35ce880d094c6071b2bf529",
+      "copy_sha256": "65c5876d27d8a2aa05c116d620255a17b44ad441275097ec1c9336e5014ee8d5",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/css/klini-workspace.css",
+      "source_sha256": "dfe5b7d40b41f2b35904fbb99c678412976747fde80fd823c248cdb436929ccb",
+      "copy_sha256": "7bfcb66a15cf9afd4f4160e9e5451dcd4388d843500acda81491aacd2e2a33d2",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/css/operational-table-scroll.css",
+      "source_sha256": "a621afbec0634797ffcf9475907967b899fc2dde09c82ed80975ab2d3e0558fd",
+      "copy_sha256": "a621afbec0634797ffcf9475907967b899fc2dde09c82ed80975ab2d3e0558fd",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/css/patient-bottom-nav-mobile.css",
+      "source_sha256": "d0a445c52504f7012f8ceb6b89066a6fcf480a16d5dba77b31ff9cae46a7cff9",
+      "copy_sha256": "d0a445c52504f7012f8ceb6b89066a6fcf480a16d5dba77b31ff9cae46a7cff9",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/css/patient-calendar-mobile.css",
+      "source_sha256": "f2e5c1273f0bfc74f8774945eb94ab8587f31242fc5fcb584875fe0a64739dab",
+      "copy_sha256": "f2e5c1273f0bfc74f8774945eb94ab8587f31242fc5fcb584875fe0a64739dab",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/css/patient-health-icons.css",
+      "source_sha256": "ccb10aa2fbfffc2b08ec57c93d666c8488559c03210b6ab67ae05d2b45a33e54",
+      "copy_sha256": "ccb10aa2fbfffc2b08ec57c93d666c8488559c03210b6ab67ae05d2b45a33e54",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/css/patient-history-mobile.css",
+      "source_sha256": "f296f72aee9e4ed244f4f1d62ebd79370711c7b975a856ff1baeaea5ce3e28c3",
+      "copy_sha256": "f296f72aee9e4ed244f4f1d62ebd79370711c7b975a856ff1baeaea5ce3e28c3",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/css/patient-insurance-drawer.css",
+      "source_sha256": "4bd31ac216917c527e4198631fc5a1c8da5410c6ff7acf224281c279d3e43d77",
+      "copy_sha256": "4bd31ac216917c527e4198631fc5a1c8da5410c6ff7acf224281c279d3e43d77",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/css/patient-portal-source.css",
+      "source_sha256": "1272be58564467a37f4933ba6f42e18c36557d5241c3dc0d81f96f805e59a968",
+      "copy_sha256": "1272be58564467a37f4933ba6f42e18c36557d5241c3dc0d81f96f805e59a968",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/css/patient-profile-panel.css",
+      "source_sha256": "170303b62c07d1b113264ccbac0f0ae849e1a5082571c5bef0bf1bc8da3e248b",
+      "copy_sha256": "170303b62c07d1b113264ccbac0f0ae849e1a5082571c5bef0bf1bc8da3e248b",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/css/patient-social.css",
+      "source_sha256": "585cc67a080df5c3e27e5f4b6d8990f7f2c9ed4f9384f862991cfa8689617086",
+      "copy_sha256": "585cc67a080df5c3e27e5f4b6d8990f7f2c9ed4f9384f862991cfa8689617086",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/css/patient-stories.css",
+      "source_sha256": "7813d56c63f93167b43769afdd67e62ed19d96ba056dd0a4aeee90d63cb56bcd",
+      "copy_sha256": "7813d56c63f93167b43769afdd67e62ed19d96ba056dd0a4aeee90d63cb56bcd",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/css/platform-density.css",
+      "source_sha256": "5f35ad47611013f645ff877ef6d3865a8f7f1380a35f68f603c896d7ad6c3684",
+      "copy_sha256": "5f35ad47611013f645ff877ef6d3865a8f7f1380a35f68f603c896d7ad6c3684",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/css/policy-saved-overlay.css",
+      "source_sha256": "6146a0f8c72e2e3553c775296e6e6e9e7319db0e6dbcbcb522cf6486d0d51a7f",
+      "copy_sha256": "6146a0f8c72e2e3553c775296e6e6e9e7319db0e6dbcbcb522cf6486d0d51a7f",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/css/unit-operation-embed.css",
+      "source_sha256": "c6af859217cdce7e9e048b46697b9be1faa9691a0fbd23abe58a601ba28c95e9",
+      "copy_sha256": "c6af859217cdce7e9e048b46697b9be1faa9691a0fbd23abe58a601ba28c95e9",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/calendar-icons/calendar.png",
+      "source_sha256": "a60b7342c83e8cad4960dc945643d881ea8e45c40f781d89b477993ccbde127d",
+      "copy_sha256": "a60b7342c83e8cad4960dc945643d881ea8e45c40f781d89b477993ccbde127d",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/communities/avatar-carlos.png",
+      "source_sha256": "75e65953f9e7d9581bc76be9322f373f2c19a9b979342f9c4e3600da5044b044",
+      "copy_sha256": "75e65953f9e7d9581bc76be9322f373f2c19a9b979342f9c4e3600da5044b044",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/communities/category-mine.png",
+      "source_sha256": "04555e3402828832f73de643e8beb88eda94c612965ba12d8c07bdc2c188f1d8",
+      "copy_sha256": "04555e3402828832f73de643e8beb88eda94c612965ba12d8c07bdc2c188f1d8",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/communities/category-new.png",
+      "source_sha256": "b00ba3375a37788b3804fc10dd31327b5b6258cdfe834fe617c353b154c0b6db",
+      "copy_sha256": "b00ba3375a37788b3804fc10dd31327b5b6258cdfe834fe617c353b154c0b6db",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/communities/category-sport.png",
+      "source_sha256": "396369d5a7d3ccaf33ee901fdfe713856021fe757abc4aecd130e6cab6a297a9",
+      "copy_sha256": "396369d5a7d3ccaf33ee901fdfe713856021fe757abc4aecd130e6cab6a297a9",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/communities/category-wellness.png",
+      "source_sha256": "474e3b8963f2939e4789aee472454a61941e9141334e9a4c6d6179ffd8a03ba0",
+      "copy_sha256": "474e3b8963f2939e4789aee472454a61941e9141334e9a4c6d6179ffd8a03ba0",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/communities/create-cover.png",
+      "source_sha256": "771ac535945d74bcec5097cabbf237345baec1487bbdc7402a95e3f1c059c976",
+      "copy_sha256": "771ac535945d74bcec5097cabbf237345baec1487bbdc7402a95e3f1c059c976",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/communities/owner-mariana.png",
+      "source_sha256": "705b564dfd03de366a45a1d35451dbff9b99e15499d9dc6cb371903c959f6559",
+      "copy_sha256": "705b564dfd03de366a45a1d35451dbff9b99e15499d9dc6cb371903c959f6559",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/health-icons/history/01_consulta_medica.png",
+      "source_sha256": "3ade659c6ba074b8d9694dab97f18cb41aee11db2ef123423e1106796585cc45",
+      "copy_sha256": "3ade659c6ba074b8d9694dab97f18cb41aee11db2ef123423e1106796585cc45",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/history/02_analisis_laboratorio.png",
+      "source_sha256": "759d957748aa4fe1b1bf21cdc8c6310bdda9cd8ac0c36de068809458dceaf38a",
+      "copy_sha256": "759d957748aa4fe1b1bf21cdc8c6310bdda9cd8ac0c36de068809458dceaf38a",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/history/03_estudios.png",
+      "source_sha256": "1d346b111b78063f6d849e443b079669aef956cdf81ceca6cbf118abb196eb5f",
+      "copy_sha256": "1d346b111b78063f6d849e443b079669aef956cdf81ceca6cbf118abb196eb5f",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/history/04_recetas.png",
+      "source_sha256": "819001edb2e4050af2c8c55def357af8b3a4f3bd657eb003e16e5f000c3a744a",
+      "copy_sha256": "819001edb2e4050af2c8c55def357af8b3a4f3bd657eb003e16e5f000c3a744a",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/history/05_hospitalizacion.png",
+      "source_sha256": "53519202521bb9ec200ba169c5ad4f9118ece0a89f0c8638ecaabcd8a6a2ba6d",
+      "copy_sha256": "53519202521bb9ec200ba169c5ad4f9118ece0a89f0c8638ecaabcd8a6a2ba6d",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/history/06_vacunas.png",
+      "source_sha256": "67353dec1de5dabd416464364f5fb724ee2062b90402cee92a879040bef61aee",
+      "copy_sha256": "67353dec1de5dabd416464364f5fb724ee2062b90402cee92a879040bef61aee",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/history/07_registro_manual.png",
+      "source_sha256": "7aefd53e4d41a787b8f59f544f44b398d3c0aab74004a1dec9c2b4f23ba75566",
+      "copy_sha256": "7aefd53e4d41a787b8f59f544f44b398d3c0aab74004a1dec9c2b4f23ba75566",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/01_agua.png",
+      "source_sha256": "0b1da9dfa382f72fd3c103e6a457af757b71fcbfd5a22fff0ecea03452ba61ee",
+      "copy_sha256": "0b1da9dfa382f72fd3c103e6a457af757b71fcbfd5a22fff0ecea03452ba61ee",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/02_pasos.png",
+      "source_sha256": "07b14f4067615c45a920b96f87942cc413e0e7055bbd3b5358fb40666ab8b582",
+      "copy_sha256": "07b14f4067615c45a920b96f87942cc413e0e7055bbd3b5358fb40666ab8b582",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/03_sueno.png",
+      "source_sha256": "0e47a60042f1557f667b89b6dbf24b5f8025e69011433d1ec0d9c6a5afecb1e4",
+      "copy_sha256": "0e47a60042f1557f667b89b6dbf24b5f8025e69011433d1ec0d9c6a5afecb1e4",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/04_descanso.png",
+      "source_sha256": "ee18de8f7c3ffc3671b0ed20b0e9f8770f751ba581dcb384909f1528f8a81e07",
+      "copy_sha256": "ee18de8f7c3ffc3671b0ed20b0e9f8770f751ba581dcb384909f1528f8a81e07",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/05_peso.png",
+      "source_sha256": "0add9ae8a00858c3f5a6fef477ecb0e8771a1e4d07d377d8832498c3710c7f29",
+      "copy_sha256": "0add9ae8a00858c3f5a6fef477ecb0e8771a1e4d07d377d8832498c3710c7f29",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/06_presion.png",
+      "source_sha256": "3d9bd3f5bb565d90092f8a028e098f19a432af1ff33aaec7013b130747915a51",
+      "copy_sha256": "3d9bd3f5bb565d90092f8a028e098f19a432af1ff33aaec7013b130747915a51",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/07_glucosa.png",
+      "source_sha256": "85b1885201f1b12ee19a54d4b966df1b0011be86cb7bb4962d921a0e3ce27301",
+      "copy_sha256": "85b1885201f1b12ee19a54d4b966df1b0011be86cb7bb4962d921a0e3ce27301",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/08_ph.png",
+      "source_sha256": "6497f5eafca1f84e1473bbc159b0913252f0aa4d2ceac4fbe6f3e6798417cb36",
+      "copy_sha256": "6497f5eafca1f84e1473bbc159b0913252f0aa4d2ceac4fbe6f3e6798417cb36",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/09_medicamentos.png",
+      "source_sha256": "862f6bc396a410043d6a39646c22f17ed5ed6ef52d9ccc79007d4e4c8ea66b14",
+      "copy_sha256": "862f6bc396a410043d6a39646c22f17ed5ed6ef52d9ccc79007d4e4c8ea66b14",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/10_alimentos.png",
+      "source_sha256": "62959684d158b22f7ae97a86069aa8fa030454854b7c19e69b4eccce0aa3aa37",
+      "copy_sha256": "62959684d158b22f7ae97a86069aa8fa030454854b7c19e69b4eccce0aa3aa37",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/11_calorias.png",
+      "source_sha256": "6e85dfefcdfdde20b3ee79af4ac0646162a1c5ba145bfab5bbe0186a70a271fa",
+      "copy_sha256": "6e85dfefcdfdde20b3ee79af4ac0646162a1c5ba145bfab5bbe0186a70a271fa",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/12_ejercicio.png",
+      "source_sha256": "c4558cb4c90345b68da3151389f83250aff9da91a859e511871e6e352f75f5db",
+      "copy_sha256": "c4558cb4c90345b68da3151389f83250aff9da91a859e511871e6e352f75f5db",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/13_meditacion.png",
+      "source_sha256": "85bd1839dc3dc8e14bd56166010b0b92fe76a48d74305f17325eae099c05dd61",
+      "copy_sha256": "85bd1839dc3dc8e14bd56166010b0b92fe76a48d74305f17325eae099c05dd61",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/14_ciclo_menstrual.png",
+      "source_sha256": "38821072b2336078551092ebdfeab3b3007c52579c7edb9eb19d52f5a6715b41",
+      "copy_sha256": "38821072b2336078551092ebdfeab3b3007c52579c7edb9eb19d52f5a6715b41",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/15_fertilidad.png",
+      "source_sha256": "5d0bd2db44334cbaa676c2fc701a3bfda8819e63ee618cb624767b43b880cf09",
+      "copy_sha256": "5d0bd2db44334cbaa676c2fc701a3bfda8819e63ee618cb624767b43b880cf09",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/16_analisis_laboratorio.png",
+      "source_sha256": "759d957748aa4fe1b1bf21cdc8c6310bdda9cd8ac0c36de068809458dceaf38a",
+      "copy_sha256": "759d957748aa4fe1b1bf21cdc8c6310bdda9cd8ac0c36de068809458dceaf38a",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/17_estudios.png",
+      "source_sha256": "1d346b111b78063f6d849e443b079669aef956cdf81ceca6cbf118abb196eb5f",
+      "copy_sha256": "1d346b111b78063f6d849e443b079669aef956cdf81ceca6cbf118abb196eb5f",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/18_recetas.png",
+      "source_sha256": "819001edb2e4050af2c8c55def357af8b3a4f3bd657eb003e16e5f000c3a744a",
+      "copy_sha256": "819001edb2e4050af2c8c55def357af8b3a4f3bd657eb003e16e5f000c3a744a",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/19_hospitalizacion.png",
+      "source_sha256": "53519202521bb9ec200ba169c5ad4f9118ece0a89f0c8638ecaabcd8a6a2ba6d",
+      "copy_sha256": "53519202521bb9ec200ba169c5ad4f9118ece0a89f0c8638ecaabcd8a6a2ba6d",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/20_vacunas.png",
+      "source_sha256": "67353dec1de5dabd416464364f5fb724ee2062b90402cee92a879040bef61aee",
+      "copy_sha256": "67353dec1de5dabd416464364f5fb724ee2062b90402cee92a879040bef61aee",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/21_registro_manual.png",
+      "source_sha256": "7aefd53e4d41a787b8f59f544f44b398d3c0aab74004a1dec9c2b4f23ba75566",
+      "copy_sha256": "7aefd53e4d41a787b8f59f544f44b398d3c0aab74004a1dec9c2b4f23ba75566",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/22_animo.png",
+      "source_sha256": "74317fa5b824009e64f1f0a6705f338da0a43352ee6712b2f2185a61c5007cbd",
+      "copy_sha256": "74317fa5b824009e64f1f0a6705f338da0a43352ee6712b2f2185a61c5007cbd",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/23_temperatura.png",
+      "source_sha256": "a57aa11d27d7ecbe2dc6bfb5981ace91cd8cfe1686b1da9e720890c17aee835c",
+      "copy_sha256": "a57aa11d27d7ecbe2dc6bfb5981ace91cd8cfe1686b1da9e720890c17aee835c",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/24_oxigeno.png",
+      "source_sha256": "6196bd7daa0b50a39925db1aee34db32fe4658fc90c63e82951c3f017b746a73",
+      "copy_sha256": "6196bd7daa0b50a39925db1aee34db32fe4658fc90c63e82951c3f017b746a73",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/25_frecuencia.png",
+      "source_sha256": "0c955c3f4fdd525270a522be07759d3b1ba3315bc124c4ace5c4fe84194d5776",
+      "copy_sha256": "0c955c3f4fdd525270a522be07759d3b1ba3315bc124c4ace5c4fe84194d5776",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/26_dolor.png",
+      "source_sha256": "088318c908bb879e5c294348a9cd73cac6f992e20c21121af5a4aa2ee41e2ca5",
+      "copy_sha256": "088318c908bb879e5c294348a9cd73cac6f992e20c21121af5a4aa2ee41e2ca5",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/27_sintomas.png",
+      "source_sha256": "99e20e308c4f1187c6051af2b719ebc5b4c44c3776da16729eec66d386355161",
+      "copy_sha256": "99e20e308c4f1187c6051af2b719ebc5b4c44c3776da16729eec66d386355161",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/28_nota_personal.png",
+      "source_sha256": "32c74841339cb03d07143bc017160e3652a721b0288e742a6d5aa7d26677a21b",
+      "copy_sha256": "32c74841339cb03d07143bc017160e3652a721b0288e742a6d5aa7d26677a21b",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/health-icons/parameters/29_personalizado.png",
+      "source_sha256": "36a8c26bd0462dc52ecb3ad9fa9dc1d9020b0c31cdd64a0eb8d23659e25e403d",
+      "copy_sha256": "36a8c26bd0462dc52ecb3ad9fa9dc1d9020b0c31cdd64a0eb8d23659e25e403d",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/history-icons/all.png",
+      "source_sha256": "d5ac7e8405b906b4f17e37741aa40a4cc75d8359e306ec7f31a09007f1bdcf23",
+      "copy_sha256": "d5ac7e8405b906b4f17e37741aa40a4cc75d8359e306ec7f31a09007f1bdcf23",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/history-icons/consultation.png",
+      "source_sha256": "7b6db633ab11a0e63a5bb75ae7e38ccce0120128e733bd0b815c414c98ecca59",
+      "copy_sha256": "7b6db633ab11a0e63a5bb75ae7e38ccce0120128e733bd0b815c414c98ecca59",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/history-icons/hospitalization.png",
+      "source_sha256": "50cac0208c1bfb8256f4b995daa5c96fba17f5ce0f4357bd804d81c2be73f4d6",
+      "copy_sha256": "50cac0208c1bfb8256f4b995daa5c96fba17f5ce0f4357bd804d81c2be73f4d6",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/history-icons/laboratory.png",
+      "source_sha256": "21a9549c1997db141da60ed7eebbe5bcaf4850fda63f95c207071e112a969dbd",
+      "copy_sha256": "21a9549c1997db141da60ed7eebbe5bcaf4850fda63f95c207071e112a969dbd",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/history-icons/manual-register.png",
+      "source_sha256": "2db20cc5fe75eadb2d8035cd2ecfe351f99f919a226684176faa3d23ad75e2c3",
+      "copy_sha256": "2db20cc5fe75eadb2d8035cd2ecfe351f99f919a226684176faa3d23ad75e2c3",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/history-icons/prescriptions.png",
+      "source_sha256": "a90de38e958015283400cf6c81786a5bbc581b8ac9d7574ce6baa1d0d460e91d",
+      "copy_sha256": "a90de38e958015283400cf6c81786a5bbc581b8ac9d7574ce6baa1d0d460e91d",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/history-icons/studies.png",
+      "source_sha256": "601e2066fe8d4874f4dc5db70e232061ab50073b693bc376815f701d030e8e68",
+      "copy_sha256": "601e2066fe8d4874f4dc5db70e232061ab50073b693bc376815f701d030e8e68",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/history-icons/vaccines.png",
+      "source_sha256": "891bb7d9b3262c7a42dd247c290834c2ce2f23f3daa4ddc2804fa403ce65675e",
+      "copy_sha256": "891bb7d9b3262c7a42dd247c290834c2ce2f23f3daa4ddc2804fa403ce65675e",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-bottom-nav/01_Inicio.png",
+      "source_sha256": "a258757e7e00ebc8af9c2e6205370a3cd2c6fc43d653882c53405c23461d4cd4",
+      "copy_sha256": "a258757e7e00ebc8af9c2e6205370a3cd2c6fc43d653882c53405c23461d4cd4",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/patient-bottom-nav/02_Comunidades.png",
+      "source_sha256": "67e63d902304923f9bce89910e908c92786b21a9c68af899794aae741bbc8bc9",
+      "copy_sha256": "67e63d902304923f9bce89910e908c92786b21a9c68af899794aae741bbc8bc9",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/patient-bottom-nav/03_Registro.png",
+      "source_sha256": "153d84267624c02eeba4e5039c33f0a80f209b09208ca9ddbd3c76e3cf1a934a",
+      "copy_sha256": "153d84267624c02eeba4e5039c33f0a80f209b09208ca9ddbd3c76e3cf1a934a",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/patient-bottom-nav/04_Salud.png",
+      "source_sha256": "0751ece29b8075d653c20a7b3fd5b755503fbbab311897b08291e3520fc41965",
+      "copy_sha256": "0751ece29b8075d653c20a7b3fd5b755503fbbab311897b08291e3520fc41965",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/patient-bottom-nav/05_Calendario.png",
+      "source_sha256": "3a8014da509b3cfeb074b0b94f609b43d766e4921d935a6a3f5b48b215d1d1f2",
+      "copy_sha256": "3a8014da509b3cfeb074b0b94f609b43d766e4921d935a6a3f5b48b215d1d1f2",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/images/patient-export/025137a57f3ca9681a57.jpg",
+      "source_sha256": "216221155c4d757b7842e069eb95ccfdd603f94ddbcf5c079682331aa301b146",
+      "copy_sha256": "216221155c4d757b7842e069eb95ccfdd603f94ddbcf5c079682331aa301b146",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/053bd5cb0be986bb99b7.jpg",
+      "source_sha256": "2535a05e2f96cbc8846bc7801c734d9362bf8ea37824d6f3d7524abbed3172f7",
+      "copy_sha256": "2535a05e2f96cbc8846bc7801c734d9362bf8ea37824d6f3d7524abbed3172f7",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/0eed2f25295ada06cb90.jpg",
+      "source_sha256": "d13b4de77e66d1208ceec575ca62cb5954f5177bd6c335c57a75f0bb9b46a640",
+      "copy_sha256": "d13b4de77e66d1208ceec575ca62cb5954f5177bd6c335c57a75f0bb9b46a640",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/12abb8f6d5927a3c831c.jpg",
+      "source_sha256": "b22062b499de49b9ecffadf8d31a939463efca4a2d67f2172161732afe214e03",
+      "copy_sha256": "b22062b499de49b9ecffadf8d31a939463efca4a2d67f2172161732afe214e03",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/17bcd799e74650458a0e.jpg",
+      "source_sha256": "62a06e89ac7e7da87f2d096b2573073481d500b6991dec081268abca8dcd0b98",
+      "copy_sha256": "62a06e89ac7e7da87f2d096b2573073481d500b6991dec081268abca8dcd0b98",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/18ff3de3a304845f9d98.jpg",
+      "source_sha256": "94b5fe400d515c7c248f53f23d17b44cda32a6ff40246434174f716b8a7e72de",
+      "copy_sha256": "94b5fe400d515c7c248f53f23d17b44cda32a6ff40246434174f716b8a7e72de",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/2249ee14324419269d99.jpg",
+      "source_sha256": "101cf4023a546524bd6b694113c86c416346319f85c9c78119a113a4054cdb09",
+      "copy_sha256": "101cf4023a546524bd6b694113c86c416346319f85c9c78119a113a4054cdb09",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/22ed010786489ca9fe1e.jpg",
+      "source_sha256": "e8a870a43cc7b72d16a47c4b77a20e36e56aca86f7acd21304dc3717b780c15b",
+      "copy_sha256": "e8a870a43cc7b72d16a47c4b77a20e36e56aca86f7acd21304dc3717b780c15b",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/23deab93472032b80cf5.jpg",
+      "source_sha256": "bf7204ffbf54c590bfb192dad4628283f41e9fe88ff5fbac41a02e0dc42a005e",
+      "copy_sha256": "bf7204ffbf54c590bfb192dad4628283f41e9fe88ff5fbac41a02e0dc42a005e",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/2b4d0e28bd24e5cc52dc.jpg",
+      "source_sha256": "f0ab45f7bf93d8eb67586839b91dadd3e0423ebdf48df2418ae4b1db372b5ea4",
+      "copy_sha256": "f0ab45f7bf93d8eb67586839b91dadd3e0423ebdf48df2418ae4b1db372b5ea4",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/2b9f2acde9605c18f665.jpg",
+      "source_sha256": "b6801c31cc77eff173e761436d4c09fc5b1e5e85055b703698dc61ee9841a27b",
+      "copy_sha256": "b6801c31cc77eff173e761436d4c09fc5b1e5e85055b703698dc61ee9841a27b",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/37242dce71befb619f94.jpg",
+      "source_sha256": "4c6085c4d254b6ec6ed5173d3b867b0959ecb310c86d7e41f6ab288a48f0dded",
+      "copy_sha256": "4c6085c4d254b6ec6ed5173d3b867b0959ecb310c86d7e41f6ab288a48f0dded",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/38d14bf66ff30240c8bc.jpg",
+      "source_sha256": "e2cf73e391b120f437a0ece7958c6b84d78862b3a32812de49ba7e019ad9661e",
+      "copy_sha256": "e2cf73e391b120f437a0ece7958c6b84d78862b3a32812de49ba7e019ad9661e",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/3984b99af2b59454d85e.jpg",
+      "source_sha256": "cd09b9aafda2fce78afe9459fd7201da13a8f4c641c83d5eb66703c26e9642f4",
+      "copy_sha256": "cd09b9aafda2fce78afe9459fd7201da13a8f4c641c83d5eb66703c26e9642f4",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/408d9fc2edb97e4d641f.jpg",
+      "source_sha256": "d3d9758b5dd0aa4ce19fb520084ab5a5ae6deb86d2f6fd3c5be25a4286f933cf",
+      "copy_sha256": "d3d9758b5dd0aa4ce19fb520084ab5a5ae6deb86d2f6fd3c5be25a4286f933cf",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/41d374994b6ce1850cc2.jpg",
+      "source_sha256": "f8bfd677e8941e1a12ad86f8c2b40d51910851bccd08dc7e89d74bdb739ee5fc",
+      "copy_sha256": "f8bfd677e8941e1a12ad86f8c2b40d51910851bccd08dc7e89d74bdb739ee5fc",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/41fafeca192d22ac1c04.jpg",
+      "source_sha256": "a457e106b4b47d90192e0afa79c008b272053196766e7a5c10a443ba270ce88d",
+      "copy_sha256": "a457e106b4b47d90192e0afa79c008b272053196766e7a5c10a443ba270ce88d",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/42dee029eaeb6a9103fc.jpg",
+      "source_sha256": "ff9b8e0fe6a7102131dc4680e4c87b0edb3698ae39ce1be17fa9386c99024ebf",
+      "copy_sha256": "ff9b8e0fe6a7102131dc4680e4c87b0edb3698ae39ce1be17fa9386c99024ebf",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/44d5adc37ae04f49c009.jpg",
+      "source_sha256": "e39fd57099cfa66bda80d035dfe1c956214c23bf77e15e7f52470cc65255a68a",
+      "copy_sha256": "e39fd57099cfa66bda80d035dfe1c956214c23bf77e15e7f52470cc65255a68a",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/4bc03be023db6becef69.jpg",
+      "source_sha256": "0be050085324ce2e23092f76c95e36c8c6ef6f3e99eb148d9b389b778d319155",
+      "copy_sha256": "0be050085324ce2e23092f76c95e36c8c6ef6f3e99eb148d9b389b778d319155",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/4e8616057ba3ddd057c2.jpg",
+      "source_sha256": "64e7d085554d6f5140d88ec5db40d52c5cc633daa206f5c4d95a923e292eda1a",
+      "copy_sha256": "64e7d085554d6f5140d88ec5db40d52c5cc633daa206f5c4d95a923e292eda1a",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/58f5ec6b1b32fa8dfa5a.jpg",
+      "source_sha256": "90a5955fb4bf45b999ea911b59df0883166c8ae3b05136737e7d349a790d804b",
+      "copy_sha256": "90a5955fb4bf45b999ea911b59df0883166c8ae3b05136737e7d349a790d804b",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/5f8ec1f0b28698a301dc.jpg",
+      "source_sha256": "e12bad36dc6b2ba53fc806e80696360fda0b08fc194487929319d4f725ca0a84",
+      "copy_sha256": "e12bad36dc6b2ba53fc806e80696360fda0b08fc194487929319d4f725ca0a84",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/66b4b1b9c976d3999ae6.jpg",
+      "source_sha256": "1a4fc628981d6e86bb4a647d6a2910c4846916b4e02db41575e1f59456d8c4dd",
+      "copy_sha256": "1a4fc628981d6e86bb4a647d6a2910c4846916b4e02db41575e1f59456d8c4dd",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/697acf432c30040e98d8.jpg",
+      "source_sha256": "8761b864b10e15cf87d15e16b7fd50b35b8ea380dfd8c0359daf3dbb1d8def83",
+      "copy_sha256": "8761b864b10e15cf87d15e16b7fd50b35b8ea380dfd8c0359daf3dbb1d8def83",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/6b0b240436ac1414521e.jpg",
+      "source_sha256": "eb95b83410301c6ce9d11708dd414af76596d880cea968de5634aabf9699d8df",
+      "copy_sha256": "eb95b83410301c6ce9d11708dd414af76596d880cea968de5634aabf9699d8df",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/6de0a7f0c746ad783b31.jpg",
+      "source_sha256": "7b0514d9bc1a0678c4564703a46f4a1fe01e17b5a5e83cba967aa6662404901f",
+      "copy_sha256": "7b0514d9bc1a0678c4564703a46f4a1fe01e17b5a5e83cba967aa6662404901f",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/79c1f3731e62fb9ad0ec.jpg",
+      "source_sha256": "a40da975a9543f31953588f75cf0a17312ccdcecf876e12a670a2e1e399f855d",
+      "copy_sha256": "a40da975a9543f31953588f75cf0a17312ccdcecf876e12a670a2e1e399f855d",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/7c6c94b37faf68177701.jpg",
+      "source_sha256": "bf528870a0d3ea66d89fcb31e507a852767edb4fd9bad2cc5c47f60c29f50dac",
+      "copy_sha256": "bf528870a0d3ea66d89fcb31e507a852767edb4fd9bad2cc5c47f60c29f50dac",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/847391ad6e1a2d5a1665.jpg",
+      "source_sha256": "83c7f3a8eb1738996f26bb7791ea99acb7c919967d4178ac1df03103a95483e9",
+      "copy_sha256": "83c7f3a8eb1738996f26bb7791ea99acb7c919967d4178ac1df03103a95483e9",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/88790920a1b06a6b679a.jpg",
+      "source_sha256": "0f488ef33de9edd244f33d2f79184aa4f6096ed4801ab54a220131caa49b8b95",
+      "copy_sha256": "0f488ef33de9edd244f33d2f79184aa4f6096ed4801ab54a220131caa49b8b95",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/88ac192570ebecf4e969.jpg",
+      "source_sha256": "3ed34ea26e610fad51ff046da8ca99b8f87d90131428194ed55e603fe3f2de74",
+      "copy_sha256": "3ed34ea26e610fad51ff046da8ca99b8f87d90131428194ed55e603fe3f2de74",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/8b44dedfdfafe0addfce.jpg",
+      "source_sha256": "63c597139b509429e72d7997b4af9296863dbd934c39dfb4ac10394acd306e69",
+      "copy_sha256": "63c597139b509429e72d7997b4af9296863dbd934c39dfb4ac10394acd306e69",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/8de7f3abd9b1451e2fc4.jpg",
+      "source_sha256": "a05dff7d88c65f645941317ca898f900fef731ca6d8a509a2ad6c6504015b652",
+      "copy_sha256": "a05dff7d88c65f645941317ca898f900fef731ca6d8a509a2ad6c6504015b652",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/93851cce76f290545d44.jpg",
+      "source_sha256": "161c7c7b456f9a34029614fff1624ddefe1cd56068e164f79e60f33647667157",
+      "copy_sha256": "161c7c7b456f9a34029614fff1624ddefe1cd56068e164f79e60f33647667157",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/93b6a487565a6d983f8e.jpg",
+      "source_sha256": "a3ccb12785b81382eac5171b73ace57f54d91994bd2debfcde26b2bc1351dfdf",
+      "copy_sha256": "a3ccb12785b81382eac5171b73ace57f54d91994bd2debfcde26b2bc1351dfdf",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/943f4dd5afbf6af7fc9e.jpg",
+      "source_sha256": "6a1e46d9bae9c4a20b5803a0018e69d86bc671102f0e3cd1d54baec01f6a2788",
+      "copy_sha256": "6a1e46d9bae9c4a20b5803a0018e69d86bc671102f0e3cd1d54baec01f6a2788",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/9640e7795c8db2cdba57.jpg",
+      "source_sha256": "f11e25e8c95ecfd2e8e3cba9c80d70f896249f640992f3ecb91f14a4eac52739",
+      "copy_sha256": "f11e25e8c95ecfd2e8e3cba9c80d70f896249f640992f3ecb91f14a4eac52739",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/97828858e7cb4ebc41c2.jpg",
+      "source_sha256": "39198f5e5b0a879acdd28b6ce714944e695a1e03d1d13eaad808277d7f2ce42a",
+      "copy_sha256": "39198f5e5b0a879acdd28b6ce714944e695a1e03d1d13eaad808277d7f2ce42a",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/998ce081eeca9ff6b6eb.jpg",
+      "source_sha256": "83199bdbbc7e77aff2efc2365bfb97bcc0b33a1a7643abccbbc13f54fbdc1b4c",
+      "copy_sha256": "83199bdbbc7e77aff2efc2365bfb97bcc0b33a1a7643abccbbc13f54fbdc1b4c",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/9bfe0ef87111af6547ae.jpg",
+      "source_sha256": "49897d2aae7020128b25013f8a68619c3a5a1e4520bfa56ca95a2fa4a3e57d33",
+      "copy_sha256": "49897d2aae7020128b25013f8a68619c3a5a1e4520bfa56ca95a2fa4a3e57d33",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/a3dde8d27437d87d2bd8.jpg",
+      "source_sha256": "5434d8d34367c6267cdde449c49cd6f7a8e4fb52dc846b1ca9fb31e46af0a073",
+      "copy_sha256": "5434d8d34367c6267cdde449c49cd6f7a8e4fb52dc846b1ca9fb31e46af0a073",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/a659aa3215522fb9f590.jpg",
+      "source_sha256": "b20ffc7cd28f33c90c033360458443be83400783e67c85dcce00dd0129e41e4c",
+      "copy_sha256": "b20ffc7cd28f33c90c033360458443be83400783e67c85dcce00dd0129e41e4c",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/a8739ed0eb5ad2677255.jpg",
+      "source_sha256": "8af0f4e3e956f47c0e98e958ed888a33127a7ed40a876c85f0ed872cc44311f8",
+      "copy_sha256": "8af0f4e3e956f47c0e98e958ed888a33127a7ed40a876c85f0ed872cc44311f8",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/a875f0e9e033f205a761.jpg",
+      "source_sha256": "bbe9fb9b22bb7a12932b0f27f062f3f3df9b93b5b9392378ad93397e152732da",
+      "copy_sha256": "bbe9fb9b22bb7a12932b0f27f062f3f3df9b93b5b9392378ad93397e152732da",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/aa061533cdffccf31974.jpg",
+      "source_sha256": "0acffca5a14b09ddb617ce5ef17f5fc3529d78ff798e1a43508297bda99134bc",
+      "copy_sha256": "0acffca5a14b09ddb617ce5ef17f5fc3529d78ff798e1a43508297bda99134bc",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/afe20faba2275119b253.jpg",
+      "source_sha256": "05906001e1e573e8ec6359dea0dd1f7f165e7dc7f8b66f60c6d5de08c2426c4b",
+      "copy_sha256": "05906001e1e573e8ec6359dea0dd1f7f165e7dc7f8b66f60c6d5de08c2426c4b",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/b59ab911e2e7afa4f63e.jpg",
+      "source_sha256": "7848fb85ef91f29f684c7224cee9e2dd46f7561d9f6d2cfa6b6aa00d2967224e",
+      "copy_sha256": "7848fb85ef91f29f684c7224cee9e2dd46f7561d9f6d2cfa6b6aa00d2967224e",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/b59b76e1620259f879ce.jpg",
+      "source_sha256": "e28134f7118d7eeba774a6ea56fd0b7d1e98eceb28c186d764b5eec258a1f5a2",
+      "copy_sha256": "e28134f7118d7eeba774a6ea56fd0b7d1e98eceb28c186d764b5eec258a1f5a2",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/bae5b7d5f17ea4346b8e.jpg",
+      "source_sha256": "000cc603b9b8b1c4f1c33f715094334b4cacee30671faba284f4853c2f59aa76",
+      "copy_sha256": "000cc603b9b8b1c4f1c33f715094334b4cacee30671faba284f4853c2f59aa76",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/c5f724b7a75a6cd919b7.jpg",
+      "source_sha256": "9a4bc2251fb6b35943293c1ea49bac6758bfa6ac6c4e1dbad2f7237d040f0bca",
+      "copy_sha256": "9a4bc2251fb6b35943293c1ea49bac6758bfa6ac6c4e1dbad2f7237d040f0bca",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/cd307ee6afc3f2957403.jpg",
+      "source_sha256": "6825d6b962fecb77a54a1f90ad892a3ceb7ba1dec4193af1f9b73be07c7a3a73",
+      "copy_sha256": "6825d6b962fecb77a54a1f90ad892a3ceb7ba1dec4193af1f9b73be07c7a3a73",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/d058a3cf7b1d172870e0.jpg",
+      "source_sha256": "dd6ca23f4e626632af47701d6cbc8d6601b81d0e69a545c25fb479be9cbe696f",
+      "copy_sha256": "dd6ca23f4e626632af47701d6cbc8d6601b81d0e69a545c25fb479be9cbe696f",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/d170c3103974c5febbd0.jpg",
+      "source_sha256": "dc0b26959a3027e4c8f389905b443e8e918cfee4a67c8c2ed6e7e8babafdd671",
+      "copy_sha256": "dc0b26959a3027e4c8f389905b443e8e918cfee4a67c8c2ed6e7e8babafdd671",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/d48389cc338d6118e8b2.jpg",
+      "source_sha256": "b836d2adfae94dc35bff7c7c610a43e05720219642e256359105b836e92f0f8a",
+      "copy_sha256": "b836d2adfae94dc35bff7c7c610a43e05720219642e256359105b836e92f0f8a",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/de157019d31e6c6f8325.jpg",
+      "source_sha256": "3ad176041a3a641672660fc6c7a83be410b3ff6cd1f858de8871fd22c63e4b48",
+      "copy_sha256": "3ad176041a3a641672660fc6c7a83be410b3ff6cd1f858de8871fd22c63e4b48",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/df94a43f03f910053436.jpg",
+      "source_sha256": "6739297e1134aa7031cdd0742ac4c0d5e42defcf9e8e01686188d9d666d687f8",
+      "copy_sha256": "6739297e1134aa7031cdd0742ac4c0d5e42defcf9e8e01686188d9d666d687f8",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/e49873da2b386a07d76a.jpg",
+      "source_sha256": "542c2014988f7d4265476e535a66bd7519f7ecec584a79e0abb7f270c9fc70ef",
+      "copy_sha256": "542c2014988f7d4265476e535a66bd7519f7ecec584a79e0abb7f270c9fc70ef",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/e7553043d2dd01250832.jpg",
+      "source_sha256": "19374afa7e63e2bd9e2e9d184e1d584ba2c9a2d4f2eaf184021075414204070b",
+      "copy_sha256": "19374afa7e63e2bd9e2e9d184e1d584ba2c9a2d4f2eaf184021075414204070b",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/f0d4bfbd855cbea59304.jpg",
+      "source_sha256": "6d76256cd89770f51537326736608bebc36545586ccafd3001c76d552afadd10",
+      "copy_sha256": "6d76256cd89770f51537326736608bebc36545586ccafd3001c76d552afadd10",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/f122e1d2a549e41a1c36.jpg",
+      "source_sha256": "0fcfc74b4b7bab56089b1a81e2eb8e53177759bd7524bf36da195542b825c561",
+      "copy_sha256": "0fcfc74b4b7bab56089b1a81e2eb8e53177759bd7524bf36da195542b825c561",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/f8bdbee90198bf11fadc.jpg",
+      "source_sha256": "91fa36a016e95eea33deb98487786860fd095fd7e57b17bf1a9a8d023ca938c9",
+      "copy_sha256": "91fa36a016e95eea33deb98487786860fd095fd7e57b17bf1a9a8d023ca938c9",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/f8f0f44d6906551ddbcd.jpg",
+      "source_sha256": "58fee2457a35dd8ea6c95b8f7ca7912a988a15cfac81e98cb6c145be776f172c",
+      "copy_sha256": "58fee2457a35dd8ea6c95b8f7ca7912a988a15cfac81e98cb6c145be776f172c",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/fd7ce2230d3ca6a58cae.jpg",
+      "source_sha256": "f69a7567b79b6d35ab3dc103c168a378e3f9454d246526a6c46ce1094f01387f",
+      "copy_sha256": "f69a7567b79b6d35ab3dc103c168a378e3f9454d246526a6c46ce1094f01387f",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/fdae6f1f9d838e48f96e.jpg",
+      "source_sha256": "343b90a024bdc556e8aba6b194f3bdb26d2fdf7fcf885e1c93dd76d1ca60d0a8",
+      "copy_sha256": "343b90a024bdc556e8aba6b194f3bdb26d2fdf7fcf885e1c93dd76d1ca60d0a8",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/fe4d65015c1a79c1acae.jpg",
+      "source_sha256": "e8a8e34bd1b972cd642e41986a758999d81782e4528df598fbf02bbd9b4dbe63",
+      "copy_sha256": "e8a8e34bd1b972cd642e41986a758999d81782e4528df598fbf02bbd9b4dbe63",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/patient-export/fef141294fffa9354688.jpg",
+      "source_sha256": "92ca80182618367ff8a92377173405a857493ec5e9bdedcc2c17508188e17fc7",
+      "copy_sha256": "92ca80182618367ff8a92377173405a857493ec5e9bdedcc2c17508188e17fc7",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/activity.png",
+      "source_sha256": "5a8ec83395cce956f10c9eee6697b466c82a5c7102f00063886fa9c7e5681006",
+      "copy_sha256": "5a8ec83395cce956f10c9eee6697b466c82a5c7102f00063886fa9c7e5681006",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/calories.png",
+      "source_sha256": "7e3cb1c5d7eb6a4b42d6577475748e10974c1133600f8e43cc5dc80d8046026a",
+      "copy_sha256": "7e3cb1c5d7eb6a4b42d6577475748e10974c1133600f8e43cc5dc80d8046026a",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/fertility.png",
+      "source_sha256": "67bccab4d8e4a9d0cc2e67e6a962db4700b6f12310b0a4b688a384b6343494ff",
+      "copy_sha256": "67bccab4d8e4a9d0cc2e67e6a962db4700b6f12310b0a4b688a384b6343494ff",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/foods.png",
+      "source_sha256": "88218e225dc2e3b6076e09f63d454b23f96b0f73e7d16d5c2d77fc5d218ad890",
+      "copy_sha256": "88218e225dc2e3b6076e09f63d454b23f96b0f73e7d16d5c2d77fc5d218ad890",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/glucose.png",
+      "source_sha256": "32fcf1c01281b048a1caffd0fc884d16470b3f9ca30dabaea1de93c5991031bd",
+      "copy_sha256": "32fcf1c01281b048a1caffd0fc884d16470b3f9ca30dabaea1de93c5991031bd",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/hospitalization.png",
+      "source_sha256": "60ba5c8e14f3fb6b0e48a459c7ad180deaf940372540bef756d6cbdef1a4c1f8",
+      "copy_sha256": "60ba5c8e14f3fb6b0e48a459c7ad180deaf940372540bef756d6cbdef1a4c1f8",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/laboratory.png",
+      "source_sha256": "11665ab03d32b94880f3bc3cbb6da80e5258fb4c148d4a82f458b6a55ae96dd8",
+      "copy_sha256": "11665ab03d32b94880f3bc3cbb6da80e5258fb4c148d4a82f458b6a55ae96dd8",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/manual-register.png",
+      "source_sha256": "fc579206d78b1940fc9227323aee4ca4123bb33a4fc28a27553e947e9cce3546",
+      "copy_sha256": "fc579206d78b1940fc9227323aee4ca4123bb33a4fc28a27553e947e9cce3546",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/medication.png",
+      "source_sha256": "b6a43dbdcbcbc874d8fa961b6b13945c04ffe5421d55f3766ee4e80f58d30f23",
+      "copy_sha256": "b6a43dbdcbcbc874d8fa961b6b13945c04ffe5421d55f3766ee4e80f58d30f23",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/meditation.png",
+      "source_sha256": "5d9d1773037187b981a4a6403134783b85a5b3b5febc38865dc9a189ed510498",
+      "copy_sha256": "5d9d1773037187b981a4a6403134783b85a5b3b5febc38865dc9a189ed510498",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/menstrual-cycle.png",
+      "source_sha256": "37f54e2c934542328d005584632423660b60a635f3af18b5bcc8c7d9fc04f09e",
+      "copy_sha256": "37f54e2c934542328d005584632423660b60a635f3af18b5bcc8c7d9fc04f09e",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/mood.png",
+      "source_sha256": "67bccab4d8e4a9d0cc2e67e6a962db4700b6f12310b0a4b688a384b6343494ff",
+      "copy_sha256": "67bccab4d8e4a9d0cc2e67e6a962db4700b6f12310b0a4b688a384b6343494ff",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/ph.png",
+      "source_sha256": "566da6afd3deb13f5858e40f619570282ce45a347fbc95f3b5206fbf2001130d",
+      "copy_sha256": "566da6afd3deb13f5858e40f619570282ce45a347fbc95f3b5206fbf2001130d",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/prescriptions.png",
+      "source_sha256": "9499f1a84ee3ae66743e8ec9bb525aad84323103b3e7ea3c0dcf70294356150b",
+      "copy_sha256": "9499f1a84ee3ae66743e8ec9bb525aad84323103b3e7ea3c0dcf70294356150b",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/pressure.png",
+      "source_sha256": "8d51fa24aa6066816f552415d9c10a958053497a9b382f54389287241a0513a0",
+      "copy_sha256": "8d51fa24aa6066816f552415d9c10a958053497a9b382f54389287241a0513a0",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/rest.png",
+      "source_sha256": "6ab2c65e77d391ab5a579ce8e0cf4b8d8c8ba102547817fd77f37cb44fdd4541",
+      "copy_sha256": "6ab2c65e77d391ab5a579ce8e0cf4b8d8c8ba102547817fd77f37cb44fdd4541",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/sleep.png",
+      "source_sha256": "a6c4ce176cd2e090f997ce9ecf27198bdaa2e6a53ab88b2ee8d9df4d013c3a33",
+      "copy_sha256": "a6c4ce176cd2e090f997ce9ecf27198bdaa2e6a53ab88b2ee8d9df4d013c3a33",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/steps.png",
+      "source_sha256": "5a8ec83395cce956f10c9eee6697b466c82a5c7102f00063886fa9c7e5681006",
+      "copy_sha256": "5a8ec83395cce956f10c9eee6697b466c82a5c7102f00063886fa9c7e5681006",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/studies.png",
+      "source_sha256": "fd7786c45b221cd553fa0ba6911e7981877e393624e3bf827668ba5f5ee7bcaa",
+      "copy_sha256": "fd7786c45b221cd553fa0ba6911e7981877e393624e3bf827668ba5f5ee7bcaa",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/vaccines.png",
+      "source_sha256": "656441a0259bb904e290a5393752b059eebbe7af95aff75b88b55bf636a6d7b8",
+      "copy_sha256": "656441a0259bb904e290a5393752b059eebbe7af95aff75b88b55bf636a6d7b8",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/vitals.png",
+      "source_sha256": "8d51fa24aa6066816f552415d9c10a958053497a9b382f54389287241a0513a0",
+      "copy_sha256": "8d51fa24aa6066816f552415d9c10a958053497a9b382f54389287241a0513a0",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/water.png",
+      "source_sha256": "793cb0d7ebbaca19dcd7ae2747f8a81c2284bb54ca9d0622d6b1227b47a70df4",
+      "copy_sha256": "793cb0d7ebbaca19dcd7ae2747f8a81c2284bb54ca9d0622d6b1227b47a70df4",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/images/register-icons/weight.png",
+      "source_sha256": "6b1cb9cbcd688117ed324d3ebf8c3f2eef890285d5c3630c3cb41c8af7481cef",
+      "copy_sha256": "6b1cb9cbcd688117ed324d3ebf8c3f2eef890285d5c3630c3cb41c8af7481cef",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/js/communities.js",
+      "source_sha256": "26bb6e12ececb1f79655f81b32173b91b88ac6f67d5b0afd71a3b542782b97f6",
+      "copy_sha256": "3e4d410e7c503b650c41bf27ce8d9ba4c73eb050d71602074ca0626d6a165eb8",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/js/community-activities.js",
+      "source_sha256": "0fdce28f5eee011bd18492ce7f1b31fcf8e2ae5693c86aaf75f8d70f7287d021",
+      "copy_sha256": "c1fb846ebe17ae4ed436d2cf88e9c82a38ed20a78a43320677154d47d7380a63",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/js/drsam-table-filters.js",
+      "source_sha256": "73868237927c1c7fb146fe8cb39b420780bd66bb2ad8b6c37f4ad6f9fe5a5b6f",
+      "copy_sha256": "73868237927c1c7fb146fe8cb39b420780bd66bb2ad8b6c37f4ad6f9fe5a5b6f",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/js/insurance-enrollment.js",
+      "source_sha256": "6445186a9fb8ff988b9d1169be7549650a4cc5c04a44e533d24bd5041fb341aa",
+      "copy_sha256": "6445186a9fb8ff988b9d1169be7549650a4cc5c04a44e533d24bd5041fb341aa",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/js/klini-carousels.js",
+      "source_sha256": "c9f9e6696036e7e3bc9f809192480b9c0eccdc32ff3a425ce44c6b79a766a1e9",
+      "copy_sha256": "c9f9e6696036e7e3bc9f809192480b9c0eccdc32ff3a425ce44c6b79a766a1e9",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/js/klini-profiles.js",
+      "source_sha256": "30a50ef0717dbb84b6479c308fd92ae1b98d59279b813daad6d76e0435dfcff1",
+      "copy_sha256": "716f2b864752f20b780b936a709ef88e87572ced1cfc3eb3a2f7f45b7a90617e",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/js/operational-table-scroll.js",
+      "source_sha256": "770c04259e84bd69394fbd05fa46363b8600c00fd1cb92afde59cfd26c6ef04d",
+      "copy_sha256": "770c04259e84bd69394fbd05fa46363b8600c00fd1cb92afde59cfd26c6ef04d",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/js/patient-insurance-drawer.js",
+      "source_sha256": "7a8016c19c70f9bda9c59279d52078751e69c7741de606f1f338ab13b3ed1fe0",
+      "copy_sha256": "1f29964db11be7287625e8df79e339bb6b6db97414d0c3162e17279285773c1f",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/js/patient-portal-table-filters.js",
+      "source_sha256": "9437699b57b81221b69ea217f165fc76042873635bd6d4590085a39ef776c3cb",
+      "copy_sha256": "9437699b57b81221b69ea217f165fc76042873635bd6d4590085a39ef776c3cb",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/js/patient-profile-panel.js",
+      "source_sha256": "c11c6ad7ab131c129473b3adc60bf46d720dd9c20a18f2d837ac4a23ad7a372f",
+      "copy_sha256": "c11c6ad7ab131c129473b3adc60bf46d720dd9c20a18f2d837ac4a23ad7a372f",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/js/patient-social.js",
+      "source_sha256": "2d29c1773a4f19ec5dd67731a0960a67a97e88f8a7202cbbbcdca3b72f0df3ba",
+      "copy_sha256": "2d29c1773a4f19ec5dd67731a0960a67a97e88f8a7202cbbbcdca3b72f0df3ba",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": true
+    },
+    {
+      "path": "public/js/patient-stories.js",
+      "source_sha256": "6a6bb64029a0d81b1a613bb3bb4a684384fef102be7a7e34908aaabe1a57cb96",
+      "copy_sha256": "6a6bb64029a0d81b1a613bb3bb4a684384fef102be7a7e34908aaabe1a57cb96",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/js/unit-operation-embed.js",
+      "source_sha256": "745bc75dcd70be169467f8e73f4b70949cbe116bef8a7dc780389f0b6eadd81b",
+      "copy_sha256": "745bc75dcd70be169467f8e73f4b70949cbe116bef8a7dc780389f0b6eadd81b",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "public/mobile-preview.html",
+      "source_sha256": "39eaf8cf4f4bdb08220ee43cad2d604cd4c21fe6ba563e56d5ca593098ff9288",
+      "copy_sha256": "39eaf8cf4f4bdb08220ee43cad2d604cd4c21fe6ba563e56d5ca593098ff9288",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/assets/avatars/ana.png",
+      "source_sha256": "5a04453e09a5b5f50a141a40955853868799cae9c6cf6d4a9c34236ab474a4b2",
+      "copy_sha256": "5a04453e09a5b5f50a141a40955853868799cae9c6cf6d4a9c34236ab474a4b2",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/assets/avatars/carlos.png",
+      "source_sha256": "c6658ea7a049b9dc6c1dea158ca20d614dbaf239014d2d6e47b136acb8a1a6a3",
+      "copy_sha256": "c6658ea7a049b9dc6c1dea158ca20d614dbaf239014d2d6e47b136acb8a1a6a3",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/assets/avatars/diego.png",
+      "source_sha256": "40862b5e1b110a0e501ef9d8a2a3517aea0a652f59e66474adc25e708f9ba3a4",
+      "copy_sha256": "40862b5e1b110a0e501ef9d8a2a3517aea0a652f59e66474adc25e708f9ba3a4",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/assets/avatars/mariana.png",
+      "source_sha256": "9fb9b3e95f9f4d37a776cdcf6d6841f510f0a6e048d8c2dd8cb482c125c024fe",
+      "copy_sha256": "9fb9b3e95f9f4d37a776cdcf6d6841f510f0a6e048d8c2dd8cb482c125c024fe",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/assets/avatars/perfil.png",
+      "source_sha256": "2c51d2df843712553c30e5206c9e8bc54e0be1b76fa73431728a86338061eeb0",
+      "copy_sha256": "2c51d2df843712553c30e5206c9e8bc54e0be1b76fa73431728a86338061eeb0",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/assets/avatars/valeria.png",
+      "source_sha256": "ee04065993ceae6e915471d8dd6b33ab117ed0dae774ab4aa85dcbf4f6810ec7",
+      "copy_sha256": "ee04065993ceae6e915471d8dd6b33ab117ed0dae774ab4aa85dcbf4f6810ec7",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/assets/brand/klini-logo-primary.svg",
+      "source_sha256": "2fd70babe5b46abe2c169e105bd52364c459a80e78d14faf619633e4caffa268",
+      "copy_sha256": "44db2bd647d4077126a8439a96d37532092c4adecf9a9a5b641c4bb30e031a5e",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/assets/fonts/DejaVuSans-Bold.woff",
+      "source_sha256": "e2628176bc9349ce845ca54d9680058665209f7d21488f15a836cfc1439aeb2a",
+      "copy_sha256": "e2628176bc9349ce845ca54d9680058665209f7d21488f15a836cfc1439aeb2a",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/assets/fonts/DejaVuSans.woff",
+      "source_sha256": "e62e0ba87b06e53b604c473be54ba859d59bf7cf99478a850d979e2fe94c0a99",
+      "copy_sha256": "e62e0ba87b06e53b604c473be54ba859d59bf7cf99478a850d979e2fe94c0a99",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/assets/photos/caminata-runway.png",
+      "source_sha256": "c9b15f24b79667743b37c372fb183fb540670f65962349b55d37ffb65fd389c8",
+      "copy_sha256": "c9b15f24b79667743b37c372fb183fb540670f65962349b55d37ffb65fd389c8",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/assets/photos/meditacion.png",
+      "source_sha256": "4b85997e22aa867e9ba4b735a7c2b89c9741ed2eeda1456c0be9e314536b695e",
+      "copy_sha256": "4b85997e22aa867e9ba4b735a7c2b89c9741ed2eeda1456c0be9e314536b695e",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/assets/photos/running.png",
+      "source_sha256": "178cbefe87d6516a6130e296925bfaa6e6534eec1ba07aafe56fe967fab41691",
+      "copy_sha256": "178cbefe87d6516a6130e296925bfaa6e6534eec1ba07aafe56fe967fab41691",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/assets/photos/yoga.png",
+      "source_sha256": "c0b090b5a0432f71151a58242e8d2142a663c3884ca308dc8e033e7b7a01c1c2",
+      "copy_sha256": "c0b090b5a0432f71151a58242e8d2142a663c3884ca308dc8e033e7b7a01c1c2",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/assets/provenance.json",
+      "source_sha256": "9b5d615805ce988478ba5087ece65da870950fc6d79a5880cc5d1d1ea86265ad",
+      "copy_sha256": "9b5d615805ce988478ba5087ece65da870950fc6d79a5880cc5d1d1ea86265ad",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/licenses/DejaVu.txt",
+      "source_sha256": "baa2e5e5cdb29e9052bbe4e171b2feb4b3314116ef9032fe11bd874c803cc815",
+      "copy_sha256": "baa2e5e5cdb29e9052bbe4e171b2feb4b3314116ef9032fe11bd874c803cc815",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "public/vendor/klini-patient/licenses/Lucide.txt",
+      "source_sha256": "6fc5b7332939dd5c61af3a5f97450f7bc05d4a396dd0bc21ac341716b3b05096",
+      "copy_sha256": "6fc5b7332939dd5c61af3a5f97450f7bc05d4a396dd0bc21ac341716b3b05096",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "resources/views/components/klini-icon.blade.php",
+      "source_sha256": "4efa36cbab85b962eb1fa8891d3cdb4eb60a1b15dbababd33602e74b03da0ba0",
+      "copy_sha256": "4efa36cbab85b962eb1fa8891d3cdb4eb60a1b15dbababd33602e74b03da0ba0",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "resources/views/layouts/app.blade.php",
+      "source_sha256": "d142fb9baa53dbd83a0426151d9b7704731911a78845fbfbcb05d5aef47badab",
+      "copy_sha256": "1e7362ce8ab2afbeb7dd3edd917a7f16fca654f5d2483e1346492d98e8af35b8",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "resources/views/patient/dashboard.blade.php",
+      "source_sha256": "f1a8202d42f5b03665f5381e5f9c5a79237fbfa81144a908e7d968a6bfb8066b",
+      "copy_sha256": "f1a8202d42f5b03665f5381e5f9c5a79237fbfa81144a908e7d968a6bfb8066b",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "resources/views/patient/partials/clinical-history.blade.php",
+      "source_sha256": "b289c8a7de1d27f69bcf980c931e019ae5b9001d3ab1dca680e2270d1cf8ad25",
+      "copy_sha256": "b289c8a7de1d27f69bcf980c931e019ae5b9001d3ab1dca680e2270d1cf8ad25",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "resources/views/patient/partials/insurance-enrollment.blade.php",
+      "source_sha256": "19f1dcff3f7d2e42db9e13f82cfdd0e60b956192faea23b78495e8ea463a1428",
+      "copy_sha256": "c6ffc3b8caa9a6785e05a743e4d33a8d3cb9d60ccf95c1d42530701f5701b6fb",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "resources/views/patient/partials/insurance-flow.blade.php",
+      "source_sha256": "11d199d5c5deb56e1e7d2183641415545aeccb15705304e18816b3d9eb6f262f",
+      "copy_sha256": "8fb328e13951455af6119af885c25886ae76d6c5217bbcc974f7b5cfe57b6ab6",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "resources/views/patient/partials/insurance-icon.blade.php",
+      "source_sha256": "1ddabe39fa538b6d761f72a48e700fcd5d87bb3d05d6f2f94069181dd5dd0134",
+      "copy_sha256": "1ddabe39fa538b6d761f72a48e700fcd5d87bb3d05d6f2f94069181dd5dd0134",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "resources/views/patient/partials/insurance-plan-card.blade.php",
+      "source_sha256": "250143b0da4ba3d6a82988acfb30ae33e67e317270c71c51084ed70dcb5d3ec0",
+      "copy_sha256": "250143b0da4ba3d6a82988acfb30ae33e67e317270c71c51084ed70dcb5d3ec0",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "resources/views/patient/partials/wellness-navigation.blade.php",
+      "source_sha256": "0ab53ce27323db68ba4c966a3f2229a50b9449f0da98e9dee7c5aabae685befc",
+      "copy_sha256": "0ab53ce27323db68ba4c966a3f2229a50b9449f0da98e9dee7c5aabae685befc",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "tests/Frontend/CommunityActivities.test.mjs",
+      "source_sha256": "70450994dd64a8bda7c0a1c38c74b8a6545c15b0c270e7ea28fb46e8b84038a0",
+      "copy_sha256": "70450994dd64a8bda7c0a1c38c74b8a6545c15b0c270e7ea28fb46e8b84038a0",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "tests/Frontend/CommunityAttendees.test.mjs",
+      "source_sha256": "2ea767653a8bf077c55885eba7f7e125782744f752278bc03225252fcf5ecddb",
+      "copy_sha256": "2ea767653a8bf077c55885eba7f7e125782744f752278bc03225252fcf5ecddb",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "tests/Frontend/CommunityCalendar.test.mjs",
+      "source_sha256": "9d075d27fbf9f16515121f26d1b1b34f51fabeaa1dcb1e1289c6f2e07431be8a",
+      "copy_sha256": "52efb886bf5c751a5e6a5a233dc48e055f87813cbba07e21d1ae9f6578d55bff",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": true
+    },
+    {
+      "path": "tests/Frontend/CommunityReservation.test.mjs",
+      "source_sha256": "05a7a72803ca121ebac515e72a9bc830d7aa575a7f25c6af95c897360583069b",
+      "copy_sha256": "05a7a72803ca121ebac515e72a9bc830d7aa575a7f25c6af95c897360583069b",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "tests/Frontend/PatientProfiles.test.mjs",
+      "source_sha256": "ba38d114e4bc1d532a21b319415be0d69a89b552def28e6fcbaf585eba6a9507",
+      "copy_sha256": "ba38d114e4bc1d532a21b319415be0d69a89b552def28e6fcbaf585eba6a9507",
+      "upstream_changed_since_oct7": false,
+      "destination_changed": false
+    },
+    {
+      "path": "tests/Frontend/PatientSocial.test.mjs",
+      "source_sha256": "9fac88a5ef8d0e7df5b3af37ecd8048f7e3b40f4b1b1d882d394f837421f68a9",
+      "copy_sha256": "9fac88a5ef8d0e7df5b3af37ecd8048f7e3b40f4b1b1d882d394f837421f68a9",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    },
+    {
+      "path": "tests/Frontend/PatientStories.test.mjs",
+      "source_sha256": "7ac6be0feb93507ffc62fde5ab41075061e255339f813808dbd61aa9e0970de3",
+      "copy_sha256": "7ac6be0feb93507ffc62fde5ab41075061e255339f813808dbd61aa9e0970de3",
+      "upstream_changed_since_oct7": true,
+      "destination_changed": true
+    }
+  ]
+}

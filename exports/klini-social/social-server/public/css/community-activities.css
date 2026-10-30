@@ -1,0 +1,70 @@
+.kc-activity-details{padding:8px 16px 18px;color:#17304d}.kc-activity-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.kc-activity-title h3{font-size:16px;margin:0}.kc-activity-title span{background:#def8f3;color:#009e96;border-radius:20px;padding:5px 12px;font-size:10px;font-weight:800;text-transform:uppercase}.kc-activity-schedule{display:flex;align-items:center;justify-content:space-between;gap:12px}.kc-activity-schedule p{display:flex;align-items:center;gap:8px;margin:6px 0;color:#62768c;font-size:12px}.kc-activity-schedule svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8}.kc-activity-schedule button{flex-shrink:0;display:grid;place-items:center;width:48px;min-height:44px;border:1.5px solid #10bdb3;background:#fff;border-radius:12px;color:#00a69d}.kc-activity-schedule button[aria-pressed=true]{background:#dcf7f1}.kc-activity-schedule button:disabled{opacity:.5}.kc-community-search-scope{margin:4px 12px 12px;padding:8px 12px;border:1px solid #dce8ec;border-radius:20px;background:#fff;color:#244058;font:inherit;font-size:12px;max-width:calc(100% - 24px)}.kc-search-profile{display:flex;gap:14px;padding:16px;border-bottom:1px solid #e3edf0}.kc-search-profile img{width:44px;height:44px;border-radius:50%;object-fit:cover}.kc-search-profile p{margin:4px 0;color:#63788b;font-size:12px}.kc-activity-notice{position:fixed;bottom:110px;left:16px;right:16px;z-index:10000;padding:12px 16px;border-radius:12px;background:#173c49;color:#fff;font-size:12px;box-shadow:0 4px 20px #0002}.kc-activity-admin{background:#fff;border:1px solid #dbe9e9;border-radius:20px;padding:24px;margin-bottom:24px}.kc-activity-admin h2{margin-top:0}.kc-activity-admin form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.kc-activity-admin label{display:grid;gap:6px;font-size:13px;font-weight:650}.kc-activity-admin input,.kc-activity-admin textarea,.kc-activity-admin select{width:100%;box-sizing:border-box;min-height:44px;border:1px solid #d5e5e7;border-radius:10px;padding:10px;font:inherit}.kc-activity-admin .kc-activity-check{display:flex;align-items:center}.kc-activity-check input{width:20px}.kc-activity-admin button{border:0;border-radius:12px;padding:12px 18px;background:#00ada3;color:#fff;cursor:pointer;min-height:44px}.kc-activity-admin article{display:flex;justify-content:space-between;align-items:center;gap:16px;border-top:1px solid #e0ecec;padding:16px 0}.kc-activity-admin article p{margin:6px 0}.kc-activity-admin [role=status]{grid-column:1/-1;color:#076f69}.kc-community-feed-list [hidden]{display:none!important}@media(max-width:650px){.kc-activity-admin{padding:16px}.kc-activity-admin form{grid-template-columns:1fr}.kc-activity-admin article{align-items:flex-start;flex-direction:column}}
+.kc-community-feed-card .kc-post-actions button{min-height:44px;min-width:44px}
+.kc-activity-schedule>div{min-width:0;flex:1}.kc-activity-schedule p{min-width:0;overflow-wrap:anywhere}.kc-activity-schedule p svg{flex-shrink:0}.kc-activity-title h3{min-width:0;overflow-wrap:anywhere}.kc-activity-title>span{flex-shrink:0}
+.kc-community-feed-card .kc-post-actions button,.kc-activity-schedule button{min-height:50px;min-width:50px}
+
+/* Compact calendar control in the community activity footer. */
+.native-shell .patient-portal-communities-view .kc-activity-schedule button[data-activity-reserve] {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
+  padding: 0;
+  border: 1px solid #00a69d !important;
+  border-radius: 7px;
+  background: #fff !important;
+  background-image: none !important;
+  color: #009e96 !important;
+  box-shadow: none !important;
+  overflow: visible;
+}
+.native-shell .patient-portal-communities-view .kc-activity-schedule button[data-activity-reserve]::before {
+  content: '';
+  position: absolute;
+  inset: -7px;
+}
+.native-shell .patient-portal-communities-view .kc-activity-schedule button[data-activity-reserve] svg {
+  width: 16px;
+  height: 16px;
+}
+/* Event reservation and demonstration checkout. */
+dialog.kc-reservation-dialog{box-sizing:border-box;width:min(400px,calc(100% - 32px));max-height:calc(100dvh - 40px);overflow:auto;margin:auto;padding:28px 22px 18px;border:1px solid #e0e9ed;border-radius:22px;background:#fff;color:#173453;box-shadow:0 18px 70px #102e4033;text-align:center}
+dialog.kc-reservation-dialog::backdrop{background:#10243280}
+dialog.kc-reservation-dialog.is-result{padding:30px 20px 22px;border-radius:24px;}
+.kc-reservation-dialog.is-result .kc-reservation-symbol{width:82px;height:82px;margin:4px auto 22px;background:#e0faf7;}
+.kc-reservation-dialog.is-result .kc-reservation-symbol svg{width:40px;height:40px;stroke-linecap:round;stroke-linejoin:round;}
+.kc-reservation-dialog.is-result h2{font-size:25px;margin-bottom:12px;letter-spacing:-.5px;}
+.kc-reservation-dialog.is-result .kc-reservation-question{font-size:18px;color:#52677b;margin:0;line-height:1.5;}
+.kc-reservation-dialog.is-result .kc-reservation-actions{margin-top:27px;}
+.native-shell .kc-reservation-dialog.is-result .kc-reservation-actions .is-primary{min-height:52px;font-size:17px;background:linear-gradient(135deg,#00c3bf,#00aba5)!important;}
+.native-shell dialog.kc-reservation-dialog button{box-sizing:border-box;box-shadow:none!important;font:inherit;cursor:pointer}
+.native-shell dialog.kc-reservation-dialog .kc-reservation-close{position:absolute;top:8px;right:8px;display:grid;place-items:center;width:36px;height:36px;min-width:36px;min-height:36px;padding:0;background:transparent!important;border:0!important;border-radius:50%;color:#718398;font-size:28px}
+.kc-reservation-symbol{display:grid;place-items:center;width:66px;height:66px;margin:4px auto 16px;border-radius:50%;background:#def8f4;color:#00a5a2}.kc-reservation-symbol svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:1.8}
+.kc-reservation-dialog h2{margin:0 0 14px;font-size:23px;line-height:1.25}.kc-reservation-question{font-size:16px;margin:10px 0}.kc-reservation-summary{font-size:12px;line-height:1.6;color:#71859c;margin:10px 0 22px;overflow-wrap:anywhere}
+.kc-reservation-actions{display:flex;gap:10px;margin-top:18px}.native-shell .kc-reservation-dialog .kc-reservation-actions button{flex:1;min-width:0;min-height:46px;padding:10px 12px;border:0!important;border-radius:25px;font-size:14px;font-weight:750}.native-shell .kc-reservation-dialog .is-secondary{background:#f0f3f6!important;color:#213d5e!important}.native-shell .kc-reservation-dialog .is-primary{background:#00afa7!important;color:#fff!important}.kc-reservation-dialog button:disabled{opacity:.55}.kc-reservation-dialog [role=status]{font-size:12px;color:#9c3540;line-height:1.5;margin:12px 0 0}.kc-reservation-dialog [role=status]:empty{display:none}
+.kc-reservation-dialog.is-payment{text-align:left;width:min(440px,calc(100% - 24px));padding:30px 18px 20px}.kc-reservation-total{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 12px;border-radius:12px;background:#f3f7f8;font-size:14px}.kc-reservation-total strong{min-width:0;overflow-wrap:anywhere}.kc-reservation-total b{flex-shrink:0}
+.kc-reservation-methods{display:flex;gap:8px;margin:14px 0}.native-shell .kc-reservation-dialog .kc-reservation-methods button{flex:1;min-width:0;min-height:44px;border:1px solid #dce6eb!important;border-radius:24px;background:#fff!important;color:#596c86;font-size:14px;font-weight:700}.native-shell .kc-reservation-dialog .kc-reservation-methods button[aria-selected=true]{border-color:#00aca5!important;background:#e7f9f6!important;color:#007f85}
+.kc-reservation-card{display:grid;gap:12px}.kc-reservation-card label{display:grid;gap:5px;font-size:11px;font-weight:650;color:#5d718b}.kc-reservation-card input{box-sizing:border-box;width:100%;min-width:0;min-height:45px;padding:11px 12px;border:1px solid #dce5ec;border-radius:10px;background:#fff;color:#173453;font:inherit;font-size:14px}.kc-reservation-card input:focus{outline:2px solid #15bbb0;outline-offset:1px}.kc-reservation-card-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.kc-reservation-demo{font-size:11px;line-height:1.5;color:#63788e;margin:14px 0 0}.kc-reservation-wallet{padding:18px 14px;background:#eefaf7;border-radius:12px;text-align:center}.kc-reservation-wallet p{font-size:13px;line-height:1.5}.kc-reservation-wallet strong{font-size:23px}.kc-reservation-dialog [hidden]{display:none!important}
+@media(max-width:520px){dialog.kc-reservation-dialog.is-payment{margin:auto auto 12px;border-radius:22px 22px 14px 14px;max-height:calc(100dvh - 24px)}}
+/* Both payment methods share the same content row, preserving popup geometry. */
+.kc-reservation-dialog [data-demo-payment] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+.kc-reservation-dialog [data-card-fields],
+.kc-reservation-dialog [data-wallet-fields] {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+.kc-reservation-dialog [data-card-fields][hidden] {
+  display: grid !important;
+  visibility: hidden;
+  pointer-events: none;
+}
+.kc-reservation-dialog [data-wallet-fields][hidden] {
+  display: block !important;
+  visibility: hidden;
+  pointer-events: none;
+}

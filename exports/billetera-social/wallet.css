@@ -1,0 +1,588 @@
+*{box-sizing:border-box}body{margin:0;background:#f5fbfa;font-family:Arial,sans-serif;color:#142c48}button,input{font:inherit}button{cursor:pointer}.wallet-dialog{width:min(96vw,800px);max-height:94dvh;padding:0;border:1px solid #d7e5e8;border-radius:22px;color:#142c48}.wallet-dialog::backdrop{background:#10213d66}.wallet-header{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid #d7e5e8}.wallet-header small{font-size:10px;letter-spacing:1px;color:#62738b;font-weight:bold}.wallet-header h1{font-size:20px;margin:4px 0}.wallet-header button{width:36px;height:36px;border:1px solid #d7e5e8;border-radius:10px;background:white;font-size:22px}.wallet-body{padding:12px}.wallet-demo-note{margin:12px;padding:10px;background:#fff8e8;font-size:12px;border-radius:10px}.patient-profile-button{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;border:1px solid #d3e2e5;border-radius:14px;background:white;font-weight:bold;color:#16364d}.patient-profile-button.is-primary{background:linear-gradient(120deg,#1ac7ba,#00aa9e);color:white;border:0}.patient-profile-button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6}
+.patient-wallet-redesign{
+  display: grid;
+  gap: 24px;
+}
+.patient-wallet-tokens{padding:22px;border:1px solid #c7edf3;border-radius:20px;background:linear-gradient(120deg,#effcfd,#fff);color:#15354d;}
+.patient-wallet-token-heading{display:flex;align-items:center;gap:16px;}
+.patient-wallet-token-heading>span{display:grid;place-items:center;background:#d7f5f8;color:#008ca7;width:62px;height:62px;border-radius:18px;}
+.patient-wallet-token-heading svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:1.7;}
+.patient-wallet-token-heading small,.patient-wallet-token-heading strong{display:block;}
+.patient-wallet-token-heading strong{font-size:28px;margin:5px 0;}
+.patient-wallet-tokens p{margin:7px 0 0;color:#617797;font-size:13px;}
+.patient-wallet-tokens details{margin-top:18px;}
+.patient-wallet-tokens summary{cursor:pointer;font-weight:700;color:#00829b;}
+.patient-wallet-tokens ul{padding:0;margin:12px 0 0;list-style:none;}
+.patient-wallet-tokens li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid #d8edf2;font-size:13px;}
+.patient-wallet-tokens li span{min-width:0;overflow-wrap:anywhere;}
+.patient-wallet-tokens li small{display:block;margin-top:4px;color:#617797;}
+.patient-wallet-tokens li b{white-space:nowrap;color:#00829b;}
+.patient-wallet-hero{
+  position: relative;
+  display: grid;
+  min-height: 196px;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 32px;
+  overflow: hidden;
+  padding: 34px;
+  border: 1px solid #cfe8eb;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 95% 18%, #38ceb8 0 7px, transparent 8px),
+    radial-gradient(circle at 98% 48%, #f2c66d 0 3px, transparent 4px),
+    radial-gradient(circle at 84% 78%, rgba(240, 180, 50, .15) 0 90px, transparent 91px),
+    linear-gradient(108deg, #efffff 0%, #fffdf8 72%, #fff8ea 100%);
+  box-shadow: 0 16px 34px rgba(17, 55, 70, .07);
+}
+.patient-wallet-hero::after{
+  content: "";
+  position: absolute;
+  right: -8px;
+  bottom: 18px;
+  width: 210px;
+  height: 86px;
+  opacity: .55;
+  background-image: radial-gradient(circle, #efd08b 0 2px, transparent 2.5px);
+  background-size: 28px 28px;
+}
+.patient-wallet-hero-icon{
+  display: grid;
+  width: 98px;
+  height: 98px;
+  place-items: center;
+  border-radius: 24px;
+  background: #dffaf5;
+  color: #03a494;
+}
+.patient-wallet-hero-icon svg{
+  width: 46px;
+  height: 46px;
+  stroke-width: 2.2;
+}
+.patient-wallet-hero small,
+.patient-wallet-recharge-main > small,
+.patient-wallet-recharge-form label > span,
+.patient-wallet-summary small{
+  color: #65758e;
+  font-weight: 900;
+}
+.patient-wallet-hero small,
+.patient-wallet-recharge-form label > span{
+  font-size: 16px;
+}
+.patient-wallet-recharge-main > small{
+  display: block;
+  margin-bottom: 18px;
+  color: #0db4a6;
+  font-size: 15px;
+  letter-spacing: .3px;
+}
+.patient-wallet-hero strong{
+  display: block;
+  margin: 8px 0 18px;
+  color: #111b36;
+  font-size: clamp(42px, 5vw, 58px);
+  font-weight: 950;
+  line-height: .95;
+}
+.patient-wallet-hero p{
+  margin: 0;
+  color: #15203b;
+  font-size: 18px;
+  line-height: 1.45;
+}
+.patient-wallet-orb{
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff1d6;
+  color: #ef9f0c;
+}
+.patient-wallet-orb svg{
+  width: 30px;
+  height: 30px;
+  stroke-width: 2.4;
+}
+.patient-wallet-orb.is-card{
+  top: 34px;
+  right: 162px;
+  width: 70px;
+  height: 70px;
+}
+.patient-wallet-orb.is-money{
+  right: 255px;
+  bottom: 24px;
+  width: 72px;
+  height: 72px;
+}
+.patient-wallet-recharge,
+.patient-wallet-subscriptions,
+.patient-wallet-movements{
+  border: 1px solid #d9e8ec;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 18px 36px rgba(16, 53, 69, .06);
+}
+.patient-wallet-recharge{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, .58fr);
+  gap: 34px;
+  align-items: center;
+  padding: 34px;
+}
+.patient-wallet-recharge-main h3,
+.patient-wallet-section-head h3,
+.patient-wallet-help h4{
+  margin: 0;
+  color: var(--pp-navy);
+  font-size: 28px;
+  line-height: 1.1;
+}
+.patient-wallet-recharge-form{
+  display: flex;
+  align-items: end;
+  gap: 16px;
+  margin-top: 26px;
+}
+.patient-wallet-recharge-form label{
+  flex: 1 1 300px;
+}
+.patient-wallet-amount-field{
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  min-height: 72px;
+  margin-top: 12px;
+  overflow: hidden;
+  border: 1px solid #d6e4e8;
+  border-radius: 15px;
+  background: #fff;
+}
+.patient-wallet-amount-field b{
+  display: grid;
+  place-items: center;
+  border-right: 1px solid #d6e4e8;
+  color: #66758c;
+  font-size: 21px;
+}
+.patient-wallet-amount-field input{
+  min-height: 70px;
+  border: 0;
+  border-radius: 0;
+  background: #fff;
+  color: #111b36;
+  font-size: 25px;
+  font-weight: 900;
+}
+.patient-wallet-recharge-form .patient-profile-button{
+  min-width: 196px;
+  min-height: 72px;
+  border-radius: 15px;
+  font-size: 18px;
+}
+.patient-wallet-help{
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding-left: 36px;
+  border-left: 1px solid #d6e4e8;
+}
+.patient-wallet-help > span,
+.patient-wallet-section-icon,
+.patient-wallet-movement-icon,
+.patient-wallet-summary-icon{
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+.patient-wallet-help > span{
+  width: 50px;
+  height: 50px;
+  background: #dffaf5;
+  color: #08a799;
+}
+.patient-wallet-help p{
+  margin: 16px 0 0;
+  color: #687893;
+  font-size: 18px;
+  line-height: 1.45;
+}
+.patient-wallet-subscriptions,
+.patient-wallet-movements{
+  padding: 30px 32px;
+}
+.patient-wallet-section-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+.patient-wallet-section-head > div{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.patient-wallet-section-icon{
+  width: 50px;
+  height: 50px;
+  background: #dffaf5;
+  color: #08a799;
+}
+.patient-wallet-current-plan{
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 13px;
+  border-radius: 999px;
+  background: #dffaf5;
+  color: #087f72;
+  font-size: 13px;
+  font-weight: 900;
+}
+.patient-wallet-plan-grid{
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+.patient-wallet-plan{
+  display: grid;
+  min-height: 260px;
+  align-content: start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #d9e8ec;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 12px 24px rgba(16, 53, 69, .045);
+}
+.patient-wallet-plan.is-current{
+  border-color: #20c8ba;
+  background: linear-gradient(180deg, #f0fffb 0%, #fff 100%);
+  box-shadow: 0 18px 30px rgba(8, 167, 153, .12);
+}
+.patient-wallet-plan-head{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.patient-wallet-plan-head > span{
+  display: grid;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  background: #dffaf5;
+  color: #08a799;
+}
+.patient-wallet-plan small{
+  display: block;
+  color: #65758e;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .2px;
+  text-transform: uppercase;
+}
+.patient-wallet-plan h4{
+  margin: 2px 0 0;
+  color: var(--pp-navy);
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1.15;
+}
+.patient-wallet-plan > strong{
+  color: #111b36;
+  font-size: 22px;
+  font-weight: 950;
+  line-height: 1;
+}
+.patient-wallet-plan > em{
+  color: #087f72;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+}
+.patient-wallet-plan p{
+  margin: 0;
+  color: #687893;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.patient-wallet-plan .patient-profile-button{
+  width: 100%;
+  margin-top: auto;
+}
+.patient-wallet-plan .patient-profile-button:disabled{
+  opacity: 1;
+  cursor: default;
+}
+.patient-wallet-filter{
+  display: inline-flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 22px;
+  border: 1px solid #d6e4e8 !important;
+  border-radius: 13px;
+  background: #fff !important;
+  color: #273650 !important;
+  box-shadow: none !important;
+  font-size: 17px;
+  font-weight: 800;
+}
+.patient-wallet-movement-list{
+  overflow: hidden;
+  border: 1px solid #d9e8ec;
+  border-radius: 15px;
+}
+.patient-wallet-movement{
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 20px;
+  min-height: 108px;
+  padding: 20px;
+  border-bottom: 1px solid #e3ecef;
+  background: #fff;
+}
+.patient-wallet-movement:last-child{
+  border-bottom: 0;
+}
+.patient-wallet-movement-icon{
+  width: 58px;
+  height: 58px;
+  background: #dffaf5;
+  color: #08a799;
+}
+.patient-wallet-movement-copy strong{
+  display: block;
+  color: var(--pp-navy);
+  font-size: 18px;
+  font-weight: 900;
+}
+.patient-wallet-movement-copy small{
+  display: block;
+  margin-top: 7px;
+  color: #65758e;
+  font-size: 15px;
+  font-weight: 800;
+}
+.patient-wallet-status{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 108px;
+  min-height: 31px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 900;
+}
+.patient-wallet-status.is-ok{
+  background: #e0f7ec;
+  color: #079060;
+}
+.patient-wallet-status.is-debit{
+  background: #ffe8ec;
+  color: #d23c50;
+}
+.patient-wallet-amount{
+  min-width: 160px;
+  color: var(--pp-navy);
+  font-size: 22px;
+  font-weight: 950;
+  text-align: right;
+}
+.patient-wallet-amount.is-credit{
+  color: #008d60;
+}
+.patient-wallet-arrow{
+  color: var(--pp-navy);
+}
+.patient-wallet-summary{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 32px;
+  border: 1px solid #e1eaed;
+  border-radius: 14px;
+  background: #fff;
+}
+.patient-wallet-summary > div{
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 18px;
+  align-items: center;
+  min-height: 116px;
+  padding: 20px 24px;
+  border-right: 1px solid #d9e8ec;
+}
+.patient-wallet-summary > div:last-child{
+  border-right: 0;
+}
+.patient-wallet-summary-icon{
+  grid-row: span 2;
+  width: 62px;
+  height: 62px;
+}
+.patient-wallet-summary-icon.is-credit{
+  background: #dff7eb;
+  color: #079060;
+}
+.patient-wallet-summary-icon.is-debit{
+  background: #ffe3e8;
+  color: #d23c50;
+}
+.patient-wallet-summary-icon.is-count{
+  background: #dff2ff;
+  color: #1083d9;
+}
+.patient-wallet-summary small{
+  align-self: end;
+  font-size: 15px;
+}
+.patient-wallet-summary strong{
+  align-self: start;
+  color: var(--pp-navy);
+  font-size: 24px;
+  font-weight: 950;
+}
+.patient-wallet-summary > div:first-child strong{
+  color: #008d60;
+}
+.patient-wallet-summary > div:nth-child(2) strong{
+  color: #d23c50;
+}
+@media (max-width: 640px){.patient-wallet-redesign{
+    gap: 14px;
+  }
+.patient-wallet-hero,
+  .patient-wallet-recharge,
+  .patient-wallet-subscriptions,
+  .patient-wallet-movements{
+    border-radius: 18px;
+  }
+.patient-wallet-hero{
+    min-height: 210px;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 22px;
+  }
+.patient-wallet-hero-icon{
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+  }
+.patient-wallet-hero strong{
+    font-size: 39px;
+  }
+.patient-wallet-hero p,
+  .patient-wallet-help p{
+    font-size: 14px;
+  }
+.patient-wallet-orb{
+    opacity: .7;
+  }
+.patient-wallet-orb.is-card{
+    top: 18px;
+    right: 20px;
+    width: 52px;
+    height: 52px;
+  }
+.patient-wallet-orb.is-money{
+    right: 78px;
+    bottom: 18px;
+    width: 50px;
+    height: 50px;
+  }
+.patient-wallet-recharge{
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 22px;
+  }
+.patient-wallet-recharge-main h3,
+  .patient-wallet-section-head h3,
+  .patient-wallet-help h4{
+    font-size: 22px;
+  }
+.patient-wallet-recharge-form{
+    display: grid;
+  }
+.patient-wallet-recharge-form .patient-profile-button,
+  .patient-wallet-amount-field{
+    min-height: 58px;
+  }
+.patient-wallet-amount-field input{
+    min-height: 56px;
+  }
+.patient-wallet-help{
+    padding: 18px 0 0;
+    border-top: 1px solid #d6e4e8;
+    border-left: 0;
+  }
+.patient-wallet-subscriptions,
+  .patient-wallet-movements{
+    padding: 18px;
+  }
+.patient-wallet-section-head{
+    display: grid;
+  }
+.patient-wallet-current-plan{
+    width: 100%;
+  }
+.patient-wallet-plan-grid{
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+.patient-wallet-plan-grid::-webkit-scrollbar{
+    display: none;
+  }
+.patient-wallet-plan{
+    flex: 0 0 min(280px, 86vw);
+    min-height: 250px;
+    scroll-snap-align: start;
+  }
+.patient-wallet-filter{
+    width: 100%;
+  }
+.patient-wallet-movement{
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 12px;
+    padding: 15px;
+  }
+.patient-wallet-status{
+    grid-column: 2;
+    justify-self: start;
+  }
+.patient-wallet-amount{
+    grid-column: 2 / 4;
+    min-width: 0;
+    text-align: left;
+  }
+.patient-wallet-arrow{
+    grid-column: 3;
+    grid-row: 1 / 3;
+  }
+.patient-wallet-summary{
+    grid-template-columns: 1fr;
+    margin-top: 18px;
+  }
+.patient-wallet-summary > div{
+    min-height: 92px;
+    border-right: 0;
+    border-bottom: 1px solid #d9e8ec;
+  }
+.patient-wallet-summary > div:last-child{
+    border-bottom: 0;
+  }
+}

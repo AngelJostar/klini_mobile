@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "Klini Social",
+    "slug": "klini-social",
+    "scheme": "klini-social",
+    "plugins": [
+      "expo-router"
+    ],
+    "ios": {
+      "bundleIdentifier": "mx.klini.social"
+    },
+    "android": {
+      "package": "mx.klini.social"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+/* A Unit area embeds the actual authorized operational screen, not a copy of its data. */
+html.unit-operation-embedded body.native-shell[class] { --platform-ui-scale: 1; --platform-viewport-height: 100dvh; zoom: 1; margin: 0; }
+html.unit-operation-embedded body.native-shell[class] .operational-native-screen { display: block; height: 100dvh; min-height: 0; }
+html.unit-operation-embedded .operational-native-screen > :is(.operational-native-topbar, .operational-native-sidebar) { display: none !important; }
+html.unit-operation-embedded body.native-shell[class] .operational-native-workspace { width: 100%; height: 100dvh; margin: 0; padding: 0; overflow: auto; }
+html.operational-detail-embedded .operational-native-workspace > :is(.operational-oncology-carousel, .operational-section-tabs) { display: none !important; }
+body.native-shell.unit-native-body .unit-area-workspace-switch { display: flex; align-items: center; gap: 8px; padding: 12px 20px; border-bottom: 1px solid #dfe6ef; background: #fff; }
+body.native-shell.unit-native-body .unit-area-workspace-switch button { min-width: 144px; height: 40px; border: 1px solid #dfe6ef; border-radius: 6px; background: white; color: #10244c; font-size: 12px; cursor: pointer; }
+body.native-shell.unit-native-body .unit-area-workspace-switch button[aria-selected="true"] { color: #008f98; border-color: #00a1ad; background: #eef8f8; }
+body.native-shell.unit-native-body .unit-area-operation-pane { padding: 0; background: white; }
+body.native-shell.unit-native-body [data-unit-operation-frame] { display: block; width: 100%; min-height: 650px; height: calc(var(--platform-viewport-height) - 260px); border: 0; background: #f7f9fb; }
+body.native-shell.unit-native-body [data-area-pane][hidden] { display: none !important; }
+body.native-shell.unit-native-body [data-unit-operation-frame][hidden] { display: none !important; }
+body.native-shell.unit-native-body .unit-procedure-toolbar { justify-content: flex-end; }
+body.native-shell.unit-native-body .unit-area-operation-placeholder { padding: 32px 20px; color: #526b93; font-size: 14px; }
+
+body.native-shell.unit-native-body .unit-area-workspace-switch button { box-shadow: none; font-family: inherit; font-weight: 400; }

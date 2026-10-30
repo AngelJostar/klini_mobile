@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Menú lateral social</title>
+  <link rel="stylesheet" href="menu.css">
+  <script src="menu.js" defer></script>
+</head>
+<body>
+  <!-- Coloca este bloque en la cabecera de tu aplicación. -->
+  <div class="social-menu-host">
+    <button class="social-menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="social-side-menu" data-social-menu-toggle>⋮</button>
+    <nav id="social-side-menu" class="social-side-menu" aria-label="Menú de usuario" hidden>
+      <button class="social-menu-card social-menu-finance" type="button" data-social-destination="wallet">
+        <span class="social-menu-art" aria-hidden="true"><span class="wallet-shape"></span><span class="coin coin-one"></span><span class="coin coin-two"></span></span>
+        <span class="social-menu-copy"><strong>Billetera y Suscripción</strong><small>Pagos, saldo y plan de acceso</small></span>
+        <span class="social-menu-arrow" aria-hidden="true">›</span>
+      </button>
+      <button class="social-menu-card" type="button" aria-expanded="false" aria-controls="social-interactions" data-social-interactions-toggle>
+        <span class="social-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3"/><circle cx="5" cy="9" r="2"/><circle cx="19" cy="9" r="2"/><path d="M7 20v-2a5 5 0 0 1 10 0v2M1 19v-1a4 4 0 0 1 5-4M23 19v-1a4 4 0 0 0-5-4"/></svg></span>
+        <span class="social-menu-copy"><strong>Interacciones</strong><small>Solicitudes, mensajes y alertas</small></span>
+        <span class="social-menu-arrow" aria-hidden="true">›</span>
+      </button>
+      <div id="social-interactions" class="social-menu-submenu" hidden>
+        <button type="button" data-social-destination="requests">Solicitudes</button>
+        <button type="button" data-social-destination="messages">Mensajes</button>
+        <button type="button" data-social-destination="alerts">Alertas</button>
+      </div>
+      <button class="social-menu-link" type="button" data-social-destination="communities"><span aria-hidden="true">♧</span>Comunidades<span class="social-menu-chevron" aria-hidden="true">›</span></button>
+      <button class="social-menu-link" type="button" data-social-destination="calendar"><span aria-hidden="true">▦</span>Mi agenda<span class="social-menu-chevron" aria-hidden="true">›</span></button>
+      <button class="social-menu-link" type="button" data-social-destination="profile"><span aria-hidden="true">○</span>Mi perfil<span class="social-menu-chevron" aria-hidden="true">›</span></button>
+    </nav>
+  </div>
+  <!-- Sólo para la vista previa; reemplázalo con tus pantallas. -->
+  <main class="social-menu-preview"><p>Abre el botón de tres puntos.</p><p data-social-menu-status role="status"></p></main>
+</body>
+</html>

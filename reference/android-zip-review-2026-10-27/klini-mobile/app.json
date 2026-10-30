@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "Klini · Revisión",
+    "slug": "klini-android-review",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "icon": "./assets/klini-icon.png",
+    "android": {
+      "package": "mx.klini.review",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/klini-adaptive.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "permissions": [
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "mx.klini.review"
+    },
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/klini-icon.png"
+    },
+    "plugins": [
+      "expo-document-picker",
+      "expo-notifications",
+      "expo-font",
+      "expo-sharing",
+      "expo-status-bar",
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permite que Klini tome fotos para adjuntarlas a tus registros.",
+          "recordAudioAndroid": false,
+          "barcodeScannerEnabled": false
+        }
+      ],
+      "expo-asset"
+    ],
+    "experiments": {
+      "typedRoutes": false
+    },
+    "scheme": "klini-review"
+  }
+}
