@@ -2,8 +2,8 @@ import type { AppState, Patient, ProfileScope } from './types';
 import type { ManagedProfile } from '../state/managedProfiles';
 
 export function captureProfile(state: AppState, kind: string): ProfileScope {
-  const { profile, appointments, policies, claims, records, medications, messages, favorites } = state;
-  return { profile, appointments, policies, claims, records, medications, messages, favorites, kind };
+  const { profile, appointments, policies, claims, records, medications, messages, favorites, aiSubscription } = state;
+  return { profile, appointments, policies, claims, records, medications, messages, favorites, aiSubscription, kind };
 }
 export function switchProfile(state: AppState, target?: ManagedProfile): AppState {
   const ownerId = state.family?.ownerId ?? state.profile.id;
@@ -17,7 +17,7 @@ export function switchProfile(state: AppState, target?: ManagedProfile): AppStat
   } : undefined);
   if (!destination) throw Error('No se encontró el perfil principal.');
   profiles[id] = destination;
-  return { ...state, profile: destination.profile, appointments: destination.appointments, policies: destination.policies, claims: destination.claims, records: destination.records, medications: destination.medications, messages: destination.messages, favorites: destination.favorites, family: { ownerId, profiles } };
+  return { ...state, profile: destination.profile, appointments: destination.appointments, policies: destination.policies, claims: destination.claims, records: destination.records, medications: destination.medications, messages: destination.messages, favorites: destination.favorites, aiSubscription: destination.aiSubscription, family: { ownerId, profiles } };
 }
 export function editStoredProfile(state: AppState, id: string, { kind, ...patch }: Partial<Patient> & { kind?: string }): AppState {
   const renamedAppointments = (scope: Pick<ProfileScope, 'profile' | 'appointments'>) => scope.appointments.map(appointment =>

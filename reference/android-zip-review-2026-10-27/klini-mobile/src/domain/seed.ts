@@ -1,4 +1,5 @@
 import type { AppState, Doctor } from "./types";
+import { createAiSubscription } from './aiSubscription';
 
 const isoDay = (date: Date) =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
@@ -116,6 +117,7 @@ export function createDemoState(now: Date = new Date()): AppState {
   const createdAt = now.toISOString();
   return {
     schemaVersion: 1,
+    aiSubscription: createAiSubscription(true, undefined, now.getTime()),
     profile: {
       id: "patient-sofia",
       name: "Sofía Martínez",

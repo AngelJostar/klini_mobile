@@ -24,11 +24,15 @@ export default function AgendaPopup({
   onBack,
   children,
   footer,
+  scrollViewRef,
+  onContentSizeChange,
 }: PropsWithChildren<{
   title: string;
   onClose: () => void;
   onBack?: () => void;
   footer?: ReactNode;
+  scrollViewRef?: React.RefObject<React.ComponentRef<typeof ScrollView> | null>;
+  onContentSizeChange?: (width: number, height: number) => void;
 }>) {
   const alreadyOpen = usePopupAlreadyOpen();
   const [progress] = useState(() => new Animated.Value(alreadyOpen ? 1 : 0));
@@ -136,7 +140,10 @@ export default function AgendaPopup({
             </Pressable>
           </View>
           <ScrollView
-            style={{ flex: 1 }}
+            ref={scrollViewRef}
+            onContentSizeChange={onContentSizeChange}
+            testID="agenda-scroll"
+            style={{ flex: 1, minHeight: 0 }}
             key={title}
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={s.content}
@@ -147,9 +154,9 @@ export default function AgendaPopup({
               <Text style={{ color: colors.teal }}>.</Text>
             </Text>
             {children}
-            {footer && <View style={s.footer}>{footer}</View>}
             <Text style={s.note}>Datos de ejemplo</Text>
           </ScrollView>
+          {footer && <View style={s.footer}>{footer}</View>}
         </Animated.View>
       </KeyboardAvoidingView>
     </View>
@@ -192,6 +199,6 @@ const s = StyleSheet.create({
     letterSpacing: -1.4,
     marginBottom: 18,
   },
-  footer: { alignSelf: 'center', minWidth: 190, marginTop: 22 },
+  footer: { alignSelf: 'center', minWidth: 190, maxWidth: '90%', flexShrink: 0, marginTop: 12, marginBottom: 8 },
   note: { textAlign: 'center', color: '#819BB6', fontSize: 11, marginTop: 22 },
 });

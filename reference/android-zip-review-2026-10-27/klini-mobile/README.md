@@ -2,6 +2,8 @@
 
 Aplicación de demostración en **React Native, Expo SDK 57 y TypeScript**. Incluye directorio médico, agenda, teleconsulta demostrativa, seguros y archivo clínico personal. Los cambios se conservan en el dispositivo; no necesitas API keys para probarla.
 
+Para probar la conversación y el plan de **Klini IA ($99 MXN/mes)**, consulta [la guía de integración](docs/KLINI_IA.md). La activación local es de demostración y no realiza cargos; la guía explica cómo configurar el puente del modelo y qué falta para operar con pagos y usuarios autenticados.
+
 ## Abrir en Android Studio
 
 ### 1. Preparar el equipo

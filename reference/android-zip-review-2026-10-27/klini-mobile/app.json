@@ -1,7 +1,13 @@
 {
   "expo": {
     "name": "Klini · Revisión",
-    "slug": "klini-android-review",
+    "slug": "klini",
+    "owner": "guillermogherzigs-team",
+    "extra": {
+      "eas": {
+        "projectId": "e6eec200-1155-4dc5-94d0-4d596afcd755"
+      }
+    },
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
@@ -35,7 +41,8 @@
         "expo-camera",
         {
           "cameraPermission": "Permite que Klini tome fotos para adjuntarlas a tus registros.",
-          "recordAudioAndroid": false,
+          "microphonePermission": "Permite que Klini grabe tu voz al registrar la aceptación de una solicitud de demostración.",
+          "recordAudioAndroid": true,
           "barcodeScannerEnabled": false
         }
       ],

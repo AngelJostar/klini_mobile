@@ -6,6 +6,13 @@
       "distribution": "internal",
       "android": { "buildType": "apk" }
     },
-    "production": { "autoIncrement": true }
-  }
+    "production": { "autoIncrement": true },
+    "testflight": {
+      "extends": "production",
+      "distribution": "store",
+      "environment": "production",
+      "ios": { "simulator": false }
+    }
+  },
+  "submit": { "testflight": {} }
 }

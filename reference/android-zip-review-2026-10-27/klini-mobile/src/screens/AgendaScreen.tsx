@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import type { LayoutChangeEvent } from 'react-native';
 import {
   Avatar,
   Button,
@@ -15,8 +16,11 @@ import { Appointment } from '../domain/types';
 import { dateLabel, todayISO } from '../domain/dates';
 import { exportCalendar } from '../services/files';
 import Sheet from '../components/AgendaPopup';
+import BookingFooterButton from '../components/BookingFooterButton';
+import AgendaFilterPopup from '../components/AgendaFilterPopup';
 
 type Props = {
+  initialAppointmentId?: string;
   onClose: () => void;
   onBook: () => void;
   onReschedule: (id: string) => void;
@@ -24,12 +28,6 @@ type Props = {
 };
 
 type Filter = 'upcoming' | 'history' | 'cancelled' | 'all';
-const filters: { key: Filter; title: string }[] = [
-  { key: 'upcoming', title: 'Próximas' },
-  { key: 'history', title: 'Historial' },
-  { key: 'cancelled', title: 'Canceladas' },
-  { key: 'all', title: 'Todas' },
-];
 
 function localDate(iso: string) {
   const [year, month, day] = iso.split('-').map(Number);
@@ -82,24 +80,50 @@ function appointmentStatus(appointment: Appointment, now: number) {
   };
 }
 
-export default function AgendaScreen({ onClose, onBook, onReschedule, onTeleconsult }: Props) {
+export default function AgendaScreen({ initialAppointmentId, onClose, onBook, onReschedule, onTeleconsult }: Props) {
   const { state, updateAppointment } = useAppStore();
   const today = todayISO();
   const [now, setNow] = useState(() => Date.now());
+  const focusDate = state.appointments.find(appointment => appointment.id === initialAppointmentId)?.date;
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [month, setMonth] = useState(() => {
-    const date = localDate(today);
+    const date = localDate(focusDate ?? today);
     return new Date(date.getFullYear(), date.getMonth(), 1, 12);
   });
-  const [selectedDate, setSelectedDate] = useState<string | null>(
-    () =>
-      state.appointments
-        .filter((a) => a.status === 'scheduled' && appointmentTime(a) >= now)
-        .sort((a, b) => appointmentTime(a) - appointmentTime(b))[0]?.date ?? today,
-  );
   const [filter, setFilter] = useState<Filter>('all');
   const [detailId, setDetailId] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const hasFilters = selectedDate !== null || filter !== 'all';
+  const closeFilterPopup = useCallback(() => setShowOptions(false), []);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const scrollViewRef = useRef<React.ComponentRef<typeof ScrollView>>(null);
+  const listTop = useRef<number | null>(null);
+  const focusGroupTop = useRef<number | null>(null);
+  const focusRowTop = useRef<number | null>(null);
+  const focusScrollDone = useRef(false);
+
+  function scrollToNewAppointment() {
+    if (!initialAppointmentId || focusScrollDone.current || listTop.current === null || focusGroupTop.current === null || focusRowTop.current === null || !scrollViewRef.current) return;
+    const targetY = listTop.current + focusGroupTop.current + Math.max(0, focusRowTop.current - 60);
+    focusScrollDone.current = true;
+    requestAnimationFrame(() => scrollViewRef.current?.scrollTo({ y: Math.max(0, targetY), animated: false }));
+  }
+
+  function handleListLayout(event: LayoutChangeEvent) {
+    listTop.current = event.nativeEvent.layout.y;
+    scrollToNewAppointment();
+  }
+
+  function handleFocusGroupLayout(event: LayoutChangeEvent) {
+    focusGroupTop.current = event.nativeEvent.layout.y;
+    scrollToNewAppointment();
+  }
+
+  function handleFocusRowLayout(event: LayoutChangeEvent) {
+    focusRowTop.current = event.nativeEvent.layout.y;
+    scrollToNewAppointment();
+  }
 
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 30_000);
@@ -140,6 +164,15 @@ export default function AgendaScreen({ onClose, onBook, onReschedule, onTelecons
   );
 
   const detail = state.appointments.find((appointment) => appointment.id === detailId);
+  const appointmentGroups = useMemo(() => {
+    const groups = new Map<string, Appointment[]>();
+    visibleAppointments.forEach(appointment => {
+      const group = groups.get(appointment.date) ?? [];
+      group.push(appointment);
+      groups.set(appointment.date, group);
+    });
+    return [...groups].map(([date, appointments]) => ({ date, appointments }));
+  }, [visibleAppointments]);
   const detailDoctor = detail && state.doctors.find((doctor) => doctor.id === detail.doctorId);
 
   function openDetail(appointment: Appointment) {
@@ -155,10 +188,19 @@ export default function AgendaScreen({ onClose, onBook, onReschedule, onTelecons
     setFilter('all');
   }
 
-  function jumpToToday() {
-    const date = localDate(today);
-    setMonth(new Date(date.getFullYear(), date.getMonth(), 1, 12));
-    selectDay(today);
+  function applyFilters(date: string | null, status: Filter) {
+    setSelectedDate(date);
+    setFilter(status);
+    if (date) {
+      const selected = localDate(date);
+      setMonth(new Date(selected.getFullYear(), selected.getMonth(), 1, 12));
+    }
+    setShowOptions(false);
+  }
+
+  function clearFilters() {
+    setSelectedDate(null);
+    setFilter('all');
   }
 
   function cancelAppointment(appointment: Appointment) {
@@ -332,25 +374,54 @@ export default function AgendaScreen({ onClose, onBook, onReschedule, onTelecons
       };
     },
   );
-  const rowTitle = selectedDate
-    ? localDate(selectedDate).toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric' })
-    : 'Tus citas';
   return (
+    <View style={s.root}>
+    <View style={s.root} pointerEvents={showOptions ? 'none' : 'auto'} accessibilityElementsHidden={showOptions} importantForAccessibility={showOptions ? 'no-hide-descendants' : 'auto'}>
     <Sheet
       title="Tu agenda"
+      scrollViewRef={scrollViewRef}
+      onContentSizeChange={scrollToNewAppointment}
       onClose={onClose}
       footer={
-        <Pressable
-          accessibilityRole="button"
+        <BookingFooterButton
+          title="Agendar cita"
+          icon="plus"
           testID="agenda-book"
           onPress={onBook}
-          style={s.bookPill}
-        >
-          <Icon name="plus" color="white" size={24} />
-          <Text style={s.bookText}>Agendar cita</Text>
-        </Pressable>
+        />
       }
     >
+      <View style={[s.calendarToolbar, calendarOpen && s.calendarToolbarExpanded]}>
+      <Pressable
+        testID="agenda-calendar-toggle"
+        accessibilityRole="button"
+        accessibilityLabel={calendarOpen ? 'Ocultar calendario' : 'Mostrar calendario'}
+        accessibilityState={{ expanded: calendarOpen }}
+        hitSlop={5}
+        onPress={() => setCalendarOpen(open => !open)}
+        style={({ pressed }) => [s.calendarToggle, { opacity: pressed ? .75 : 1 }]}
+      >
+        <Icon name="calendar" size={15} color={colors.tealDark} />
+        <Text style={s.calendarToggleText}>{calendarOpen ? 'Ocultar calendario' : 'Mostrar calendario'}</Text>
+        <Icon name={calendarOpen ? 'chevronUp' : 'chevronDown'} size={14} color={colors.tealDark} />
+      </Pressable>
+        <View style={s.filterControls}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={hasFilters ? 'Filtros de agenda activos' : 'Filtros de agenda'}
+          accessibilityState={{ expanded: showOptions }}
+          testID="agenda-options"
+          onPress={() => setShowOptions(true)}
+          style={s.arrowButton}
+        >
+          <Icon name="filter" size={19} color={colors.tealDark} />
+        </Pressable>
+        {hasFilters && <Pressable testID="agenda-clear-filters" accessibilityRole="button" accessibilityLabel="Borrar filtros de agenda" onPress={clearFilters} style={s.clearFilters}>
+          <Text style={s.clearFiltersText}>Borrar filtros</Text>
+        </Pressable>}
+        </View>
+      </View>
+      {calendarOpen && <View testID="agenda-calendar">
       <View style={s.monthHeader}>
         <Pressable
           testID="agenda-prev-month"
@@ -417,57 +488,28 @@ export default function AgendaScreen({ onClose, onBook, onReschedule, onTelecons
           </Pressable>
         ))}
       </View>
-      <View style={s.dayHeading}>
-        <Text style={s.dayTitle}>{rowTitle}</Text>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Opciones de agenda"
-          testID="agenda-options"
-          onPress={() => setShowOptions(!showOptions)}
-          style={s.arrowButton}
-        >
-          <Icon name="filter" size={19} color={colors.tealDark} />
-        </Pressable>
-      </View>
-      {showOptions && (
-        <View>
-          <View style={s.monthHeader}>
-            <Pressable testID="agenda-today" onPress={jumpToToday} style={s.todayButton}>
-              <Text style={s.clearText}>Hoy</Text>
-            </Pressable>
-            <Pressable
-              testID="agenda-clear-date"
-              onPress={() => setSelectedDate(null)}
-              style={s.todayButton}
-            >
-              <Text style={s.clearText}>Todas las fechas</Text>
-            </Pressable>
-          </View>
-          <ScrollView horizontal contentContainerStyle={s.filters}>
-            {filters.map((item) => (
-              <Pressable
-                key={item.key}
-                testID={`agenda-filter-${item.key}`}
-                onPress={() => setFilter(item.key)}
-                style={[s.filterButton, filter === item.key && s.selectedFilter]}
-              >
-                <Text style={[s.filterText, filter === item.key && s.selectedFilterText]}>
-                  {item.title}
-                </Text>
-              </Pressable>
-            ))}
-          </ScrollView>
-        </View>
-      )}
+      </View>}
+      <View testID="agenda-appointments" onLayout={handleListLayout}>
       {!visibleAppointments.length ? (
-        <Text style={s.emptyDay}>No tienes citas en esta vista.</Text>
+        <Text style={s.emptyDay}>{selectedDate ? `Sin citas para el ${displayDate(selectedDate)}` : 'No tienes citas en esta vista.'}</Text>
       ) : (
-        visibleAppointments.map((appointment) => {
+        appointmentGroups.map(group => {
+          const groupDate = localDate(group.date);
+          const day = groupDate.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric' });
+          const monthName = groupDate.toLocaleDateString('es-MX', { month: 'long' });
+          const month = `de ${monthName.charAt(0).toUpperCase() + monthName.slice(1)}${groupDate.getFullYear() === localDate(today).getFullYear() ? '' : ` de ${groupDate.getFullYear()}`}`;
+          return <View key={group.date} testID={`agenda-group-${group.date}`} style={s.appointmentGroup} onLayout={initialAppointmentId && group.date === focusDate ? handleFocusGroupLayout : undefined}>
+            <Text accessibilityRole="header" testID={`agenda-heading-${group.date}`} style={s.dayHeading}>
+              <Text testID={`agenda-day-label-${group.date}`} style={s.dayTitle}>{day.charAt(0).toUpperCase() + day.slice(1)}</Text>
+              <Text testID={`agenda-month-label-${group.date}`} style={s.dayMonth}> {month}</Text>
+            </Text>
+            {group.appointments.map((appointment) => {
           const doctor = state.doctors.find((item) => item.id === appointment.doctorId);
           const status = appointmentStatus(appointment, now);
           return (
             <Pressable
               key={appointment.id}
+              onLayout={appointment.id === initialAppointmentId ? handleFocusRowLayout : undefined}
               testID={`agenda-open-${appointment.id}`}
               accessibilityRole="button"
               accessibilityLabel={`Ver cita con ${doctor?.name}, ${appointment.time}, ${status.label}`}
@@ -476,7 +518,6 @@ export default function AgendaScreen({ onClose, onBook, onReschedule, onTelecons
             >
               <View style={s.timeColumn}>
                 <Text style={s.largeTime}>{appointment.time}</Text>
-                {!selectedDate && <Text style={s.helper}>{displayDate(appointment.date)}</Text>}
               </View>
               <View style={s.flex}>
                 <Text style={s.appointmentDoctor}>{doctor?.name || 'Consulta médica'}</Text>
@@ -495,9 +536,15 @@ export default function AgendaScreen({ onClose, onBook, onReschedule, onTelecons
               <Icon name="chevronRight" size={22} color={colors.teal} />
             </Pressable>
           );
+            })}
+          </View>;
         })
       )}
+      </View>
     </Sheet>
+    </View>
+    {showOptions && <AgendaFilterPopup date={selectedDate} status={filter} today={today} onClose={closeFilterPopup} onApply={applyFilters} />}
+    </View>
   );
 }
 
@@ -526,28 +573,20 @@ function DetailRow({
 }
 
 const s = StyleSheet.create({
-  bookPill: {
-    backgroundColor: colors.teal,
-    borderRadius: 28,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    paddingVertical: 13,
-    paddingHorizontal: 20,
-  },
-  bookText: { color: 'white', fontWeight: '600', fontSize: 15 },
-  dayHeading: {
-    borderTopWidth: 1,
-    borderTopColor: colors.line,
-    marginTop: 15,
-    paddingTop: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  dayTitle: { textTransform: 'capitalize', color: colors.navy, fontWeight: '700', fontSize: 21 },
-  emptyDay: { color: colors.muted, paddingVertical: 20, fontSize: 14 },
+  root: { flex: 1 },
+  calendarToggle: { minHeight: 30, marginTop: 7, borderRadius: 18, paddingHorizontal: 12, paddingVertical: 6, backgroundColor: '#DDF5F2', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
+  calendarToggleText: { color: colors.tealDark, fontSize: 11, fontWeight: '500' },
+  // Reserve the clear action inside the existing gap without moving the calendar or list.
+  calendarToolbar: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: -8 },
+  calendarToolbarExpanded: { marginBottom: 12 },
+  filterControls: { width: 70, minHeight: 64, marginRight: -13, alignItems: 'center' },
+  clearFilters: { minHeight: 20, width: '100%', alignItems: 'center', justifyContent: 'center' },
+  clearFiltersText: { color: colors.tealDark, fontSize: 9, lineHeight: 13 },
+  appointmentGroup: { marginTop: 20 },
+  dayHeading: { marginBottom: 4, color: colors.navy },
+  dayTitle: { color: colors.navy, fontWeight: '700', fontSize: 21 },
+  dayMonth: { color: '#8AA0B7', fontSize: 13, fontWeight: '400' },
+  emptyDay: { color: colors.muted, paddingVertical: 12, fontSize: 12, textAlign: 'center' },
   simpleRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 14 },
   timeColumn: {
     borderRightWidth: 1,
@@ -694,17 +733,6 @@ const s = StyleSheet.create({
     marginTop: 8,
     marginBottom: 18,
   },
-  filters: { flexDirection: 'row', gap: 6, paddingBottom: 3 },
-  filterButton: {
-    minHeight: 44,
-    paddingHorizontal: 14,
-    borderRadius: 18,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.6)',
-  },
-  selectedFilter: { backgroundColor: colors.navy },
-  filterText: { color: colors.muted, fontWeight: '600', fontSize: 12 },
-  selectedFilterText: { color: colors.white },
   listHeading: {
     flexDirection: 'row',
     alignItems: 'center',

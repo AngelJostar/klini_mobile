@@ -107,6 +107,7 @@ export interface Settings {
   meetingBaseUrl: string;
 }
 export interface AppState {
+  aiSubscription?: import('./aiSubscription').AiSubscription;
   family?: { ownerId: string; profiles: Record<string, ProfileScope> };
   wallet?: import('./wallet').Wallet;
   schemaVersion: 1;
@@ -121,7 +122,7 @@ export interface AppState {
   favorites: string[];
   settings: Settings;
 }
-export type ProfileScope = Pick<AppState, 'profile' | 'appointments' | 'policies' | 'claims' | 'records' | 'medications' | 'messages' | 'favorites'> & { kind: string };
+export type ProfileScope = Pick<AppState, 'profile' | 'appointments' | 'policies' | 'claims' | 'records' | 'medications' | 'messages' | 'favorites' | 'aiSubscription'> & { kind: string };
 export type NewAppointment = Omit<Appointment, "id" | "createdAt">;
 export interface StoreContext {
   ownerProfile: Patient;
@@ -129,6 +130,7 @@ export interface StoreContext {
   selectProfile: (profile?: import('../state/managedProfiles').ManagedProfile) => Promise<void>;
   editFamilyProfile: (id: string, patch: Partial<Patient> & { kind?: string }) => Promise<void>;
   rechargeWallet: (amount: number) => Promise<void>;
+  setAiSubscription: (active: boolean) => Promise<void>;
   state: AppState;
   ready: boolean;
   storageError: string | null;
@@ -142,6 +144,7 @@ export interface StoreContext {
   updateClaim: (id: string, p: Partial<Claim>) => void;
   deleteClaim: (id: string) => void;
   addRecord: (r: Omit<ClinicalRecord, "id">) => string;
+  addRecordPersisted: (r: Omit<ClinicalRecord, "id">) => Promise<string>;
   updateRecord: (id: string, p: Partial<ClinicalRecord>) => void;
   deleteRecord: (id: string) => void;
   addMedication: (m: Omit<Medication, "id">) => string;

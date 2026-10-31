@@ -18,6 +18,7 @@ import {
 import type { AppAction } from "../domain/reducer";
 import { createDemoState } from "../domain/seed";
 import { switchProfile, editStoredProfile } from '../domain/family';
+import { createAiSubscription, getProfileAiSubscription, rollbackAiSubscription } from '../domain/aiSubscription';
 
 const Context = createContext<StoreContext | null>(null);
 
@@ -31,6 +32,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const queueRef = useRef<ReturnType<typeof createPersistenceQueue> | null>(
     null,
   );
+  const aiSubscriptionQueue = useRef<Promise<void>>(Promise.resolve());
+  const aiResetGeneration = useRef(0);
   if (queueRef.current === null)
     queueRef.current = createPersistenceQueue(AsyncStorage);
 
@@ -60,8 +63,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setStorageError(result.error);
         readyRef.current = true;
         setReady(true);
-        // Only initialize an empty store. Malformed data is not overwritten on mount.
-        if (raw === null) void persist(result.state).catch(() => undefined);
+        // Persist valid demo defaults and migrations; never overwrite malformed data.
+        if (raw === null || (!result.error && raw !== JSON.stringify(result.state))) void persist(result.state).catch(() => undefined);
       } catch {
         if (!active) return;
         setStorageError(
@@ -129,6 +132,34 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         throw new Error('No se pudo guardar la recarga local. No se aplicó el importe.');
       }
     },
+    setAiSubscription: (active) => {
+      ensureReady();
+      // Capture the requested profile before awaiting another activation or a profile switch.
+      const profileId = stateRef.current.profile.id;
+      const resetGeneration = aiResetGeneration.current;
+      const operation = aiSubscriptionQueue.current.then(async () => {
+        if (resetGeneration !== aiResetGeneration.current) throw new Error('La activación de Klini IA se canceló al restablecer la demostración.');
+        const previous = getProfileAiSubscription(stateRef.current, profileId);
+        const subscription = createAiSubscription(active, previous);
+        const next = appReducer(stateRef.current, { type: 'SET_AI_SUBSCRIPTION', profileId, subscription });
+        stateRef.current = next;
+        if (mounted.current) setState(next);
+        try {
+          await persist(next);
+        } catch (error) {
+          const rollback = rollbackAiSubscription(stateRef.current, profileId, subscription, previous);
+          if (rollback !== stateRef.current) {
+            stateRef.current = rollback;
+            if (mounted.current) setState(rollback);
+            await persist(rollback).catch(() => undefined);
+          }
+          throw error;
+        }
+      });
+      // A failed activation must not prevent the next explicit attempt or cancellation.
+      aiSubscriptionQueue.current = operation.catch(() => undefined);
+      return operation;
+    },
     state,
     ready,
     storageError,
@@ -176,6 +207,30 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       commit({ type: "ADD_RECORD", record: { ...input, id } });
       return id;
     },
+    addRecordPersisted: async (input) => {
+      ensureReady();
+      const profileId = stateRef.current.profile.id;
+      const id = createId("record");
+      const next = appReducer(stateRef.current, { type: "ADD_RECORD", record: { ...input, id } });
+      stateRef.current = next;
+      setState(next);
+      try {
+        await persist(next);
+      } catch (error) {
+        // Remove only this failed addition, preserving subsequent edits and profile changes.
+        const current = stateRef.current;
+        const rollback = { ...current, records: current.profile.id === profileId ? current.records.filter(record => record.id !== id) : current.records };
+        const scope = current.family?.profiles[profileId];
+        if (scope && current.family) {
+          rollback.family = { ...current.family, profiles: { ...current.family.profiles, [profileId]: { ...scope, records: scope.records.filter(record => record.id !== id) } } };
+        }
+        stateRef.current = rollback;
+        if (mounted.current) setState(rollback);
+        await persist(rollback).catch(() => undefined);
+        throw error;
+      }
+      return id;
+    },
     updateRecord: (id, patch) => {
       commit({ type: "UPDATE_RECORD", id, patch });
     },
@@ -211,6 +266,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     },
     resetDemo: async () => {
       ensureReady();
+      // A queued activation from before reset must not reactivate the reset profile.
+      aiResetGeneration.current += 1;
       const next = appReducer(stateRef.current, {
         type: "RESET",
         state: createDemoState(),

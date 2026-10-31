@@ -20,6 +20,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, Icon } from './ui';
 import { menuItems, searchHome, type MenuItem } from '../domain/navigation';
 import { useAppStore } from '../state/store';
+import { hasAiAccess } from '../domain/aiSubscription';
+import type { AiAction } from '../domain/kliniAi';
+import AiConversation from './AiConversation';
+import AiSparkles from './AiSparkles';
 
 export const TOOLBAR_HEIGHT = 68;
 
@@ -29,8 +33,9 @@ export default function HomeToolbar({
   onOverlayChange: (open: boolean) => void;
 }) {
   const { state } = useAppStore();
-  const [panel, setPanel] = useState<'menu' | 'search' | null>(null);
+  const [panel, setPanel] = useState<'menu' | 'search' | 'ai' | null>(null);
   const [query, setQuery] = useState('');
+  const [question, setQuestion] = useState('');
   const [interactionsOpen, setInteractionsOpen] = useState(false);
   const [progress] = useState(() => new Animated.Value(0));
   const [reduceMotion, setReduceMotion] = useState(false);
@@ -38,6 +43,8 @@ export default function HomeToolbar({
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const results = searchHome(query, state.doctors);
+  const aiEnabled = hasAiAccess(state.aiSubscription);
+  const conversationOpen = panel === 'ai' && aiEnabled;
   const initials = state.profile.name
     .split(/\s+/)
     .filter(Boolean)
@@ -57,7 +64,7 @@ export default function HomeToolbar({
       progress.stopAnimation();
     };
   }, [progress]);
-  const showPanel = (next: 'menu' | 'search') => {
+  const showPanel = (next: 'menu' | 'search' | 'ai') => {
     progress.stopAnimation();
     progress.setValue(0);
     setPanel(next);
@@ -100,7 +107,11 @@ export default function HomeToolbar({
       close();
       return true;
     });
-    return () => back.remove();
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && panel === 'ai') { event.preventDefault(); close(); }
+    };
+    if (Platform.OS === 'web') window.addEventListener('keydown', escape);
+    return () => { back.remove(); if (Platform.OS === 'web') window.removeEventListener('keydown', escape); };
   }, [panel, close]);
   const openItem = (item: MenuItem) => {
     dismissPanel(() => {
@@ -108,6 +119,17 @@ export default function HomeToolbar({
       router.push({ pathname: '/[section]', params: item.destination });
     });
   };
+  const ask = (text: string) => {
+    if (!aiEnabled || !text.trim()) return;
+    input.current?.blur();
+    Keyboard.dismiss();
+    setQuestion(text.trim());
+    setQuery(text.trim());
+    showPanel('ai');
+    setInteractionsOpen(false);
+  };
+  const openAiAction = (action: AiAction) => dismissPanel(() => router.push({ pathname: '/[section]', params: { section: action.section, ...(action.appointmentId ? { appointmentId: action.appointmentId } : {}) } }));
+  const closeConversation = () => { setQuery(''); dismissPanel(); };
   const row = (item: MenuItem, compact = false) => (
     <Pressable
       key={item.id}
@@ -130,7 +152,7 @@ export default function HomeToolbar({
   const item = (id: string) => menuItems.find((entry) => entry.id === id)!;
   return (
     <View pointerEvents="box-none" style={s.layer}>
-      {panel && (
+      {panel && !conversationOpen && (
         <Animated.View style={[s.backdrop, { opacity: progress }]}>
           <Pressable
             testID="dismiss-header-panel"
@@ -174,10 +196,11 @@ export default function HomeToolbar({
           <TextInput
             ref={input}
             testID="home-search"
-            accessibilityLabel="Buscar en Klini"
-            placeholder="Buscar en Klini"
+            accessibilityLabel={aiEnabled ? 'Pregunta a Klini' : 'Buscar en Klini'}
+            placeholder={aiEnabled ? 'Pregunta a Klini…' : 'Buscar en Klini'}
             placeholderTextColor="#617B90"
             value={query}
+            maxLength={1500}
             onChangeText={setQuery}
             onFocus={() => {
               showPanel('search');
@@ -191,10 +214,11 @@ export default function HomeToolbar({
             returnKeyType="search"
             style={s.input}
             onSubmitEditing={() => {
-              if (query.trim() && results[0]) openItem(results[0]);
+              if (aiEnabled) ask(query);
+              else if (query.trim() && results[0]) openItem(results[0]);
             }}
           />
-          {!!query && (
+          {!!query && !aiEnabled && (
             <Pressable
               testID="clear-search"
               accessibilityRole="button"
@@ -209,6 +233,7 @@ export default function HomeToolbar({
               <Icon name="close" size={17} color={colors.muted} />
             </Pressable>
           )}
+          {aiEnabled && <Pressable testID="home-ai-submit" accessibilityRole="button" accessibilityLabel={query.trim() ? 'Preguntar a Klini IA' : 'Ideas para preguntar a Klini IA'} onPress={() => query.trim() ? ask(query) : showPanel('search')} style={s.aiBadge}><Text style={s.aiBadgeText}>IA</Text><AiSparkles small /></Pressable>}
         </View>
         <Pressable
           testID="header-profile"
@@ -221,14 +246,17 @@ export default function HomeToolbar({
           <Text style={s.initials}>{initials}</Text>
         </Pressable>
       </View>
-      {panel && (
+      {conversationOpen && <View style={s.conversationSurface}><AiConversation key={`${state.profile.id}-${question}`} initialQuestion={question} onClose={closeConversation} onAction={openAiAction} onManage={() => openItem(item('wallet'))} /></View>}
+      {panel && panel !== 'ai' && (
         <Animated.View
           testID="header-panel"
           accessibilityViewIsModal
           style={[
             s.panel,
             {
-              maxHeight: Math.max(160, height - insets.top - insets.bottom - TOOLBAR_HEIGHT - 20),
+              maxHeight: panel === 'search'
+                ? Math.max(120, height / 2 - insets.top - TOOLBAR_HEIGHT)
+                : Math.max(160, height - insets.top - insets.bottom - TOOLBAR_HEIGHT - 20),
               width: panel === 'menu' ? drawerWidth : undefined,
               left: panel === 'menu' ? 0 : 24,
               borderTopLeftRadius: panel === 'menu' ? 0 : 23,
@@ -250,6 +278,7 @@ export default function HomeToolbar({
           ]}
         >
           <ScrollView
+            style={panel === 'search' ? s.searchScroll : undefined}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
             contentContainerStyle={s.panelContent}
@@ -258,7 +287,7 @@ export default function HomeToolbar({
               <Text accessibilityRole="header" style={s.panelTitle}>
                 {panel === 'menu'
                   ? 'Tu espacio'
-                  : query.trim()
+                  : aiEnabled ? 'Pregunta a Klini IA' : query.trim()
                     ? 'Resultados'
                     : '¿Qué necesitas hoy?'}
               </Text>
@@ -324,6 +353,12 @@ export default function HomeToolbar({
               </>
             ) : (
               <>
+                {aiEnabled && <View style={s.aiSuggestions}>
+                  {(query.trim() ? [query.trim()] : ['¿Cuándo es mi próxima cita?', 'Resume mi expediente', '¿Qué medicamentos tengo registrados?']).map(text => <Pressable key={text} testID={query.trim() ? 'ai-ask-question' : undefined} accessibilityRole="button" onPress={() => ask(text)} style={s.suggestion}><Icon name="chat" size={17} color={colors.tealDark} /><Text style={s.suggestionText}>{text}</Text><Icon name="chevronRight" size={16} color={colors.tealDark} /></Pressable>)}
+                  <View style={s.divider} />
+                  <Text style={s.sectionLabel}>ACCESOS EN KLINI</Text>
+                </View>}
+                {!aiEnabled && <Pressable testID="ai-discover" accessibilityRole="button" onPress={() => openItem(item('wallet'))} style={s.aiDiscover}><AiSparkles /><View style={s.copy}><Text style={s.rowTitle}>Conoce Klini IA</Text><Text style={s.subtitle}>Tu expediente en palabras claras · $99 MXN/mes</Text></View><Icon name="chevronRight" size={17} color={colors.tealDark} /></Pressable>}
                 {!query.trim() && (
                   <Text style={s.hint}>Médicos, especialidades y tus servicios.</Text>
                 )}
@@ -381,6 +416,13 @@ const s = StyleSheet.create({
     backgroundColor: '#F1F7F7',
   },
   searchActive: { borderColor: colors.teal },
+  aiBadge: { flexDirection: 'row', alignItems: 'center', gap: 3, minHeight: 36, paddingHorizontal: 3 },
+  aiBadgeText: { color: colors.teal, fontSize: 10, fontWeight: '600' },
+  conversationSurface: { position: 'absolute', top: TOOLBAR_HEIGHT, bottom: 88, left: 0, right: 0, backgroundColor: 'white' },
+  aiSuggestions: { paddingTop: 5 },
+  suggestion: { flexDirection: 'row', alignItems: 'center', minHeight: 48, paddingHorizontal: 8, gap: 9, borderRadius: 12, backgroundColor: '#F1FAFA', marginBottom: 6 },
+  suggestionText: { flex: 1, color: colors.navy, fontSize: 12, lineHeight: 18 },
+  aiDiscover: { flexDirection: 'row', alignItems: 'center', gap: 8, borderRadius: 14, backgroundColor: '#F1FAFA', padding: 10, marginBottom: 10 },
   input: { flex: 1, minWidth: 0, height: 36, color: colors.navy, fontSize: 12, paddingVertical: 0 },
   clear: { minHeight: 36, width: 30, alignItems: 'center', justifyContent: 'center' },
   avatar: {
@@ -412,6 +454,7 @@ const s = StyleSheet.create({
     overflow: 'hidden',
   },
   panelContent: { padding: 12, paddingTop: 5 },
+  searchScroll: { minHeight: 0, flexShrink: 1 },
   panelHeader: {
     flexDirection: 'row',
     alignItems: 'center',

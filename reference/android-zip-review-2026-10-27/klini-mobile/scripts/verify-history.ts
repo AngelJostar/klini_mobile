@@ -88,8 +88,11 @@ async function main() {
     expect(grid!.x + grid!.width).toBeLessThanOrEqual(320);
     await page.getByTestId('add-archive-item').click();
     await page.waitForTimeout(450);
-    await expect(page.getByTestId('record-category-continue')).toBeDisabled();
-    await page.getByTestId('record-category-continue').dispatchEvent('click');
+    await page.getByTestId('record-category-continue').click();
+    await expect(page.getByTestId('record-category-hint')).toHaveCSS('opacity', '1');
+    await page.waitForTimeout(1500);
+    await expect(page.getByTestId('record-category-hint')).toHaveCSS('opacity', '1');
+    await expect(page.getByTestId('record-category-hint')).toHaveCSS('opacity', '0', { timeout: 2500 });
     await expect(page.getByTestId('record-type-popup')).toHaveCount(0);
     await page.getByTestId('record-category-Todos').click();
     await page.getByTestId('record-type-text').click();

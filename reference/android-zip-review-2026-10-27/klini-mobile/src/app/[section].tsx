@@ -51,8 +51,8 @@ function SectionContent() {
   if (params.section === 'profile') return <ProfileScreen onClose={close} />;
   if (params.section === 'teleconsult') return <TeleconsultScreen onReschedule={id => go('directory', { rescheduleId: id })} onClose={close} onBook={() => go('directory', { mode: 'Teleconsulta' })} appointmentId={params.appointmentId} />;
   if (params.section === 'wallet') return <WalletScreen onClose={close} />;
-  if (params.section === 'directory') return <DirectoryFlow onClose={close} onBooked={() => go('agenda')} initialDoctorId={params.doctorId} initialMode={params.mode === 'Presencial' || params.mode === 'Teleconsulta' ? params.mode : undefined} rescheduleId={params.rescheduleId} />;
-  if (params.section === 'agenda') return <AgendaScreen onClose={close} onBook={() => go('directory')} onReschedule={id => go('directory', { rescheduleId: id })} onTeleconsult={id => go('teleconsult', { appointmentId: id })} />;
+  if (params.section === 'directory') return <DirectoryFlow onClose={close} onBooked={id => go('agenda', { appointmentId: id })} initialDoctorId={params.doctorId} initialMode={params.mode === 'Presencial' || params.mode === 'Teleconsulta' ? params.mode : undefined} rescheduleId={params.rescheduleId} />;
+  if (params.section === 'agenda') return <AgendaScreen key={params.appointmentId ?? 'agenda'} initialAppointmentId={params.appointmentId} onClose={close} onBook={() => go('directory')} onReschedule={id => go('directory', { rescheduleId: id })} onTeleconsult={id => go('teleconsult', { appointmentId: id })} />;
   let content: React.ReactNode;
   switch (params.section) {
     case 'register':
@@ -62,7 +62,7 @@ function SectionContent() {
       content = (
         <DirectoryFlow
           onClose={close}
-          onBooked={() => go('agenda')}
+          onBooked={id => go('agenda', { appointmentId: id })}
           initialDoctorId={params.doctorId}
           initialMode={
             params.mode === 'Presencial' || params.mode === 'Teleconsulta' ? params.mode : undefined
@@ -74,6 +74,8 @@ function SectionContent() {
     case 'agenda':
       content = (
         <AgendaScreen
+          key={params.appointmentId ?? 'agenda'}
+          initialAppointmentId={params.appointmentId}
           onClose={close}
           onBook={() => go('directory')}
           onReschedule={(id) => go('directory', { rescheduleId: id })}

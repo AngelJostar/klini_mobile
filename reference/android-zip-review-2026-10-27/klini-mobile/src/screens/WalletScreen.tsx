@@ -20,6 +20,9 @@ import { colors, Icon } from '../components/ui';
 import { initialWallet, money, walletTotals } from '../domain/wallet';
 import { loadWalletTokens, TokenWallet } from '../services/wallet';
 import { useAppStore } from '../state/store';
+import { hasAiAccess } from '../domain/aiSubscription';
+import AiSubscriptionPanel from '../components/AiSubscriptionPanel';
+import BookingFooterButton from '../components/BookingFooterButton';
 
 export default function WalletScreen({ onClose }: { onClose: () => void }) {
   const { state, rechargeWallet, storageError } = useAppStore();
@@ -38,6 +41,12 @@ export default function WalletScreen({ onClose }: { onClose: () => void }) {
   const [tokenError, setTokenError] = useState('');
   const [tokenLoading, setTokenLoading] = useState(true);
   const [showTokens, setShowTokens] = useState(false);
+  const [subscriptionOpen, setSubscriptionOpen] = useState(false);
+  const [subscriptionBusy, setSubscriptionBusy] = useState(false);
+  const subscriptionBusyRef = useRef(false);
+  const aiActive = hasAiAccess(state.aiSubscription);
+  const onSubscriptionBusy = useCallback((value: boolean) => { subscriptionBusyRef.current = value; setSubscriptionBusy(value); }, []);
+  const leaveSubscription = useCallback(() => { if (!subscriptionBusyRef.current) setSubscriptionOpen(false); }, []);
   const request = useRef<AbortController | null>(null);
   const refreshTokens = useCallback(async () => {
     request.current?.abort();
@@ -97,7 +106,7 @@ export default function WalletScreen({ onClose }: { onClose: () => void }) {
     };
   }, [progress]);
   const close = useCallback(() => {
-    if (closing.current || busyRef.current) return;
+    if (closing.current || busyRef.current || subscriptionBusyRef.current) return;
     closing.current = true;
     Animated.timing(progress, {
       toValue: 0,
@@ -110,11 +119,12 @@ export default function WalletScreen({ onClose }: { onClose: () => void }) {
   }, [onClose, progress]);
   useEffect(() => {
     const listener = BackHandler.addEventListener('hardwareBackPress', () => {
-      close();
+      if (subscriptionOpen) leaveSubscription();
+      else close();
       return true;
     });
     return () => listener.remove();
-  }, [close]);
+  }, [close, leaveSubscription, subscriptionOpen]);
   const recharge = async () => {
     if (busyRef.current) return;
     busyRef.current = true;
@@ -172,21 +182,36 @@ export default function WalletScreen({ onClose }: { onClose: () => void }) {
         >
           <View style={s.handle} />
           <View style={s.header}>
-            <View>
-              <Text style={s.eyebrow}>PAGOS Y RECARGAS</Text>
-              <Text style={s.title}>Billetera</Text>
+            {subscriptionOpen && <Pressable testID="wallet-ai-back" accessibilityRole="button" accessibilityLabel="Volver a mi billetera" accessibilityState={{ disabled: subscriptionBusy }} disabled={subscriptionBusy} onPress={leaveSubscription} style={s.back}><Icon name="back" size={23} /></Pressable>}
+            <View style={s.headerTitle}>
+              <Text style={s.eyebrow}>{subscriptionOpen ? 'TU ASISTENTE PERSONAL' : 'MI CUENTA'}</Text>
+              <Text accessibilityRole="header" style={s.title}>{subscriptionOpen ? 'Klini IA' : 'Billetera y suscripción'}</Text>
             </View>
             <Pressable
               testID="wallet-close"
               accessibilityRole="button"
-              accessibilityLabel="Cerrar billetera"
+              accessibilityLabel="Cerrar billetera y suscripción"
+              accessibilityState={{ disabled: subscriptionBusy }}
+              disabled={subscriptionBusy}
               onPress={close}
               style={s.close}
             >
               <Icon name="close" size={23} />
             </Pressable>
           </View>
-          <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={s.content}>
+          {subscriptionOpen ? <AiSubscriptionPanel onBack={leaveSubscription} onClose={close} onBusyChange={onSubscriptionBusy} /> : <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={s.content}>
+            <View testID="wallet-ai-card" style={s.aiCard}>
+              <View style={s.row}>
+                <View style={s.aiIcon}><Icon name="sparkles-outline" color={colors.tealDark} size={26} /></View>
+                <View style={s.flex}><Text style={s.aiTitle}>Klini IA</Text><Text testID="wallet-ai-status" style={s.aiStatus}>{aiActive ? 'Activa · demostración' : 'Sin activar'}</Text></View>
+              </View>
+              <Text style={s.aiIntro}>Tu información de salud, más clara y a la mano.</Text>
+              <View style={s.aiBenefits}>
+                {['Resúmenes de tu expediente', 'Explicaciones en lenguaje sencillo', 'Consulta y organización de tu agenda'].map(benefit => <View key={benefit} style={s.aiBenefit}><Icon name="check" size={15} color={colors.tealDark} /><Text style={s.aiBenefitText}>{benefit}</Text></View>)}
+              </View>
+              <View style={s.aiPriceRow}><Text style={s.aiPrice}>$99 MXN<Text style={s.aiPeriod}> / mes</Text></Text><BookingFooterButton title={aiActive ? 'Gestionar' : 'Ver Klini IA'} testID="wallet-ai-open" onPress={() => setSubscriptionOpen(true)} /></View>
+              <Text style={s.aiDemo}>Activación de demostración · sin cargos</Text>
+            </View>
             <View style={s.tokens}>
               <View style={s.row}>
                 <View style={s.icon}>
@@ -332,7 +357,7 @@ export default function WalletScreen({ onClose }: { onClose: () => void }) {
                 ))}
               </View>
             </View>
-          </ScrollView>
+          </ScrollView>}
         </Animated.View>
       </KeyboardAvoidingView>
     </View>
@@ -365,13 +390,28 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 24,
     paddingVertical: 17,
+    gap: 8,
     borderBottomWidth: 1,
     borderBottomColor: colors.line,
   },
   eyebrow: { fontSize: 10, letterSpacing: 1.8, color: colors.tealDark, fontWeight: '700' },
-  title: { fontSize: 28, fontWeight: '700', color: colors.navy, marginTop: 5 },
+  headerTitle: { flex: 1, minWidth: 0 },
+  title: { fontSize: 26, lineHeight: 31, fontWeight: '700', color: colors.navy, marginTop: 5 },
+  back: { minHeight: 44, width: 32, alignItems: 'flex-start', justifyContent: 'center' },
   close: { padding: 10, borderRadius: 16, backgroundColor: colors.background },
   content: { padding: 20, gap: 16 },
+  aiCard: { borderRadius: 20, borderWidth: 1, borderColor: '#CEEBE5', backgroundColor: '#F0FAF7', padding: 18, gap: 13 },
+  aiIcon: { width: 48, height: 48, borderRadius: 16, backgroundColor: '#DCF2EC', alignItems: 'center', justifyContent: 'center' },
+  aiTitle: { color: colors.navy, fontSize: 21, fontWeight: '700', lineHeight: 27 },
+  aiStatus: { color: colors.tealDark, fontSize: 11, lineHeight: 17, marginTop: 3 },
+  aiIntro: { color: '#5F7C8E', fontSize: 13, lineHeight: 20 },
+  aiBenefits: { gap: 7 },
+  aiBenefit: { flexDirection: 'row', gap: 8, alignItems: 'flex-start' },
+  aiBenefitText: { color: colors.navy, fontSize: 12, lineHeight: 18, flex: 1 },
+  aiPriceRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginTop: 3 },
+  aiPrice: { color: colors.navy, fontSize: 19, fontWeight: '700', lineHeight: 26 },
+  aiPeriod: { color: '#738D9E', fontSize: 12, fontWeight: '400' },
+  aiDemo: { color: '#729589', fontSize: 10, lineHeight: 16 },
   row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
   flex: { flex: 1 },
   tokens: { borderRadius: 20, backgroundColor: '#F0FAF9', padding: 18, gap: 10 },

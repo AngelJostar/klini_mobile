@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { AccessibilityInfo, Animated, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
   Button,
@@ -109,6 +109,22 @@ export default function ArchiveScreen({
   const [tab, setTab] = useState<'records' | 'medications'>(initialTab);
   const [page, setPage] = useState<Page>(initialCreate ? 'recordCategory' : initialHistory && !initialListTitle ? 'history' : 'list');
   const [recordTypeOpen, setRecordTypeOpen] = useState(false);
+  const categoryHintOpacity = useRef(new Animated.Value(0)).current;
+  const categoryHintAnimation = useRef<Animated.CompositeAnimation | null>(null);
+  useEffect(() => () => {
+    categoryHintAnimation.current?.stop();
+    categoryHintOpacity.setValue(0);
+  }, [page, categoryHintOpacity]);
+  function showCategoryHint() {
+    categoryHintAnimation.current?.stop();
+    AccessibilityInfo.announceForAccessibility('Selecciona una categoría para guardar el registro.');
+    categoryHintAnimation.current = Animated.sequence([
+      Animated.timing(categoryHintOpacity, { toValue: 1, duration: 900, useNativeDriver: true, isInteraction: false }),
+      Animated.delay(2000),
+      Animated.timing(categoryHintOpacity, { toValue: 0, duration: 900, useNativeDriver: true, isInteraction: false }),
+    ]);
+    categoryHintAnimation.current.start();
+  }
   const [historyList, setHistoryList] = useState(!!initialListTitle);
   const [query, setQuery] = useState('');
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -377,12 +393,12 @@ export default function ArchiveScreen({
     <View style={{ flex: 1 }}>
     <View style={{ flex: 1 }} pointerEvents={recordTypeOpen || photoOpen || textOpen || photoReviewOpen ? 'none' : 'auto'} accessibilityElementsHidden={recordTypeOpen || photoOpen || textOpen || photoReviewOpen} importantForAccessibility={recordTypeOpen || photoOpen || textOpen || photoReviewOpen ? 'no-hide-descendants' : 'auto'}>
     <Sheet title="Registro" animateEntrance onClose={onClose} onBack={initialCreate ? onClose : back} footerAlignment="right" footer={
-      <Pressable testID="record-category-continue" accessibilityRole="button" accessibilityLabel="Selecciona una categoría para agregar un registro" accessibilityState={{ disabled: true }} disabled style={local.historyAdd}>
+      <Pressable testID="record-category-continue" accessibilityRole="button" accessibilityLabel="Selecciona una categoría para agregar un registro" onPress={showCategoryHint} style={local.historyAdd}>
         <LinearGradient colors={['#15C9CC', '#00ADB2', '#009DA5']} style={local.historyAddCircle}><Icon name="plus" size={32} color="white" /></LinearGradient>
       </Pressable>
     }>
       <View style={{ height: 12 }} />
-      <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}><Text style={{ color: colors.navy, fontSize: 14, fontWeight: '600' }}>Selecciona la categoría</Text></View>
+      <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}><View style={{ justifyContent: 'center' }}><Text style={{ color: colors.navy, fontSize: 14, fontWeight: '600' }}>Selecciona la categoría</Text><Animated.View testID="record-category-hint" pointerEvents="none" accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ position: 'absolute', right: -28, opacity: categoryHintOpacity }}><Icon name="information-circle-outline" size={21} color={colors.teal} /></Animated.View></View></View>
       <View style={local.historyGrid} testID="record-categories">
         {historyCategories.map(category => <Pressable key={category.type} testID={`record-category-${category.type}`} accessibilityRole="button" accessibilityLabel={category.label.replace('\n', ' ')} onPress={() => chooseCategory(category.type)} style={({ pressed }) => [local.historyCategory, { opacity: pressed ? .65 : 1 }]}>
           <LinearGradient colors={['#F7FDFD', '#E0F3F2']} style={local.historyIcon}><Icon name={category.icon} size={30} color={colors.teal} /></LinearGradient>

@@ -42,6 +42,7 @@ export default function KliniApp() {
   const compact = height < 740;
   const contentWidth = Math.min(width, 540);
   const iconSize = Math.min(68, (contentWidth - 80) / 4);
+  const iconAssetScale = Math.min((iconSize + 10) / 290, (iconSize + 16) / 315);
   const changePage = (index: number) => {
     pager.current?.scrollTo({ x: index * contentWidth, animated: !reduceMotion });
     setPage(index);
@@ -122,7 +123,21 @@ export default function KliniApp() {
                   <View style={[s.modules, { marginTop: compact ? 24 : 36 }]}>
                     {index === 0 ? modules.map((m, i) => (
                       <Pressable key={m.label} accessibilityRole="button" accessibilityLabel={m.label.replace('\n', ' ')} testID={['menu-agenda', 'menu-directory', 'menu-teleconsult', 'menu-insurance'][i]} onPress={m.action} style={({ pressed }) => [s.module, { opacity: pressed ? .65 : 1 }]}>
-                        <Image source={[require('./assets/home-icon-0.png'), require('./assets/home-icon-1.png'), require('./assets/home-icon-2.png'), require('./assets/home-icon-3.png')][i]} style={{ width: iconSize + 10, height: iconSize + 16 }} resizeMode="contain" accessible={false} />
+                        <Image
+                          source={[require('./assets/home-icon-0.png'), require('./assets/home-icon-1.png'), require('./assets/home-icon-2.png'), require('./assets/home-icon-3.png')][i]}
+                          style={[
+                            { width: iconSize + 10, height: iconSize + 16 },
+                            // Match the generated tile's visible bounds to the other menu assets.
+                            i === 1 && { transform: [
+                              { translateX: 1.5974 * iconAssetScale },
+                              { translateY: -2.5347 * iconAssetScale },
+                              { scaleX: 246 / 231 },
+                              { scaleY: 258 / 259 },
+                            ] },
+                          ]}
+                          resizeMode="contain"
+                          accessible={false}
+                        />
                         <Text style={[s.moduleLabel, contentWidth < 360 && { fontSize: 10, lineHeight: 15 }]}>{m.label}</Text>
                       </Pressable>
                     )) : [
@@ -173,7 +188,7 @@ export default function KliniApp() {
               </View>
             </View>
           </View>
-          <HomeToolbar onOverlayChange={setOverlayOpen} />
+          <HomeToolbar key={state.profile.id} onOverlayChange={setOverlayOpen} />
         </View>
       </SafeAreaView>
     </View>

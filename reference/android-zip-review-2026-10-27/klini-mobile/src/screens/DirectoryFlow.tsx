@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Button, Card, Chip, Empty, Icon, TextField, colors, notify } from '../components/ui';
+import { Card, Chip, Empty, Icon, TextField, colors, notify } from '../components/ui';
 import { useAppStore } from '../state/store';
 import Sheet from '../components/DirectoryPopup';
 import DoctorPortrait from '../components/DoctorPortrait';
 import DirectorySearch from '../components/DirectorySearch';
+import BookingFooterButton from '../components/BookingFooterButton';
 import { addDays, dateLabel, futureDates, money, monthLabel, parseDate, todayISO } from '../domain/dates';
 import { APPOINTMENT_DURATION_MINUTES, appointmentTimestamp } from '../domain/reducer';
 import type { Doctor, Mode, NewAppointment, Policy, StoreContext } from '../domain/types';
@@ -487,8 +488,8 @@ export default function DirectoryFlow({
               accessibilityLabel={`Seleccionar ${hour}`}
               style={[s.slot, time === hour && s.slotSelected]}
             >
-              <Text style={[s.slotText, time === hour && s.selectedText]}>{hour}</Text>
-              {time === hour && <Icon name="check" size={15} color={colors.white} />}
+              <Text style={[s.slotText, time === hour && { color: colors.tealDark }]}>{hour}</Text>
+              {time === hour && <Icon name="check" size={15} color={colors.tealDark} />}
             </Pressable>
           ))}
         </View>
@@ -544,7 +545,7 @@ export default function DirectoryFlow({
       <Sheet
         title="Reprogramar cita"
         onClose={onClose}
-        footer={<Button title="Cerrar" onPress={onClose} />}
+        footer={<BookingFooterButton title="Cerrar" onPress={onClose} />}
       >
         <Empty
           title="Esta cita ya no se puede reprogramar"
@@ -597,16 +598,12 @@ export default function DirectoryFlow({
       </>
     );
     footer = (
-      <Pressable
-        accessibilityRole="button"
+      <BookingFooterButton
+        title="Buscar médicos"
+        icon="search"
         testID="booking-search-submit"
-        hitSlop={5}
         onPress={() => setStep(2)}
-        style={s.searchPill}
-      >
-        <Icon name="search" size={15} color={colors.tealDark} />
-        <Text style={s.searchPillText}>Buscar médicos</Text>
-      </Pressable>
+      />
     );
   } else if (step === 2) {
     content = (
@@ -815,7 +812,7 @@ export default function DirectoryFlow({
       </>
     );
     footer = (
-      <Button
+      <BookingFooterButton
         title={time ? `Revisar horario de ${time}` : 'Elegir fecha y hora'}
         icon="calendar"
         onPress={() => setStep(4)}
@@ -855,7 +852,7 @@ export default function DirectoryFlow({
       </>
     );
     footer = (
-      <Button
+      <BookingFooterButton
         title="Continuar con este horario"
         disabled={!time}
         onPress={() => {
@@ -933,7 +930,7 @@ export default function DirectoryFlow({
       </>
     );
     footer = (
-      <Button
+      <BookingFooterButton
         title="Continuar con datos del paciente"
         disabled={paymentMethod === 'Seguro' && !policy}
         onPress={() => {
@@ -1026,7 +1023,7 @@ export default function DirectoryFlow({
       </>
     );
     footer = (
-      <Button
+      <BookingFooterButton
         title="Revisar mi reserva"
         onPress={() => {
           if (validatePatient() && checkSchedule()) setStep(7);
@@ -1102,7 +1099,7 @@ export default function DirectoryFlow({
       </>
     );
     footer = (
-      <Button
+      <BookingFooterButton
         title={
           saving
             ? 'Guardando…'
@@ -1175,13 +1172,13 @@ export default function DirectoryFlow({
     );
     footer = (
       <>
-        <Button
+        <BookingFooterButton
           title="Ver en mi agenda"
           icon="calendar"
           onPress={() => onBooked(confirmed.id)}
           testID="booking-view-agenda"
         />
-        <Button title="Volver al inicio" secondary onPress={onClose} />
+        <BookingFooterButton title="Volver al inicio" onPress={onClose} />
       </>
     );
   } else {
@@ -1193,7 +1190,7 @@ export default function DirectoryFlow({
         onAction={() => setStep(2)}
       />
     );
-    footer = <Button title="Volver al directorio" onPress={() => setStep(2)} />;
+    footer = <BookingFooterButton title="Volver al directorio" onPress={() => setStep(2)} />;
   }
 
   return (
@@ -1350,18 +1347,6 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  searchPill: {
-    alignSelf: 'center',
-    borderRadius: 20,
-    backgroundColor: '#DDF5F2',
-    minHeight: 34,
-    paddingHorizontal: 18,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-  },
-  searchPillText: { color: colors.tealDark, fontSize: 11, fontWeight: '500' },
   content: { gap: 14, paddingBottom: 8 },
   footer: { gap: 9 },
   flex: { flex: 1, minWidth: 0 },
@@ -1599,8 +1584,8 @@ const s = StyleSheet.create({
     paddingHorizontal: 9,
   },
   slotSelected: {
-    borderColor: colors.tealDark,
-    backgroundColor: colors.tealDark,
+    borderColor: '#DDF3F2',
+    backgroundColor: '#DDF3F2',
   },
   slotText: { color: colors.navy, fontSize: 14, fontWeight: '600' },
   selectionCard: { flexDirection: 'row', alignItems: 'center', gap: 10 },

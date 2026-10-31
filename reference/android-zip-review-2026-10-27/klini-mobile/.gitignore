@@ -5,6 +5,8 @@ android/
 ios/
 *.log
 .env
+.env.ai.local
+!.env.ai.local.example
 .local/
 dist-web/
 dist-android/

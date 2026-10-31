@@ -12,6 +12,8 @@ import type {
 } from "./types";
 import { createDemoState } from "./seed";
 import { initialWallet, isWallet, rechargeWallet } from './wallet';
+import { isAiSubscription, setProfileAiSubscription, type AiSubscription } from './aiSubscription';
+import { provisionSofiaDemoAi } from './demoAccount';
 
 export const STORAGE_KEY = "@klini/app-state:v1";
 export const APPOINTMENT_DURATION_MINUTES = 30;
@@ -253,7 +255,8 @@ export function validateAppState(
     !guardedArray(v.messages, isMessage) ||
     !allStrings(v.favorites) ||
     !isSettings(v.settings) ||
-    (v.wallet !== undefined && !isWallet(v.wallet))
+    (v.wallet !== undefined && !isWallet(v.wallet)) ||
+    (v.aiSubscription !== undefined && !isAiSubscription(v.aiSubscription))
   )
     return false;
   const doctors = new Set(v.doctors.map((x) => x.id));
@@ -293,7 +296,7 @@ export function hydrateState(
   if (raw === null) return { state: fallback, error: null };
   try {
     const state = parseStoredState(raw);
-    return { state: { ...state, wallet: state.wallet ?? { ...initialWallet, movements: [] } }, error: null };
+    return { state: provisionSofiaDemoAi({ ...state, wallet: state.wallet ?? { ...initialWallet, movements: [] } }), error: null };
   } catch {
     return {
       state: fallback,
@@ -399,6 +402,7 @@ export function assertAppointmentCanBeSaved(
 }
 
 export type AppAction =
+  | { type: 'SET_AI_SUBSCRIPTION'; profileId: string; subscription: AiSubscription }
   | { type: "UPDATE_PROFILE"; patch: Partial<Patient> }
   | { type: "ADD_APPOINTMENT"; appointment: Appointment }
   | { type: "UPDATE_APPOINTMENT"; id: string; patch: Partial<Appointment> }
@@ -450,6 +454,10 @@ export function appReducer(
 ): AppState {
   let next: AppState;
   switch (action.type) {
+    case 'SET_AI_SUBSCRIPTION':
+      if (!isAiSubscription(action.subscription)) throw new Error('La activación de Klini IA no tiene un formato compatible.');
+      next = setProfileAiSubscription(state, action.profileId, action.subscription);
+      break;
     case 'RECHARGE_WALLET':
       next = { ...state, wallet: rechargeWallet(state.wallet ?? initialWallet, action.amount, action.id, action.date) };
       break;
