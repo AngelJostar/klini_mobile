@@ -1,35 +1,41 @@
-import { Platform } from "react-native";
+import { shareClinicalRecordWith, shareMedicationWith } from './clinicalRecordShareWorkflow';
+import { Platform, Share } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import { Directory, File, Paths } from "expo-file-system";
 import * as Sharing from "expo-sharing";
-import type { Appointment, Attachment, Doctor } from "../domain/types";
+import type { Appointment, Attachment, Doctor, ClinicalRecord, Medication } from "../domain/types";
 import { localDateTime } from "../domain/dates";
 
 export async function savePhotoAttachment(uri: string): Promise<Attachment> {
-  const name = `Foto-${Date.now()}.jpg`;
+  const capturedAt = Date.now();
   if (Platform.OS === 'web') {
     const blob = await (await fetch(uri)).blob();
     if (blob.size > 2 * 1024 * 1024) throw new Error('La foto supera 2 MB. Repite la captura.');
+    const mimeType = blob.type || 'image/jpeg';
+    const extension = mimeType === 'image/png' ? 'png' : mimeType === 'image/webp' ? 'webp' : 'jpg';
     const savedUri = await new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(String(reader.result));
       reader.onerror = () => reject(new Error('No se pudo conservar la foto.'));
       reader.readAsDataURL(blob);
     });
-    return { uri: savedUri, name, mimeType: 'image/jpeg' };
+    return { uri: savedUri, name: `Foto-${capturedAt}.${extension}`, mimeType };
   }
+  const name = `Foto-${capturedAt}.jpg`;
   const source = new File(uri);
   if (source.size > 2 * 1024 * 1024) throw new Error('La foto supera 2 MB. Repite la captura.');
   const dir = new Directory(Paths.document, 'attachments');
   dir.create({ idempotent: true, intermediates: true });
   const destination = new File(dir, name);
-  source.copy(destination);
+  await source.copy(destination);
   return { uri: destination.uri, name, mimeType: 'image/jpeg' };
 }
 
 export async function pickAttachment(mode: "file" | "photo" = "file"): Promise<Attachment | null> {
   const result = await DocumentPicker.getDocumentAsync({
-    copyToCacheDirectory: true,
+    // Android's picker cache can sit outside the Expo Go experience sandbox.
+    // Keep the granted content URI and copy it into our own documents below.
+    copyToCacheDirectory: Platform.OS !== "android",
     multiple: false,
     type: mode === "photo" ? "image/*" : ["application/pdf", "image/*", "text/plain"],
   });
@@ -58,7 +64,16 @@ export async function pickAttachment(mode: "file" | "photo" = "file"): Promise<A
     dir,
     `${Date.now()}-${Math.random().toString(36).slice(2, 7)}-${safeName}`,
   );
-  await new File(asset.uri).copy(file);
+  try {
+    await new File(asset.uri).copy(file);
+    // Providers may omit the original size; validate the completed private copy.
+    if (file.size > 2 * 1024 * 1024)
+      throw new Error("Selecciona un archivo de hasta 2 MB.");
+  } catch (error) {
+    // Only remove the destination created for this attempt, never the original.
+    try { if (file.exists) file.delete(); } catch { /* Preserve the copy error. */ }
+    throw error;
+  }
   return { uri: file.uri, name: asset.name, mimeType };
 }
 export async function openAttachment(a: Attachment): Promise<void> {
@@ -113,6 +128,29 @@ export async function exportText(
     UTI: mimeType === "text/calendar" ? "com.apple.ical.ics" : "public.text",
   });
 }
+/** Clinical records use the system sheet directly, like body-parameter exports. */
+export async function shareClinicalRecord(record: ClinicalRecord, patientName: string): Promise<void> {
+  return shareClinicalRecordWith(record, patientName, {
+    text: (filename, content) => exportText(filename, content),
+    attachment: async (attachment, content, title) => {
+      // Never fetch remote URLs or silently send a summary when the selected original is missing.
+      if (!/^(file:|content:|data:|blob:)/i.test(attachment.uri)) throw new Error('El adjunto no es un archivo local. Vuelve a adjuntarlo antes de compartir.');
+      if (Platform.OS === 'ios') {
+        if (!attachment.uri.startsWith('file:') || !new File(attachment.uri).exists) throw new Error('El archivo ya no está en este iPhone. Vuelve a adjuntarlo.');
+        // RN presents UIActivityViewController with text + the unchanged original file.
+        // Dismissing resolves normally; opening the sheet never means the item was sent.
+        await Share.share({ title, message: content, url: attachment.uri }, { subject: title });
+      } else {
+        await openAttachment(attachment);
+      }
+    },
+  });
+}
+
+export async function shareMedication(medication: Medication, patientName: string): Promise<void> {
+  return shareMedicationWith(medication, patientName, (filename, content) => exportText(filename, content));
+}
+
 function escapeICS(value: string): string {
   return value
     .replace(/\\/g, "\\\\")

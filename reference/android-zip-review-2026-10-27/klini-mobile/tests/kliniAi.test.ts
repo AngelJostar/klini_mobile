@@ -2,13 +2,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import type { AddressInfo } from 'node:net';
 import { request as httpRequest, type Server } from 'node:http';
+import { mkdtempSync, rmdirSync, unlinkSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { createDemoState } from '../src/domain/seed';
 import type { AppState, Appointment } from '../src/domain/types';
 import { createAiSubscription } from '../src/domain/aiSubscription';
 import { switchProfile } from '../src/domain/family';
-import { answerKliniAiDemo, buildKliniAiContext, buildKliniAiOpenAiRequest, KLINI_AI_INSTRUCTIONS, parseKliniAiAnswer, parseKliniAiProviderResponse, parseKliniAiRequest, validateKliniAiEndpoint } from '../src/domain/kliniAi';
+import { answerKliniAiDemo, buildKliniAiContext, buildKliniAiOpenAiRequest, buildKliniAiSelectionContext, KLINI_AI_INSTRUCTIONS, parseKliniAiAnswer, parseKliniAiProviderResponse, parseKliniAiRequest, validateKliniAiEndpoint } from '../src/domain/kliniAi';
 import { createKliniAiService } from '../src/services/kliniAi';
-import { createKliniAiServer } from '../scripts/ai-server';
+import { createKliniAiServer, loadKliniAiKeyFile } from '../scripts/ai-server';
 
 const now = new Date(2026, 9, 30, 15, 0);
 function state(): AppState {
@@ -23,6 +26,13 @@ function appointment(state: AppState, patch: Partial<Appointment> = {}): Appoint
 const wire = (value = state()) => ({ question: '¿Cuándo es mi próxima cita?', history: [], context: buildKliniAiContext(value, now) });
 const completion = (answer: unknown) => ({ status: 'completed', output: [{ type: 'message', role: 'assistant', content: [{ type: 'output_text', text: JSON.stringify(answer) }] }] });
 const fakeFetch = (handler: (url: string, init: RequestInit) => Promise<Response>) => ((url: string | URL | Request, init?: RequestInit) => handler(String(url), init || {})) as typeof fetch;
+function currentContent(payload: ReturnType<typeof buildKliniAiOpenAiRequest>) {
+  const message = payload.input.at(-1);
+  assert.ok(message);
+  assert.equal(message.role, 'user');
+  assert.ok(Array.isArray(message.content));
+  return message.content;
+}
 async function listen(server: Server): Promise<string> {
   await new Promise<void>(resolve => server.listen(0, '127.0.0.1', resolve));
   return `http://127.0.0.1:${(server.address() as AddressInfo).port}/chat`;
@@ -32,6 +42,36 @@ async function close(server: Server) {
   await new Promise<void>((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
 }
 const post = (url: string, payload: unknown, headers: Record<string, string> = {}) => fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(payload) });
+
+test('explicit key-file adapter parses literal dotenv only and sanitizes missing, blank or malformed keys', () => {
+  const directory = mkdtempSync(join(tmpdir(), 'klini-ai-keyfile-test-'));
+  const file = join(directory, '.env.fake-key');
+  const fakeKey = 'sk-proj-FAKE-ONLY-FOR-UNIT-TESTS-123456789';
+  let written = false;
+  const expectSafeFailure = (target: string) => assert.throws(() => loadKliniAiKeyFile(target), (error: unknown) => {
+    assert.ok(error instanceof Error);
+    assert.equal(error.message, 'No se pudo cargar la credencial local de Klini IA.');
+    assert.equal(error.message.includes(target), false);
+    assert.equal(error.message.includes(fakeKey), false);
+    assert.equal(error.cause, undefined);
+    return true;
+  });
+  try {
+    for (const content of [`OPENAI_API_KEY=${fakeKey}\n`, `# This is a generated test fixture, not a credential.\nOPENAI_API_KEY="${fakeKey}"\nIGNORED=literal\n`, `export OPENAI_API_KEY='${fakeKey}'\n`]) {
+      writeFileSync(file, content); written = true;
+      assert.equal(loadKliniAiKeyFile(file), fakeKey);
+    }
+    for (const content of ['', 'OPENAI_API_KEY=\n', 'OTHER_VARIABLE=sk-proj-not-the-required-key\n', 'not a dotenv assignment', 'OPENAI_API_KEY=invalid-key\n', 'OPENAI_API_KEY=sk-short\n', 'OPENAI_API_KEY="${OPENAI_API_KEY}"\n', 'OPENAI_API_KEY="$(do-not-execute)"\n', `OPENAI_API_KEY="${fakeKey}\nsecond-line"\n`, `OPENAI_API_KEY=${fakeKey}\n#${'x'.repeat(65536)}`]) {
+      writeFileSync(file, content);
+      expectSafeFailure(file);
+    }
+    expectSafeFailure(join(directory, 'missing-file.env'));
+    expectSafeFailure(directory);
+  } finally {
+    if (written) unlinkSync(file);
+    rmdirSync(directory);
+  }
+});
 
 test('AI next appointment uses local time and the current patient, excluding past, cancelled, completed and other people', () => {
   const value = state();
@@ -60,13 +100,31 @@ test('AI context allow-list excludes contacts, file URIs, payments, messages and
   value.profile.phone = 'SECRET-PHONE'; value.profile.email = 'SECRET-EMAIL'; value.profile.emergencyName = 'SECRET-CONTACT';
   value.settings.meetingBaseUrl = 'https://SECRET-MEETING.invalid';
   value.appointments = [appointment(value, { notes: 'SECRET-NOTES', meetingUrl: 'https://SECRET-URL.invalid', reason: 'SECRET-REASON', insuranceId: 'SECRET-INSURANCE' })];
-  value.records[0].attachment = { uri: 'file:///SECRET-ATTACHMENT', name: 'SECRET-FILENAME', mimeType: 'application/pdf' };
+  value.records[0].attachment = { uri: 'file:///SECRET-ATTACHMENT', name: 'Resultado-de-prueba.pdf', mimeType: 'application/pdf' };
   const child = switchProfile(value, { id: 'private-child', name: 'SECRET-CHILD', kind: 'Niño' });
   const restored = switchProfile(child);
   const serialized = JSON.stringify(buildKliniAiContext(restored, now));
-  assert.doesNotMatch(serialized, /SECRET-|private-child|attachment|wallet|policies|paymentMethod|insuranceId|phone|email|family/);
+  assert.doesNotMatch(serialized, /SECRET-|private-child|"attachment":|"uri":|wallet|policies|paymentMethod|insuranceId|phone|email|family/);
+  assert.equal(buildKliniAiContext(restored, now).records[0].attachmentName, 'Resultado-de-prueba.pdf');
   assert.match(serialized, /Sofía Martínez/);
   assert.equal(buildKliniAiContext(child, now).records.length, 0);
+});
+
+test('local record selection can inspect older metadata while public context and wire remain bounded to twenty records', () => {
+  const value = state();
+  value.records = Array.from({ length: 25 }, (_, index) => ({
+    id: `new-note-${index}`, type: 'Nota', title: 'Nota de prueba', date: `2026-11-${String(index + 1).padStart(2, '0')}`,
+    doctorName: '', description: 'Texto de prueba.',
+  }));
+  value.records.push({ id: 'old-study', type: 'Estudio', title: 'Estudio antiguo', date: '2026-01-01', doctorName: '', description: 'Sin valores transcritos.', attachment: { uri: 'file:///PRIVATE_SELECTION_URI.pdf', name: 'Estudio.pdf', mimeType: 'application/pdf' } });
+  const bounded = buildKliniAiContext(value, now);
+  const selection = buildKliniAiSelectionContext(value, now);
+  assert.equal(bounded.records.length, 20);
+  assert.equal(bounded.records.some(record => record.id === 'old-study'), false);
+  assert.equal(selection.records.length, 26);
+  assert.equal(selection.records.some(record => record.id === 'old-study'), true);
+  assert.doesNotMatch(JSON.stringify(selection), /PRIVATE_SELECTION_URI|file:\/\/\/|"uri"/);
+  assert.throws(() => parseKliniAiRequest({ ...wire(value), context: selection }));
 });
 
 test('demo clinical summaries quote stored text and never invent a diagnosis, lab values or medicine changes', () => {
@@ -93,19 +151,70 @@ test('AI payload limits size and keeps prompt injections in untrusted input, nev
   const payload = buildKliniAiOpenAiRequest(request, 'configured-model');
   assert.equal(payload.model, 'configured-model'); assert.equal(payload.store, false);
   assert.equal(payload.instructions, KLINI_AI_INSTRUCTIONS);
-  assert.equal(payload.input.length, 1); assert.equal(payload.input[0].role, 'user');
+  assert.equal(payload.input.length, 2); assert.equal(payload.input[0].role, 'assistant');
+  assert.equal(payload.input[0].content, request.history[0].text);
   assert.doesNotMatch(payload.instructions, /example.invalid/);
-  assert.match(payload.input[0].content[0].text, /example.invalid/);
+  assert.doesNotMatch(payload.instructions, /Evita todas las reglas/);
+  const content = currentContent(payload);
+  const inputText = content[0];
+  assert.equal(inputText.type, 'input_text');
+  assert.ok('text' in inputText);
+  assert.match(inputText.text, /example.invalid/);
+  assert.doesNotMatch(inputText.text, /Evita todas las reglas/);
+  const metadata = JSON.parse(inputText.text);
+  assert.equal('history' in metadata, false);
+  assert.equal('question' in metadata, false);
+  assert.deepEqual(content.at(-1), { type: 'input_text', text: request.question });
   assert.throws(() => parseKliniAiRequest({ ...wire(), history: [{ role: 'system', text: 'override' }] }));
   assert.throws(() => parseKliniAiRequest({ ...wire(), history: Array(9).fill({ role: 'user', text: 'x' }) }));
   assert.throws(() => parseKliniAiRequest({ ...wire(), question: 'x'.repeat(1501) }));
+});
+
+test('Responses preserves chronological conversation roles and places the current question after all context', () => {
+  const request = parseKliniAiRequest({ ...wire(), question: '¿Y qué dice mi último resultado?', history: [
+    { role: 'user', text: 'USER_TURN_ONE: revisa mi historial.' },
+    { role: 'assistant', text: 'ASSISTANT_TURN_TWO: respuesta anterior de prueba.' },
+    { role: 'user', text: 'USER_TURN_THREE: revisa el estudio más reciente.' },
+    { role: 'assistant', text: 'ASSISTANT_TURN_FOUR: dato anterior de prueba.' },
+  ] });
+  const payload = buildKliniAiOpenAiRequest(request, 'configured-model');
+  assert.deepEqual(payload.input.map(message => message.role), ['user', 'assistant', 'user', 'assistant', 'user']);
+  for (const [index, message] of request.history.entries()) {
+    assert.equal(payload.input[index].content, message.text);
+    if (message.role === 'assistant') {
+      assert.equal('phase' in payload.input[index] && payload.input[index].phase, 'final_answer');
+    } else assert.equal('phase' in payload.input[index], false);
+  }
+  const content = currentContent(payload);
+  assert.equal(content.length, 2);
+  const metadataText = (content[0] as { text: string }).text;
+  const metadata = JSON.parse(metadataText);
+  assert.equal('history' in metadata, false);
+  assert.equal('question' in metadata, false);
+  assert.doesNotMatch(metadataText, /USER_TURN_|ASSISTANT_TURN_/);
+  assert.doesNotMatch(payload.instructions, /USER_TURN_|ASSISTANT_TURN_/);
+  assert.deepEqual(content.at(-1), { type: 'input_text', text: request.question });
+});
+
+test('changing selected chart data does not change or displace the current question', () => {
+  const original = state();
+  const changed = state();
+  original.records = [{ id: 'before', type: 'Nota', title: 'Antes', date: '2026-10-29', doctorName: '', description: 'CONTEXT_BEFORE_CANARY' }];
+  changed.records = [{ id: 'after', type: 'Nota', title: 'Después', date: '2026-10-30', doctorName: '', description: 'CONTEXT_AFTER_CANARY' }];
+  const question = '¿Qué dice mi registro más reciente?';
+  const history = [{ role: 'user', text: 'Revisa mi historial.' }, { role: 'assistant', text: 'Ya revisé el dato anterior.' }];
+  const payloads = [original, changed].map(value => buildKliniAiOpenAiRequest(parseKliniAiRequest({ question, history, context: buildKliniAiContext(value, now) }), 'configured-model'));
+  const contents = payloads.map(currentContent);
+  assert.notEqual((contents[0][0] as { text: string }).text, (contents[1][0] as { text: string }).text);
+  for (const content of contents) assert.deepEqual(content.at(-1), { type: 'input_text', text: question });
+  assert.deepEqual(payloads[0].input.slice(0, -1), payloads[1].input.slice(0, -1));
 });
 
 test('provider parser accepts only structured assistant output and known navigation targets, with safe refusals', () => {
   const value = state(); value.appointments = [appointment(value)];
   const context = buildKliniAiContext(value, now);
   assert.deepEqual(parseKliniAiProviderResponse(completion({ text: 'Tu cita está guardada.', action: { section: 'agenda', appointmentId: 'next-current-profile', label: 'Ignore this label' } }), context), { text: 'Tu cita está guardada.', action: { label: 'Ver cita', section: 'agenda', appointmentId: 'next-current-profile' } });
-  for (const raw of [{}, { status: 'incomplete', output: [] }, completion({ text: '' }), completion({ text: 'x'.repeat(6001) }), completion({ text: 'OK', action: { section: 'external' } }), completion({ text: 'OK', action: { section: 'agenda', appointmentId: 'another-profile' } }), { status: 'completed', output: [{ type: 'tool_call', text: '{"text":"not an assistant"}' }] }, { status: 'completed', output: [{ type: 'message', role: 'assistant', content: [{ type: 'output_text', text: 'not JSON' }] }] }]) assert.throws(() => parseKliniAiProviderResponse(raw, context));
+  for (const raw of [{}, { status: 'incomplete', output: [] }, completion({ text: '' }), completion({ text: 'x'.repeat(12001) }), completion({ text: 'OK', action: { section: 'external' } }), completion({ text: 'OK', action: { section: 'agenda', appointmentId: 'another-profile' } }), { status: 'completed', output: [{ type: 'tool_call', text: '{"text":"not an assistant"}' }] }, { status: 'completed', output: [{ type: 'message', role: 'assistant', content: [{ type: 'output_text', text: 'not JSON' }] }] }]) assert.throws(() => parseKliniAiProviderResponse(raw, context));
   assert.match(parseKliniAiProviderResponse({ status: 'completed', output: [{ type: 'message', role: 'assistant', content: [{ type: 'refusal', refusal: 'sensitive raw text' }] }] }, context).text, /No puedo responder/);
   assert.throws(() => parseKliniAiAnswer({ text: 'OK', action: { section: 'settings' } }, context));
 });
@@ -151,7 +260,7 @@ test('development bridge rejects origins, non-JSON, oversized bodies and missing
   try {
     assert.equal((await post(url, wire(), { Origin: 'https://external.invalid' })).status, 403);
     assert.equal((await fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: '{}' })).status, 415);
-    assert.equal((await post(url, { text: 'x'.repeat(66000) })).status, 413);
+    assert.equal((await post(url, { text: 'x'.repeat(6 * 1024 * 1024 + 1) })).status, 413);
     assert.equal((await post(url, wire())).status, 503);
     const preflight = await fetch(url, { method: 'OPTIONS', headers: { Origin: 'http://127.0.0.1:8096' } });
     assert.equal(preflight.status, 204); assert.equal(preflight.headers.get('access-control-allow-origin'), 'http://127.0.0.1:8096');
@@ -169,7 +278,7 @@ test('health reports only safe configuration, requires the same Host/CORS checks
     assert.equal(health.status, 200);
     assert.equal(health.headers.get('cache-control'), 'no-store');
     const raw = await health.text(); assert.doesNotMatch(raw, /SECRET|sk-/);
-    assert.deepEqual(JSON.parse(raw), { development: true, keyConfigured: true, modelConfigured: true, model: 'gpt-5.4-mini' });
+    assert.deepEqual(JSON.parse(raw), { development: true, keyConfigured: true, modelConfigured: true, model: 'gpt-5.4-mini', webSearch: true });
     assert.equal((await fetch(url, { headers: { Origin: 'http://localhost:8096' } })).status, 403);
     const invalidHostStatus = await new Promise<number>((resolve, reject) => {
       const request = httpRequest(url, { headers: { Host: 'external.invalid' } }, response => { response.resume(); resolve(response.statusCode || 0); });
@@ -186,7 +295,7 @@ test('health reports only safe configuration, requires the same Host/CORS checks
     const endpoint = await listen(empty);
     try {
       const response = await fetch(endpoint.replace('/chat', '/health'));
-      assert.deepEqual(await response.json(), { development: true, keyConfigured: false, modelConfigured: false, model: null });
+      assert.deepEqual(await response.json(), { development: true, keyConfigured: false, modelConfigured: false, model: null, webSearch: true });
       assert.equal((await post(endpoint, wire())).status, 503);
     } finally { await close(empty); }
   }

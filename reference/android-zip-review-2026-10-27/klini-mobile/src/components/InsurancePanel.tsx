@@ -24,12 +24,14 @@ export default function InsurancePanel({
   onBack,
   children,
   footer,
+  inlineTitle = false,
 }: PropsWithChildren<{
   title: string;
   onClose: () => void;
   onBack?: () => void;
   footer?: ReactNode;
   step?: number;
+  inlineTitle?: boolean;
 }>) {
   const alreadyOpen = usePopupAlreadyOpen();
   const [progress] = useState(() => new Animated.Value(alreadyOpen ? 1 : 0));
@@ -113,7 +115,7 @@ export default function InsurancePanel({
           ]}
         >
           <View style={s.handle} />
-          <View style={s.controls}>
+          <View style={[s.controls, inlineTitle && s.inlineControls]}>
             {onBack && (
               <Pressable
                 accessibilityRole="button"
@@ -125,7 +127,9 @@ export default function InsurancePanel({
                 <Icon name="back" size={24} />
               </Pressable>
             )}
-            <View style={{ flex: 1 }} />
+            {inlineTitle
+              ? <Text accessibilityRole="header" style={s.inlineTitle}>{title}</Text>
+              : <View style={{ flex: 1 }} />}
             <Pressable
               testID="insurance-close"
               accessibilityRole="button"
@@ -142,9 +146,9 @@ export default function InsurancePanel({
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={s.content}
           >
-            <Text accessibilityRole="header" style={s.title}>
+            {!inlineTitle && <Text accessibilityRole="header" style={s.title}>
               {title}
-            </Text>
+            </Text>}
             {children}
           </ScrollView>
           <View style={s.footer}>{footer}<Text style={s.note}>Datos de ejemplo</Text></View>
@@ -173,6 +177,8 @@ const s = StyleSheet.create({
     marginTop: 10,
   },
   controls: { flexDirection: 'row', paddingHorizontal: 20, marginTop: 3 },
+  inlineControls: { alignItems: 'center' },
+  inlineTitle: { flex: 1, minWidth: 0, color: colors.navy, fontSize: 17, fontWeight: '700', marginLeft: 8 },
   back: {flexDirection:'row', alignItems:'center', minHeight:44, gap:2},
   close: {
     width: 44,

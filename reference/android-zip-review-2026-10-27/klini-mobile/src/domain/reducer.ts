@@ -14,6 +14,7 @@ import { createDemoState } from "./seed";
 import { initialWallet, isWallet, rechargeWallet } from './wallet';
 import { isAiSubscription, setProfileAiSubscription, type AiSubscription } from './aiSubscription';
 import { provisionSofiaDemoAi } from './demoAccount';
+import { isAppleHealthPreferences } from './appleHealth';
 
 export const STORAGE_KEY = "@klini/app-state:v1";
 export const APPOINTMENT_DURATION_MINUTES = 30;
@@ -229,7 +230,8 @@ function isSettings(v: unknown): v is Settings {
     isObject(v) &&
     typeof v.reminders === "boolean" &&
     typeof v.biometricLock === "boolean" &&
-    isSafeMeetingUrl(v.meetingBaseUrl)
+    isSafeMeetingUrl(v.meetingBaseUrl) &&
+    (v.appleHealth === undefined || isAppleHealthPreferences(v.appleHealth))
   );
 }
 const guardedArray = <T extends { id: string }>(

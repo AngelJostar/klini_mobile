@@ -2,9 +2,11 @@ import { chromium, expect, type Page } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 import type { AppState } from '../src/domain/types';
 import { initialWallet } from '../src/domain/wallet';
+import { answerKliniAiDemo } from '../src/domain/kliniAi';
 
 const storageKey = '@klini/app-state:v1';
 const origin = 'http://127.0.0.1:8096';
+const endpoint = 'http://127.0.0.1:8098/chat';
 const now = new Date('2026-10-30T12:00:00-06:00');
 
 function readState(page: Page): Promise<AppState> {
@@ -24,15 +26,18 @@ async function wallet(page: Page) {
 
 async function ask(page: Page, question: string, enter = false) {
   await page.getByTestId('home-search').fill(question);
-  await expect(page.getByTestId('ai-ask-question')).toContainText(question);
+  await expect(page.getByTestId('home-search')).toBeFocused();
+  await expect(page.getByTestId('header-panel')).toHaveCount(0);
   if (enter) await page.getByTestId('home-search').press('Enter');
   else await page.getByTestId('home-ai-submit').click();
   await expect(page.getByTestId('klini-ai-conversation')).toBeVisible();
   await expect(page.getByTestId('ai-message-assistant')).toHaveCount(1);
-  await expect(page.getByTestId('ai-mode')).toContainText('Demostración');
+  await expect(page.getByTestId('home-search')).toHaveValue('');
+  await expect(page.getByTestId('ai-mode')).toContainText('IA conectada');
 }
 
 async function noOverflow(page: Page) {
+  await expect.poll(() => page.getByTestId('klini-ai-sheet').evaluate(element => Math.abs(new DOMMatrixReadOnly(getComputedStyle(element).transform).m42))).toBeLessThanOrEqual(.5);
   expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
   const conversation = await page.getByTestId('klini-ai-conversation').boundingBox();
   const viewport = page.viewportSize()!;
@@ -41,8 +46,14 @@ async function noOverflow(page: Page) {
   expect(conversation!.y).toBeGreaterThanOrEqual(0);
   expect(conversation!.x + conversation!.width).toBeLessThanOrEqual(viewport.width);
   expect(conversation!.y + conversation!.height).toBeLessThanOrEqual(viewport.height);
-  await expect(page.getByTestId('ai-message-input')).toBeInViewport();
-  await expect(page.getByTestId('ai-send')).toBeInViewport();
+  await expect(page.getByTestId('klini-ai-sheet').getByTestId('klini-ai-conversation')).toBeVisible();
+  await expect(page.getByTestId('klini-ai-sheet').getByTestId('home-bottom-toolbar')).toBeVisible();
+  await expect(page.getByTestId('klini-ai-sheet').getByRole('textbox')).toHaveCount(1);
+  await expect(page.getByRole('textbox')).toHaveCount(1);
+  await expect(page.getByTestId('ai-message-input')).toHaveCount(0);
+  await expect(page.getByTestId('ai-send')).toHaveCount(0);
+  await expect(page.getByTestId('home-search')).toBeInViewport();
+  await expect(page.getByTestId('home-ai-submit')).toBeInViewport();
   await expect(page.getByTestId('ai-close')).toBeInViewport();
 }
 
@@ -51,11 +62,24 @@ async function main() {
   const browser = await chromium.launch({ executablePath: process.env.KLINI_CHROMIUM_EXECUTABLE_PATH || 'C:/Program Files/Google/Chrome/Application/chrome.exe' });
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, timezoneId: 'America/Mexico_City' });
   await page.clock.install({ time: now });
-  const errors: string[] = [], posts: string[] = [];
+  const errors: string[] = [], posts: string[] = [], mockedQuestions: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
-  // This test exercises only the local demo; it must never send a model request.
-  await page.route('**/*', route => {
+  // Synthetic demo answers exercise the connected UI without contacting a model.
+  await page.route('**/*', async route => {
+    const request = route.request();
+    if (request.url() === endpoint) {
+      const headers = { 'access-control-allow-origin': origin, 'access-control-allow-headers': 'content-type, x-klini-dev-token', 'access-control-allow-methods': 'POST, OPTIONS' };
+      if (request.method() === 'OPTIONS') return route.fulfill({ status: 204, headers });
+      if (request.method() === 'POST') {
+        const { question } = request.postDataJSON() as { question: string };
+        mockedQuestions.push(question);
+        const answer = answerKliniAiDemo(question, await readState(page), now);
+        return route.fulfill({ status: 200, headers, contentType: 'application/json', body: JSON.stringify(answer) });
+      }
+      return route.abort();
+    }
     if (route.request().method() === 'POST') { posts.push(route.request().url()); return route.abort(); }
+    if (new URL(request.url()).origin !== origin) return route.abort();
     return route.continue();
   });
   try {
@@ -161,26 +185,28 @@ async function main() {
     const current = await readState(page);
     for (const question of ['¿Qué medicamentos tengo registrados?', 'Muéstrame mis registros', '¿Cuándo es mi próxima cita?']) {
       const count = await page.getByTestId('ai-message-assistant').count();
-      await page.getByTestId('ai-message-input').fill(question);
-      await page.getByTestId('ai-send').click();
+      await page.getByTestId('home-search').fill(question);
+      await expect(page.getByTestId('ai-message-assistant')).toHaveCount(count);
+      await page.getByTestId('home-ai-submit').click();
       await expect(page.getByTestId('ai-message-assistant')).toHaveCount(count + 1);
+      await expect(page.getByTestId('home-search')).toHaveValue('');
       if (question.includes('medicamentos')) {
         await expect(page.getByTestId('ai-message-assistant').last()).toContainText(current.medications.find(item => item.active)!.name);
       }
     }
-    for (const width of [390, 320]) {
-      await page.setViewportSize({ width, height: width === 390 ? 844 : 640 });
+    for (const width of [393, 390, 320]) {
+      await page.setViewportSize({ width, height: width === 320 ? 640 : width === 393 ? 852 : 844 });
       await noOverflow(page);
-      const input = await page.getByTestId('ai-message-input').boundingBox();
+      const input = await page.getByTestId('home-search').boundingBox();
       const close = await page.getByTestId('ai-close').boundingBox();
       const scroll = page.getByTestId('ai-messages');
       const dimensions = await scroll.evaluate(element => ({ content: element.scrollHeight, viewport: element.clientHeight }));
       expect(dimensions.content).toBeGreaterThan(dimensions.viewport);
       await scroll.evaluate(element => { element.scrollTop = 0; });
-      expect(await page.getByTestId('ai-message-input').boundingBox()).toEqual(input);
+      expect(await page.getByTestId('home-search').boundingBox()).toEqual(input);
       expect(await page.getByTestId('ai-close').boundingBox()).toEqual(close);
       await scroll.evaluate(element => { element.scrollTop = element.scrollHeight; });
-      expect(await page.getByTestId('ai-message-input').boundingBox()).toEqual(input);
+      expect(await page.getByTestId('home-search').boundingBox()).toEqual(input);
       await page.screenshot({ path: `test-results/klini-ai-chat-scroll-${width}.png` });
     }
     await page.getByTestId('ai-close').click();
@@ -235,7 +261,8 @@ async function main() {
     expect((await readState(page)).wallet).toEqual(walletBaseline);
     expect(errors).toEqual([]);
     expect(posts).toEqual([]);
-    console.log('PASS Klini IA: gated search, local demo subscription/consent/payment selection, failed persistence retry, contextual conversation and deep link, fixed composer 390/320px, family isolation, reload and cancellation without model requests or charges');
+    expect(mockedQuestions.length).toBeGreaterThan(4);
+    console.log(`PASS Klini IA: gated search, subscription/consent/payment selection, failed persistence retry, contextual conversation and deep link, unified sheet with one fixed composer 393/390/320px, follow-up focus preserves history, family isolation, reload and cancellation; ${mockedQuestions.length} mocked answers, no model requests or charges`);
   } finally { await browser.close(); }
 }
 

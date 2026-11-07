@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Klini · Revisión",
+    "name": "Klini",
     "slug": "klini",
     "owner": "guillermogherzigs-team",
     "extra": {
@@ -24,7 +24,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "mx.klini.review"
+      "bundleIdentifier": "mx.klini.review",
+      "buildNumber": "10"
     },
     "web": {
       "bundler": "metro",
@@ -40,13 +41,30 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Permite que Klini tome fotos para adjuntarlas a tus registros.",
+          "cameraPermission": "Permite que Klini tome fotos para adjuntarlas a tus registros o preguntas.",
           "microphonePermission": "Permite que Klini grabe tu voz al registrar la aceptación de una solicitud de demostración.",
           "recordAudioAndroid": true,
           "barcodeScannerEnabled": false
         }
       ],
-      "expo-asset"
+      "expo-asset",
+      "./plugins/withMergedHealthKitStatistics.cjs",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Permite que Klini seleccione fotos para adjuntarlas a tus preguntas.",
+          "cameraPermission": "Permite que Klini tome fotos para adjuntarlas a tus registros o preguntas.",
+          "microphonePermission": "Permite que Klini grabe tu voz al registrar la aceptación de una solicitud de demostración."
+        }
+      ],
+      [
+        "@kingstinct/react-native-healthkit",
+        {
+          "NSHealthShareUsageDescription": "Klini consulta las mediciones que elijas de frecuencia cardiaca, reposo, pasos, actividad y sueño para mostrarlas solo en tu iPhone, sin enviarlas al servidor ni a Klini IA.",
+          "NSHealthUpdateUsageDescription": false,
+          "background": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": false

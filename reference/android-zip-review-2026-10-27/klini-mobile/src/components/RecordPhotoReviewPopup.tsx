@@ -9,7 +9,6 @@ type Draft = Omit<ClinicalRecord, 'id'>;
 export default function RecordPhotoReviewPopup({ value, onChange, onClose, onSave }: {
   value: Draft; onChange: (draft: Draft) => void; onClose: () => void; onSave: (draft: Draft) => void;
 }) {
-  const [details, setDetails] = useState(false);
   const [preview, setPreview] = useState(false);
   const [date, setDate] = useState(value.date.split('-').reverse().join('/'));
   const [error, setError] = useState('');
@@ -21,7 +20,7 @@ export default function RecordPhotoReviewPopup({ value, onChange, onClose, onSav
   }, [preview, onClose]);
   function save() {
     const iso = filterDateToISO(date);
-    if (!iso || iso > todayISO()) { setDetails(true); setError('Escribe una fecha válida, igual o anterior a hoy.'); return; }
+    if (!iso || iso > todayISO()) { setError('Escribe una fecha válida, igual o anterior a hoy.'); return; }
     try { onSave({ ...value, date: iso, title: value.title.trim() || 'Foto adjunta', description: value.description.trim() }); }
     catch { setError('No se pudo guardar el registro. Intenta de nuevo.'); }
   }
@@ -36,12 +35,12 @@ export default function RecordPhotoReviewPopup({ value, onChange, onClose, onSav
         </Pressable>
         <View style={s.textHeader}><TextInput testID="photo-review-title" accessibilityLabel="Título de la foto" placeholder="Título de la foto" placeholderTextColor="#8BA0B1" value={value.title} onChangeText={title => onChange({ ...value, title })} maxLength={120} style={[s.input, { flex: 1, marginBottom: 0 }]} /><Text style={s.badge}>Por revisar</Text></View>
         <TextInput testID="photo-review-text" accessibilityLabel="Descripción de la foto" placeholder="Agrega una descripción de la foto" placeholderTextColor="#8BA0B1" multiline maxLength={10000} value={value.description} onChangeText={description => onChange({ ...value, description })} style={s.textArea} textAlignVertical="top" />
-        <Pressable testID="photo-review-details" accessibilityRole="button" accessibilityState={{ expanded: details }} onPress={() => setDetails(!details)} style={s.details}><Text style={s.detailsLabel}>Datos del documento</Text><Icon name={details ? 'chevronUp' : 'chevronDown'} size={16} color="#8296AA" /></Pressable>
-        {details && <View style={s.fields}>
+        <View testID="photo-review-details" style={s.details}><Text accessibilityRole="header" style={s.detailsLabel}>Datos del documento</Text></View>
+        <View style={s.fields}>
           <Text style={s.label}>Fecha</Text><TextInput testID="photo-review-date" accessibilityLabel="Fecha del documento" value={date} onChangeText={setDate} placeholder="dd/mm/aaaa" maxLength={10} style={s.input} />
           <Text style={s.label}>Médico o laboratorio</Text><TextInput accessibilityLabel="Médico o laboratorio" value={value.doctorName} onChangeText={doctorName => onChange({ ...value, doctorName })} maxLength={120} style={s.input} />
           <Text style={s.label}>Institución u hospital</Text><TextInput accessibilityLabel="Institución u hospital" value={value.institution ?? ''} onChangeText={institution => onChange({ ...value, institution })} maxLength={160} style={s.input} />
-        </View>}
+        </View>
         {!!error && <Text accessibilityRole="alert" style={s.error}>{error}</Text>}
       </ScrollView>
       <View style={s.footer}><Pressable testID="photo-review-save" accessibilityRole="button" accessibilityLabel="Guardar registro" onPress={save} style={s.save}><Text style={s.saveText}>Guardar</Text></Pressable></View>

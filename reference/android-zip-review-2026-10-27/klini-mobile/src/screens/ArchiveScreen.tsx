@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { AccessibilityInfo, Animated, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import React, { useMemo, useRef, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
   Button,
@@ -17,20 +17,16 @@ import {
 } from '../components/ui';
 import { dateLabel, parseDate, todayISO } from '../domain/dates';
 import type { ClinicalRecord, Medication } from '../domain/types';
-import { openAttachment, pickAttachment } from '../services/files';
+import { openAttachment, pickAttachment, shareClinicalRecord, shareMedication } from '../services/files';
 import { useAppStore } from '../state/store';
 import Sheet from '../components/ArchivePopup';
-import RecordTextPopup from '../components/RecordTextPopup';
-import RecordPhotoReviewPopup from '../components/RecordPhotoReviewPopup';
-import RecordPhotoPopup from '../components/RecordPhotoPopup';
-import RecordSharePopup from '../components/RecordSharePopup';
 import HistoryFiltersPopup from '../components/HistoryFiltersPopup';
-import RecordTypePopup, { type RecordEntryMode } from '../components/RecordTypePopup';
+import RecordRegistrationFlow from '../components/RecordRegistrationFlow';
 import { emptyHistoryFilters, matchesHistoryFilters } from '../domain/historyFilters';
 
 type RecordDraft = Omit<ClinicalRecord, 'id'>;
 type MedicationDraft = Omit<Medication, 'id'>;
-type Page = 'history' | 'list' | 'record' | 'recordCategory' | 'recordForm' | 'medicationForm';
+type Page = 'history' | 'list' | 'record' | 'recordMode' | 'recordForm' | 'medicationForm';
 const recordTypes: ClinicalRecord['type'][] = ['Consulta', 'Estudio', 'Receta', 'Vacuna', 'Nota', 'Procedimiento', 'Hospitalización', 'Alergia', 'Antecedente'];
 const historyCategories: { label: string; type: ClinicalRecord['type'] | 'Todos'; icon: string }[] = [
   { label: 'Mi historial', type: 'Todos', icon: 'folder' },
@@ -81,7 +77,7 @@ function errorMessage(error: unknown) {
 }
 
 export default function ArchiveScreen({
-  onClose,
+  onClose: closeScreen,
   initialType,
   initialCreate = false,
   initialHistory = false,
@@ -107,24 +103,8 @@ export default function ArchiveScreen({
     deleteMedication,
   } = useAppStore();
   const [tab, setTab] = useState<'records' | 'medications'>(initialTab);
-  const [page, setPage] = useState<Page>(initialCreate ? 'recordCategory' : initialHistory && !initialListTitle ? 'history' : 'list');
-  const [recordTypeOpen, setRecordTypeOpen] = useState(false);
-  const categoryHintOpacity = useRef(new Animated.Value(0)).current;
-  const categoryHintAnimation = useRef<Animated.CompositeAnimation | null>(null);
-  useEffect(() => () => {
-    categoryHintAnimation.current?.stop();
-    categoryHintOpacity.setValue(0);
-  }, [page, categoryHintOpacity]);
-  function showCategoryHint() {
-    categoryHintAnimation.current?.stop();
-    AccessibilityInfo.announceForAccessibility('Selecciona una categoría para guardar el registro.');
-    categoryHintAnimation.current = Animated.sequence([
-      Animated.timing(categoryHintOpacity, { toValue: 1, duration: 900, useNativeDriver: true, isInteraction: false }),
-      Animated.delay(2000),
-      Animated.timing(categoryHintOpacity, { toValue: 0, duration: 900, useNativeDriver: true, isInteraction: false }),
-    ]);
-    categoryHintAnimation.current.start();
-  }
+  const [page, setPage] = useState<Page>(initialCreate ? 'recordMode' : initialHistory && !initialListTitle ? 'history' : 'list');
+  const [createReturn, setCreateReturn] = useState<'history' | 'list' | null>(initialCreate ? null : initialHistory && !initialListTitle ? 'history' : 'list');
   const [historyList, setHistoryList] = useState(!!initialListTitle);
   const [query, setQuery] = useState('');
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -140,8 +120,27 @@ export default function ArchiveScreen({
   const [medicationDraft, setMedicationDraft] = useState<MedicationDraft>(newMedication);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
-  const [sharingRecord, setSharingRecord] = useState<ClinicalRecord | null>(null);
+  const [sharingId, setSharingId] = useState<string | null>(null);
+  const sharePending = useRef(false);
+  async function sendRecord(record: ClinicalRecord) {
+    if (sharePending.current) return;
+    sharePending.current = true; setSharingId(record.id);
+    const snapshot = { ...record, ...(record.attachment && { attachment: { ...record.attachment } }) };
+    const patientName = state.profile.name;
+    try { await shareClinicalRecord(snapshot, patientName); }
+    catch (reason) { notify('No se pudo abrir Compartir', errorMessage(reason)); }
+    finally { sharePending.current = false; setSharingId(null); }
+  }
+  async function sendMedication(item: Medication) {
+    if (sharePending.current) return;
+    sharePending.current = true; setSharingId(item.id);
+    const snapshot = { ...item }, patientName = state.profile.name;
+    try { await shareMedication(snapshot, patientName); }
+    catch (reason) { notify('No se pudo abrir Compartir', errorMessage(reason)); }
+    finally { sharePending.current = false; setSharingId(null); }
+  }
   const selectedRecord = state.records.find((record) => record.id === selectedId);
+  const onClose = closeScreen;
   const records = useMemo(() => {
     const text = query.trim().toLocaleLowerCase('es');
     return state.records
@@ -175,8 +174,9 @@ export default function ArchiveScreen({
     if (!record) {
       setEditingId(null);
       setRecordDraft(newRecord());
+      setCreateReturn(page === 'history' ? 'history' : 'list');
       setError('');
-      setPage('recordCategory');
+      setPage('recordMode');
       return;
     }
     setEditingId(record?.id ?? null);
@@ -216,21 +216,6 @@ export default function ArchiveScreen({
     setError('');
     setPage('medicationForm');
   }
-  function chooseCategory(category: ClinicalRecord['type'] | 'Todos') {
-    setRecordDraft(draft => ({ ...draft, type: category === 'Todos' ? 'Nota' : category }));
-    setRecordTypeOpen(true);
-  }
-  const [textOpen, setTextOpen] = useState(false);
-  const [photoMode, setPhotoMode] = useState<'photo' | 'scan'>('photo');
-  const [photoReviewOpen, setPhotoReviewOpen] = useState(false);
-  const [photoOpen, setPhotoOpen] = useState(false);
-  function chooseRecordMode(mode: RecordEntryMode) {
-    setRecordTypeOpen(false);
-    if (mode === 'text') { setTextOpen(true); return; }
-    if (mode === 'photo' || mode === 'scan') { setPhotoMode(mode); setPhotoOpen(true); return; }
-    setPage('recordForm');
-    void attach(mode);
-  }
   async function attach(mode: 'file' | 'photo' = 'file') {
     setBusy(true);
     setError('');
@@ -251,11 +236,16 @@ export default function ArchiveScreen({
       notify('No se pudo abrir el archivo', errorMessage(e));
     }
   }
+  function validateRecord() {
+    const message = !recordDraft.title.trim() ? 'Escribe un título para el registro.'
+      : recordDraft.time && !/^([01]\d|2[0-3]):[0-5]\d$/.test(recordDraft.time) ? 'Usa una hora válida con formato HH:MM.'
+      : !isDate(recordDraft.date) || recordDraft.date > todayISO() ? 'Usa una fecha real con formato AAAA-MM-DD, igual o anterior a hoy.'
+      : '';
+    setError(message);
+    return !message;
+  }
   function saveRecord() {
-    if (!recordDraft.title.trim()) return setError('Escribe un título para el registro.');
-    if (recordDraft.time && !/^([01]\d|2[0-3]):[0-5]\d$/.test(recordDraft.time)) return setError('Usa una hora válida con formato HH:MM.');
-    if (!isDate(recordDraft.date) || recordDraft.date > todayISO())
-      return setError('Usa una fecha real con formato AAAA-MM-DD, igual o anterior a hoy.');
+    if (busy || !validateRecord()) return;
     const data = {
       ...recordDraft,
       title: recordDraft.title.trim(),
@@ -266,7 +256,14 @@ export default function ArchiveScreen({
       if (editingId) updateRecord(editingId, data);
       else addRecord(data);
       setError('');
-      setPage((initialHistory || initialCreate) && !historyList ? 'history' : 'list');
+      if (editingId) setPage((initialHistory || initialCreate) && !historyList ? 'history' : 'list');
+      else {
+        setType(initialListTitle ? initialType ?? 'Todos' : 'Todos');
+        setHistoryFilters(emptyHistoryFilters);
+        setQuery('');
+        setHistoryList(true);
+        setPage('list');
+      }
       setTab('records');
     } catch (e) {
       setError(`No se pudo guardar el registro. ${errorMessage(e)}`);
@@ -389,52 +386,26 @@ export default function ArchiveScreen({
       </View>}
     </Sheet>
   );
-  if (page === 'recordCategory') return (
-    <View style={{ flex: 1 }}>
-    <View style={{ flex: 1 }} pointerEvents={recordTypeOpen || photoOpen || textOpen || photoReviewOpen ? 'none' : 'auto'} accessibilityElementsHidden={recordTypeOpen || photoOpen || textOpen || photoReviewOpen} importantForAccessibility={recordTypeOpen || photoOpen || textOpen || photoReviewOpen ? 'no-hide-descendants' : 'auto'}>
-    <Sheet title="Registro" animateEntrance onClose={onClose} onBack={initialCreate ? onClose : back} footerAlignment="right" footer={
-      <Pressable testID="record-category-continue" accessibilityRole="button" accessibilityLabel="Selecciona una categoría para agregar un registro" onPress={showCategoryHint} style={local.historyAdd}>
-        <LinearGradient colors={['#15C9CC', '#00ADB2', '#009DA5']} style={local.historyAddCircle}><Icon name="plus" size={32} color="white" /></LinearGradient>
-      </Pressable>
-    }>
-      <View style={{ height: 12 }} />
-      <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}><View style={{ justifyContent: 'center' }}><Text style={{ color: colors.navy, fontSize: 14, fontWeight: '600' }}>Selecciona la categoría</Text><Animated.View testID="record-category-hint" pointerEvents="none" accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ position: 'absolute', right: -28, opacity: categoryHintOpacity }}><Icon name="information-circle-outline" size={21} color={colors.teal} /></Animated.View></View></View>
-      <View style={local.historyGrid} testID="record-categories">
-        {historyCategories.map(category => <Pressable key={category.type} testID={`record-category-${category.type}`} accessibilityRole="button" accessibilityLabel={category.label.replace('\n', ' ')} onPress={() => chooseCategory(category.type)} style={({ pressed }) => [local.historyCategory, { opacity: pressed ? .65 : 1 }]}>
-          <LinearGradient colors={['#F7FDFD', '#E0F3F2']} style={local.historyIcon}><Icon name={category.icon} size={30} color={colors.teal} /></LinearGradient>
-          <Text style={local.historyLabel}>{category.label}</Text>
-        </Pressable>)}
-      </View>
-    </Sheet>
-    </View>
-    {textOpen && <RecordTextPopup onClose={() => setTextOpen(false)} onSave={text => {
-      addRecord({ ...recordDraft, title: text.split('\n')[0].slice(0, 120), description: text });
-      setTextOpen(false);
-      setType(initialListTitle ? initialType ?? 'Todos' : 'Todos');
-      setHistoryFilters(emptyHistoryFilters);
-      setQuery('');
-      setHistoryList(true);
-      setPage('list');
-    }} />}
-    {photoReviewOpen && <RecordPhotoReviewPopup value={recordDraft} onChange={setRecordDraft} onClose={() => setPhotoReviewOpen(false)} onSave={draft => {
+  if (page === 'recordMode') return <RecordRegistrationFlow
+    onClose={onClose}
+    onBack={() => { if (createReturn) setPage(createReturn); else onClose(); }}
+    storageError={storageError || undefined}
+    onSave={draft => {
       addRecord(draft);
-      setPhotoReviewOpen(false);
       setType(initialListTitle ? initialType ?? 'Todos' : 'Todos');
       setHistoryFilters(emptyHistoryFilters);
       setQuery('');
       setHistoryList(true);
       setPage('list');
-    }} />}
-    {photoOpen && <RecordPhotoPopup title={photoMode === 'scan' ? 'Escaneo' : 'Foto'} onClose={() => setPhotoOpen(false)} enableTranscription={photoMode === 'scan'} onCapture={(attachment, transcription) => { setRecordDraft(draft => ({ ...draft, attachment, ...(transcription ? { description: transcription.text, doctorName: transcription.doctorName || draft.doctorName, institution: transcription.institution || draft.institution } : {}) })); setPhotoOpen(false); setPhotoReviewOpen(true); }} />}
-    {recordTypeOpen && <RecordTypePopup onClose={() => setRecordTypeOpen(false)} onSelect={chooseRecordMode} />}
-    </View>
-  );
+      setTab('records');
+    }}
+  />;
   if (page === 'recordForm')
     return (
       <Sheet
         title={editingId ? 'Editar registro' : 'Agregar registro'}
         onClose={onClose}
-        onBack={editingId ? back : () => setPage('recordCategory')}
+        onBack={back}
         footer={
           <Button
             title="Guardar registro"
@@ -612,7 +583,7 @@ export default function ArchiveScreen({
     <Sheet title={historyCategories.find(category => category.type === selectedRecord.type)?.label.replace('\n', ' ') ?? selectedRecord.type} onClose={onClose} onBack={back}>
       <View style={local.detailTitleRow}>
         <Text style={local.detailTitle}>{selectedRecord.title}</Text>
-        <Pressable testID="detail-send" accessibilityRole="button" accessibilityLabel={`Enviar ${selectedRecord.title}`} onPress={() => setSharingRecord(selectedRecord)} style={local.historySend}><Icon name="send" size={21} color="#285474" /></Pressable>
+        <Pressable testID="detail-send" accessibilityRole="button" accessibilityLabel={`Enviar ${selectedRecord.title}`} disabled={sharingId !== null} accessibilityState={{ disabled: sharingId !== null }} onPress={() => void sendRecord(selectedRecord)} style={local.historySend}><Icon name="send" size={21} color="#285474" /></Pressable>
       </View>
       <Text style={local.detailMeta}>{state.profile.name}</Text>
       <Text style={local.detailMeta}>{parseDate(selectedRecord.date).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })}{selectedRecord.time ? ` · ${selectedRecord.time}` : ''}</Text>
@@ -635,7 +606,6 @@ export default function ArchiveScreen({
       </Pressable> : <Text style={[local.detailMeta, { marginTop: 18 }]}>Sin archivo adjunto</Text>}
       <Pressable testID="edit-record" accessibilityRole="button" accessibilityLabel="Editar registro" onPress={() => startRecord(selectedRecord)} style={local.detailEdit}><Icon name="edit" size={16} color={colors.teal} /><Text style={{ color: colors.tealDark, fontSize: 12 }}>Editar registro</Text></Pressable>
     </Sheet>
-    {sharingRecord && <RecordSharePopup record={sharingRecord} patientName={state.profile.name} onClose={() => setSharingRecord(null)} />}
   </>;
 
   if (page === 'record' && selectedRecord)
@@ -714,14 +684,13 @@ export default function ArchiveScreen({
               <Text style={local.historyRecordTitle}>{record.title}</Text>
               <Text style={local.historyProfessional}>{record.doctorName || 'Añadido por ti'}</Text>
             </Pressable>
-            <Pressable testID={`history-send-${record.id}`} accessibilityRole="button" accessibilityLabel={`Enviar ${record.title}`} onPress={() => setSharingRecord(record)} style={local.historySend}><Icon name="send" size={20} color="#285474" /></Pressable>
+            <Pressable testID={`history-send-${record.id}`} accessibilityRole="button" accessibilityLabel={`Enviar ${record.title}`} disabled={sharingId !== null} accessibilityState={{ disabled: sharingId !== null }} onPress={() => void sendRecord(record)} style={local.historySend}><Icon name="send" size={20} color="#285474" /></Pressable>
             <Pressable accessibilityRole="button" accessibilityLabel={`Abrir detalle de ${record.title}`} onPress={() => { setSelectedId(record.id); setPage('record'); }} style={local.historyDetail}><Icon name="chevronRight" size={17} color="#285474" /></Pressable>
           </View>)}
           {records.length === 0 && <Text style={local.historyEmpty}>{query.trim() ? 'No hay registros que coincidan con tu búsqueda.' : 'Aún no tienes registros en esta categoría.'}</Text>}
         </View>
       </Sheet>
-      {sharingRecord && <RecordSharePopup record={sharingRecord} patientName={state.profile.name} onClose={() => setSharingRecord(null)} />}
-    </>;
+      </>;
   }
 
   return (
@@ -880,6 +849,7 @@ export default function ArchiveScreen({
                     />
                   </View>
                 </View>
+                <View style={{ marginTop: 8 }}><Button title="Enviar" secondary icon="send" testID={`medication-send-${item.id}`} disabled={sharingId !== null} onPress={() => void sendMedication(item)} /></View>
               </Card>
             ))
           )}

@@ -102,6 +102,7 @@ export interface Message {
   createdAt: string;
 }
 export interface Settings {
+  appleHealth?: import('./appleHealth').AppleHealthPreferences;
   reminders: boolean;
   biometricLock: boolean;
   meetingBaseUrl: string;

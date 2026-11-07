@@ -14,14 +14,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useAppStore } from './src/state/store';
 import { colors, Icon } from './src/components/ui';
 import HomeToolbar, { TOOLBAR_HEIGHT } from './src/components/HomeToolbar';
 import { dateLabel, localDateTime } from './src/domain/dates';
 
 export default function KliniApp() {
-  const { state, ready, storageError, profileKind } = useAppStore();
+  const { state, ready, storageError } = useAppStore();
   const [overlayOpen, setOverlayOpen] = useState(false);
+  const [attachmentHeight, setAttachmentHeight] = useState(0);
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 30_000);
@@ -41,8 +43,8 @@ export default function KliniApp() {
   const { width, height } = useWindowDimensions();
   const compact = height < 740;
   const contentWidth = Math.min(width, 540);
+  const topLogoWidth = Math.min(78, Math.max(0, (contentWidth - 180) / 2 - 24 - 4));
   const iconSize = Math.min(68, (contentWidth - 80) / 4);
-  const iconAssetScale = Math.min((iconSize + 10) / 290, (iconSize + 16) / 315);
   const changePage = (index: number) => {
     pager.current?.scrollTo({ x: index * contentWidth, animated: !reduceMotion });
     setPage(index);
@@ -65,37 +67,42 @@ export default function KliniApp() {
     {
       label: 'Agenda',
       name: 'calendar',
-      gradient: ['#FFFFFF', '#F1F8FA'],
+      surface: '#F1F8F9',
       action: () => setRoute({ name: 'agenda' }),
     },
     {
       label: 'Directorio\nmédico',
       name: 'doctor',
-      gradient: ['#193F62', '#082441'],
+      surface: colors.navy,
       action: book,
     },
     {
       label: 'Teleconsulta',
       name: 'video',
-      gradient: ['#12C4C8', '#00989E'],
+      surface: '#00A9AE',
       action: () => setRoute({ name: 'teleconsult' }),
     },
     {
       label: 'Seguro\nmédico',
       name: 'shield',
-      gradient: ['#EAFFFC', '#CFF1EE'],
+      surface: '#D9F2F0',
       action: () => setRoute({ name: 'insurance' }),
     },
   ];
   return (
     <View style={s.app}>
       <StatusBar style="dark" />
-      <LinearGradient colors={['#FFFFFF', '#FFFFFF', '#F8FCFD']} style={StyleSheet.absoluteFill} />
       <SafeAreaView style={s.safe} edges={['top', 'bottom']}>
         <View style={[s.phone, { maxWidth: 540 }]}>
-          <View style={s.homeLayout} accessibilityElementsHidden={overlayOpen} importantForAccessibility={overlayOpen ? 'no-hide-descendants' : 'auto'}>
-            <View style={s.fixedHeader} testID="home-fixed-logo">
-              <Image source={require('./assets/klini-logo.png')} accessibilityLabel="Klini" resizeMode="contain" style={s.logo} />
+          <View style={[s.homeLayout, { paddingBottom: TOOLBAR_HEIGHT + attachmentHeight }]} accessibilityElementsHidden={overlayOpen} importantForAccessibility={overlayOpen ? 'no-hide-descendants' : 'auto'}>
+            <View style={s.topNavigation} testID="home-top-navigation">
+              <Image testID="home-top-logo" source={require('./assets/klini-logo.png')} accessibilityLabel="Klini" resizeMode="contain" style={[s.logo, s.topLogo, { width: topLogoWidth }]} />
+              <View style={s.dock}>
+                {['Hoy', 'Archivo'].map((title, index) => <Pressable key={title} testID={index === 0 ? 'home-tab-today' : 'home-tab-archive'} accessibilityRole="tab" accessibilityState={{ selected: page === index }} accessibilityLabel={title} onPress={() => changePage(index)} style={s.dockTab}>
+                  <Text style={[s.dockText, { fontWeight: page === index ? '700' : '400' }]}>{title}</Text>
+                  <View style={[s.activeDot, { opacity: page === index ? 1 : 0 }]} />
+                </Pressable>)}
+              </View>
             </View>
             {storageError && <Text style={s.storageError}>{storageError}</Text>}
             <ScrollView
@@ -115,38 +122,34 @@ export default function KliniApp() {
             >
               {[0, 1].map(index => (
                 <ScrollView key={index} style={{ width: contentWidth }} contentContainerStyle={s.pageContent} showsVerticalScrollIndicator={false} nestedScrollEnabled accessibilityElementsHidden={page !== index} importantForAccessibility={page !== index ? 'no-hide-descendants' : 'auto'} testID={index === 0 ? 'home-today-page' : 'home-archive-page'}>
-                  <Text testID={page === index ? 'home-profile-name' : undefined} style={s.patient}>{state.profile.name}</Text>
-                  {profileKind !== 'Perfil principal' && <Text style={{ color: colors.tealDark, fontSize: 11, marginTop: 4 }}>{profileKind === 'Niño' || profileKind === 'Niña' ? 'Perfil infantil' : profileKind}</Text>}
                   <Text accessibilityRole="header" style={[s.hero, { marginTop: compact ? 12 : 20, fontSize: Math.min(compact ? 62 : 86, (contentWidth - 50) * .225), lineHeight: Math.min(compact ? 65 : 90, (contentWidth - 50) * .235) }]}>
                     Tu{`\n`}{index === 0 ? 'atención' : 'archivo'}<Text style={{ color: colors.teal }}>.</Text>
                   </Text>
                   <View style={[s.modules, { marginTop: compact ? 24 : 36 }]}>
                     {index === 0 ? modules.map((m, i) => (
                       <Pressable key={m.label} accessibilityRole="button" accessibilityLabel={m.label.replace('\n', ' ')} testID={['menu-agenda', 'menu-directory', 'menu-teleconsult', 'menu-insurance'][i]} onPress={m.action} style={({ pressed }) => [s.module, { opacity: pressed ? .65 : 1 }]}>
-                        <Image
-                          source={[require('./assets/home-icon-0.png'), require('./assets/home-icon-1.png'), require('./assets/home-icon-2.png'), require('./assets/home-icon-3.png')][i]}
-                          style={[
-                            { width: iconSize + 10, height: iconSize + 16 },
-                            // Match the generated tile's visible bounds to the other menu assets.
-                            i === 1 && { transform: [
-                              { translateX: 1.5974 * iconAssetScale },
-                              { translateY: -2.5347 * iconAssetScale },
-                              { scaleX: 246 / 231 },
-                              { scaleY: 258 / 259 },
-                            ] },
-                          ]}
-                          resizeMode="contain"
-                          accessible={false}
-                        />
-                        <Text style={[s.moduleLabel, contentWidth < 360 && { fontSize: 10, lineHeight: 15 }]}>{m.label}</Text>
+                        <View style={{ height: iconSize + 16, justifyContent: 'center' }} accessible={false} importantForAccessibility="no-hide-descendants">
+                          <View testID={`home-${m.name}-icon`} style={[s.attentionIcon, { width: iconSize, height: iconSize, backgroundColor: m.surface }]}>
+                            {i === 0 ? <View style={s.iconLayers}>
+                              <Icon name="calendar-clear-outline" size={iconSize * .61} color={colors.teal} />
+                              <Text style={[s.calendarDay, { top: iconSize * .235, fontSize: iconSize * .25, lineHeight: iconSize * .3 }]}>28</Text>
+                            </View> : i === 1 ? <FontAwesome name="stethoscope" size={iconSize * .53} color="white" />
+                              : i === 2 ? <Icon name="video" size={iconSize * .61} color="white" />
+                                : <View style={s.iconLayers}>
+                                  <Icon name="shield-outline" size={iconSize * .69} color={colors.navy} />
+                                  <View style={s.shieldCheck}><Icon name="check" size={iconSize * .32} color={colors.teal} /></View>
+                                </View>}
+                          </View>
+                        </View>
+                        <Text style={[s.moduleLabel, { fontSize: contentWidth < 360 ? 9 : 11 }]}>{m.label}</Text>
                       </Pressable>
                     )) : [
                       { label: 'Historial', icon: 'folder', colors: ['#FFFFFF', '#E4F5F5'] as const, ink: colors.teal, action: () => archive({ archiveTab: 'history' }) },
                       { label: 'Recetas y\nmedicamentos', icon: 'document', colors: ['#193F62', '#082441'] as const, ink: 'white', action: () => archive({ recordType: 'Receta', archiveTitle: 'Recetas y medicamentos' }) },
                       { label: 'Análisis\nclínicos', icon: 'pill', colors: ['#12C4C8', '#00989E'] as const, ink: 'white', action: () => archive({ recordType: 'Estudio', archiveTitle: 'Análisis clínicos' }) },
-                      { label: 'Registros', icon: 'book', colors: ['#EAFFFC', '#CFF1EE'] as const, ink: colors.navy, action: () => archive({ archiveTitle: 'Registros' }) },
-                    ].map((m, i) => <Pressable key={m.label} testID={['menu-history', 'menu-prescriptions', 'menu-medications', 'menu-records'][i]} accessibilityRole="button" accessibilityLabel={m.label} onPress={m.action} style={({ pressed }) => [s.module, { opacity: pressed ? .65 : 1 }]}>
-                      <View style={{ height: iconSize + 16, justifyContent: 'center' }}><LinearGradient colors={m.colors} style={[s.appIcon, { width: iconSize, height: iconSize, borderRadius: 14 }]}><Icon name={m.icon} size={iconSize * .58} color={m.ink} /></LinearGradient></View>
+                      { label: 'Parámetros\ncorporales', icon: 'watch-outline', colors: ['#EAFFFC', '#CFF1EE'] as const, ink: colors.navy, action: () => setRoute({ name: 'body-parameters' }) },
+                    ].map((m, i) => <Pressable key={m.label} testID={['menu-history', 'menu-prescriptions', 'menu-medications', 'menu-records'][i]} accessibilityRole="button" accessibilityLabel={m.label.replace('\n', ' ')} onPress={m.action} style={({ pressed }) => [s.module, { opacity: pressed ? .65 : 1 }]}>
+                      <View style={{ height: iconSize + 16, justifyContent: 'center' }}>{i === 3 ? <Image source={require('./assets/home-body-parameters.png')} style={{ width: iconSize + 6, height: iconSize + 6 }} resizeMode="contain" accessible={false} /> : <LinearGradient colors={m.colors} style={[s.appIcon, { width: iconSize, height: iconSize, borderRadius: 14 }]}><Icon name={m.icon} size={iconSize * .58} color={m.ink} /></LinearGradient>}</View>
                       <Text style={[s.moduleLabel, { fontSize: contentWidth < 360 ? 9 : 11 }]}>{m.label}</Text>
                     </Pressable>)}
                   </View>
@@ -169,62 +172,34 @@ export default function KliniApp() {
                 </ScrollView>
               ))}
             </ScrollView>
-            <View style={s.fixedBottom} testID="home-fixed-bottom">
-              <Pressable testID="home-context" accessibilityRole="button" accessibilityLabel={page === 0 ? 'Ver próxima cita en agenda' : 'Ver registros del archivo'} onPress={() => page === 0 ? setRoute({ name: 'agenda' }) : archive()} style={s.nextAppointment}>
-                <Text style={s.eyebrow}>{page === 0 ? 'PRÓXIMA CITA' : 'TU INFORMACIÓN'}</Text>
-                <Text style={s.nextDate}>{page === 0 ? (next ? `${dateLabel(next.date)} · ${next.time} h` : 'Tu tiempo, a tu ritmo') : 'Todo en un solo lugar'}</Text>
-                <Text numberOfLines={2} style={s.nextDoctor}>{page === 0 ? (next ? `${doctor?.name || 'Tu especialista'} · ${next.mode}` : 'Encuentra un especialista y reserva tu cita.') : 'Selecciona una categoría para consultar tus documentos y registros.'}</Text>
+            {page === 0 && <View style={s.fixedBottom} testID="home-fixed-bottom">
+              <Pressable testID="home-context" accessibilityRole="button" accessibilityLabel="Ver próxima cita en agenda" onPress={() => setRoute({ name: 'agenda' })} style={s.nextAppointment}>
+                <Text style={s.eyebrow}>PRÓXIMA CITA</Text>
+                <Text style={s.nextDate}>{next ? `${dateLabel(next.date)} · ${next.time} h` : 'Tu tiempo, a tu ritmo'}</Text>
+                <Text numberOfLines={2} style={s.nextDoctor}>{next ? `${doctor?.name || 'Tu especialista'} · ${next.mode}` : 'Encuentra un especialista y reserva tu cita.'}</Text>
               </Pressable>
-              <View style={[s.homeBottom, compact && { height: 65 }]}>
-                <View style={s.dock}>
-                  {['Hoy', 'Archivo'].map((title, index) => <Pressable key={title} testID={index === 0 ? 'home-tab-today' : 'home-tab-archive'} accessibilityRole="tab" accessibilityState={{ selected: page === index }} accessibilityLabel={title} onPress={() => changePage(index)} style={s.dockTab}>
-                    <Text style={[s.dockText, { fontWeight: page === index ? '700' : '400' }]}>{title}</Text>
-                    <View style={[s.activeDot, { opacity: page === index ? 1 : 0 }]} />
-                  </Pressable>)}
-                </View>
-                <Pressable onPress={() => setRoute({ name: 'register' })} accessibilityRole="button" accessibilityLabel="Registrar información de salud" testID="quick-register" style={({ pressed }) => [s.fabGroup, pressed && { opacity: .75 }]}>
-                  <LinearGradient colors={['#15C9CC', '#00ADB2', '#009DA5']} style={s.fab}><Icon name="plus" size={32} color="white" /></LinearGradient>
-                </Pressable>
-              </View>
-            </View>
+            </View>}
           </View>
-          <HomeToolbar key={state.profile.id} onOverlayChange={setOverlayOpen} />
+          <HomeToolbar key={state.profile.id} onOverlayChange={setOverlayOpen} onAttachmentHeightChange={setAttachmentHeight} onRegister={() => setRoute({ name: 'register' })} />
         </View>
       </SafeAreaView>
     </View>
   );
 }
 const s = StyleSheet.create({
-  homeLayout: { flex: 1, marginTop: TOOLBAR_HEIGHT },
-  fixedHeader: { paddingHorizontal: 25, paddingTop: 10 },
+  homeLayout: { flex: 1, paddingBottom: TOOLBAR_HEIGHT },
+  topNavigation: { height: TOOLBAR_HEIGHT, paddingTop: 6, alignItems: 'center' },
+  topLogo: { position: 'absolute', left: 24, top: 10 },
   pager: { flex: 1 },
   pageContent: { paddingHorizontal: 25, paddingBottom: 12 },
-  fixedBottom: { paddingHorizontal: 25, paddingBottom: 18 },
+  fixedBottom: { paddingHorizontal: 25, paddingBottom: 8 },
   app: { flex: 1, backgroundColor: 'white' },
   safe: { flex: 1 },
   phone: { flex: 1, width: '100%', alignSelf: 'center' },
-  homeContent: {
-    paddingHorizontal: 25,
-    paddingTop: 10,
-    paddingBottom: 18,
-    flexGrow: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
   logo: {
-    width: 100,
-    height: 44,
+    width: 78,
+    height: 36,
   },
-  profileButton: {
-    width: 44,
-    height: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  initials: { fontSize: 15, letterSpacing: 1, color: '#315A7B' },
   eyebrow: {
     fontSize: 11,
     letterSpacing: 1.6,
@@ -235,13 +210,6 @@ const s = StyleSheet.create({
     color: colors.navy,
     fontWeight: '800',
     letterSpacing: -3.8,
-    marginTop: 15,
-  },
-  patient: {
-    fontSize: 22,
-    fontWeight: '700',
-    letterSpacing: -0.6,
-    color: colors.navy,
     marginTop: 15,
   },
   modules: {
@@ -271,6 +239,21 @@ const s = StyleSheet.create({
     borderColor: 'rgba(8,36,65,.08)',
     boxShadow: '0 6px 12px rgba(8,36,65,0.10)',
   },
+  attentionIcon: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(8,36,65,.04)',
+  },
+  iconLayers: { alignItems: 'center', justifyContent: 'center' },
+  calendarDay: {
+    position: 'absolute',
+    color: colors.teal,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  shieldCheck: { position: 'absolute', alignItems: 'center', justifyContent: 'center' },
   moduleLabel: {
     fontSize: 13,
     fontWeight: '600',
@@ -279,7 +262,6 @@ const s = StyleSheet.create({
     color: colors.navy,
     letterSpacing: -0.3,
   },
-  spacer: { flex: 1, minHeight: 48 },
   nextAppointment: {
     paddingBottom: 10,
     height: 116,
@@ -292,19 +274,11 @@ const s = StyleSheet.create({
     marginTop: 9,
   },
   nextDoctor: { fontSize: 13, color: '#41698B', marginTop: 7, lineHeight: 20 },
-  homeBottom: {
-    height: 88,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    gap: 8,
-    paddingBottom: 3,
-  },
   dock: {
     flexDirection: 'row',
     backgroundColor: colors.navy,
     borderRadius: 30,
-    height: 49,
+    height: 44,
     width: 180,
     maxWidth: '62%',
     alignItems: 'center',
@@ -316,7 +290,7 @@ const s = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 49,
+    height: 44,
     paddingTop: 5,
   },
   dockText: { color: 'white', fontSize: 13 },
@@ -327,25 +301,6 @@ const s = StyleSheet.create({
     backgroundColor: colors.teal,
     marginTop: 5,
   },
-  fabGroup: {
-    position: 'absolute',
-    right: 0,
-    bottom: 3 + (49 - 44) / 2,
-    alignItems: 'center',
-    gap: 5,
-  },
-  fab: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    borderWidth: 1,
-    borderColor: '#55D4D6',
-    boxShadow: '0 3px 5px rgba(8,36,65,.24)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  modalRoot: { flex: 1 },
-  scrim: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(26,52,72,.31)' },
   loading: {
     flex: 1,
     justifyContent: 'center',

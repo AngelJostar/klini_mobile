@@ -23,7 +23,7 @@ type Props = {
   setQuery: (value: string) => void;
 };
 export default function DirectorySearch(p: Props) {
-  const [open, setOpen] = useState<string | null>('country');
+  const [open, setOpen] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const cities = p.country === 'México' ? [...new Set(p.doctors.map((d) => d.city))].sort() : [];
   const specialties = [...new Set(p.doctors.map((d) => d.specialty))].sort();

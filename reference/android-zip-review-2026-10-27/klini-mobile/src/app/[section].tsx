@@ -11,6 +11,7 @@ import AgendaScreen from '../screens/AgendaScreen';
 import TeleconsultScreen from '../screens/TeleconsultScreen';
 import InsuranceScreen from '../screens/InsuranceScreen';
 import ArchiveScreen from '../screens/ArchiveScreen';
+import BodyParametersScreen from '../screens/BodyParametersScreen';
 import ProfileScreen from '../screens/SocialProfileScreen';
 import WalletScreen from '../screens/WalletScreen';
 
@@ -48,6 +49,7 @@ function SectionContent() {
     />
   );
   if (params.section === 'insurance') return <InsuranceScreen onClose={close} />;
+  if (params.section === 'body-parameters') return <BodyParametersScreen onClose={close} />;
   if (params.section === 'profile') return <ProfileScreen onClose={close} />;
   if (params.section === 'teleconsult') return <TeleconsultScreen onReschedule={id => go('directory', { rescheduleId: id })} onClose={close} onBook={() => go('directory', { mode: 'Teleconsulta' })} appointmentId={params.appointmentId} />;
   if (params.section === 'wallet') return <WalletScreen onClose={close} />;

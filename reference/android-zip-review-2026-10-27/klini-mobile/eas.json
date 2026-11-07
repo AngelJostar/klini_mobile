@@ -1,18 +1,47 @@
 {
-  "cli": { "version": ">=16.0.0" },
+  "cli": {
+    "version": ">=16.0.0"
+  },
   "build": {
-    "development": { "developmentClient": true, "distribution": "internal" },
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": false
+      }
+    },
     "preview": {
       "distribution": "internal",
-      "android": { "buildType": "apk" }
+      "android": {
+        "buildType": "apk"
+      }
     },
-    "production": { "autoIncrement": true },
+    "production": {
+      "autoIncrement": true
+    },
     "testflight": {
       "extends": "production",
       "distribution": "store",
       "environment": "production",
-      "ios": { "simulator": false }
+      "ios": {
+        "simulator": false
+      }
+    },
+    "standalone": {
+      "distribution": "internal",
+      "developmentClient": false,
+      "environment": "preview",
+      "env": {
+        "EXPO_NO_DOTENV": "1",
+        "EXPO_NO_CLIENT_ENV_VARS": "1"
+      },
+      "ios": {
+        "simulator": false,
+        "buildConfiguration": "Release"
+      }
     }
   },
-  "submit": { "testflight": {} }
+  "submit": {
+    "testflight": {}
+  }
 }

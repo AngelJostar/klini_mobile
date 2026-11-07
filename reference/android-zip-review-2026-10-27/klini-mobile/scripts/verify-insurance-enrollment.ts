@@ -3,8 +3,10 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import type { AppState } from '../src/domain/types';
 
-const origin = 'http://127.0.0.1:8096';
+const origin = process.env.KLINI_VERIFY_ORIGIN || 'http://127.0.0.1:8096';
 const storageKey = '@klini/app-state:v1';
+const planNames = { essential: 'Esencial', integral: 'Integral', family: 'Familiar' } as const;
+type PlanId = keyof typeof planNames;
 
 async function stored(page: Page): Promise<AppState> {
   return page.evaluate(key => JSON.parse(localStorage.getItem(key) || 'null'), storageKey);
@@ -18,6 +20,34 @@ async function mintButton(page: Page, id: string) {
   expect(bounds!.height).toBeGreaterThanOrEqual(34);
   expect(bounds!.x).toBeGreaterThanOrEqual(0);
   expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(page.viewportSize()!.width);
+}
+
+async function planRows(page: Page) {
+  await expect(page.getByRole('heading', { name: 'Elige un plan', exact: true })).toBeVisible();
+  await expect(page.getByTestId('insurance-enrollment-next')).toHaveCount(0);
+  for (const id of Object.keys(planNames) as PlanId[]) {
+    const row = page.getByTestId(`insurance-plan-${id}`);
+    await expect(row).toHaveRole('button');
+    await expect(row.getByRole('button')).toHaveCount(0);
+    await expect(row.locator('[role="radio"], input[type="radio"], [aria-checked]')).toHaveCount(0);
+    await expect(page.getByTestId(`insurance-plan-detail-${id}`)).not.toHaveAttribute('role', 'button');
+  }
+}
+
+async function planDetail(page: Page, id: PlanId) {
+  const popup = page.getByTestId('insurance-enrollment-popup');
+  await expect(popup).toBeVisible();
+  await expect(popup).toContainText(`Plan ${planNames[id]}`);
+  await expect(popup.getByRole('button', { name: 'Elegir este plan', exact: true })).toBeInViewport();
+  await expect(page.getByTestId('insurance-quote-age')).toHaveCount(0);
+}
+
+async function chooseFromDetail(page: Page, id: PlanId) {
+  await planDetail(page, id);
+  await page.getByTestId('insurance-enrollment-popup').getByRole('button', { name: 'Elegir este plan', exact: true }).click();
+  await expect(page.getByTestId('insurance-enrollment-popup')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Tu seguro', exact: true })).toBeVisible();
+  await expect(page.getByText(`Plan ${planNames[id]}`, { exact: true })).toBeVisible();
 }
 
 async function recordAcceptance(page: Page) {
@@ -51,35 +81,44 @@ async function main() {
   });
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, permissions: ['camera', 'microphone'] });
   const page = await context.newPage();
-  const errors: string[] = [];
+  const errors: string[] = [], blockedRequests: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('dialog', dialog => void dialog.accept());
+  await context.route('**/*', async route => {
+    const request = route.request();
+    if (request.method() === 'POST' || new URL(request.url()).origin !== new URL(origin).origin) {
+      blockedRequests.push(`${request.method()} ${request.url()}`);
+      return route.abort();
+    }
+    return route.continue();
+  });
   try {
     await page.goto(origin);
     await page.getByTestId('menu-insurance').click();
     await page.getByTestId('insurance-new').click();
-    await expect(page.getByRole('heading', { name: 'Elige un plan', exact: true })).toBeVisible();
+    await planRows(page);
     const initial = await stored(page);
     expect(initial).not.toBeNull();
-    await expect(page.getByTestId('insurance-enrollment-next')).toHaveCount(0);
-    for (const id of ['essential', 'integral', 'family']) await expect(page.getByTestId(`insurance-plan-${id}`)).toHaveRole('button');
-    await page.getByTestId('insurance-plan-detail-essential').click();
+    await page.getByTestId('insurance-plan-essential').click();
+    await planDetail(page, 'essential');
     await expect(page.getByTestId('insurance-enrollment-popup')).toContainText('Hospitalización');
+    await page.screenshot({ path: 'test-results/insurance-enrollment-plan-detail-essential.png' });
     await page.keyboard.press('Escape');
     await expect(page.getByTestId('insurance-enrollment-popup')).toHaveCount(0);
-    await expect(page.getByRole('heading', { name: 'Elige un plan', exact: true })).toBeVisible();
+    await planRows(page);
     await page.screenshot({ path: 'test-results/insurance-enrollment-plans.png' });
     await page.setViewportSize({ width: 320, height: 640 });
     await expect(page.getByTestId('insurance-enrollment-next')).toHaveCount(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
     await page.screenshot({ path: 'test-results/insurance-enrollment-plans-320.png' });
     await page.getByTestId('insurance-plan-essential').click();
+    await chooseFromDetail(page, 'essential');
     await expect(page.getByRole('heading', { name: 'Tu seguro', exact: true })).toBeVisible();
     await expect(page.getByText('Plan Esencial', { exact: true })).toBeVisible();
     await expect(page.getByTestId('insurance-quote-contract')).toBeDisabled();
     await page.getByTestId('insurance-quote-age').fill('17');
     await expect(page.getByTestId('insurance-quote-contract')).toBeDisabled();
-    await expect(page.getByText('Para esta demostración, escribe una edad de 18 a 80 años.')).toBeVisible();
+    await expect(page.getByText('Para esta demostración, escribe una edad de 18 a 80 años.')).toHaveCount(0);
     await page.getByTestId('insurance-quote-age').fill('40');
     await page.getByTestId('insurance-sex-male').click();
     await page.getByTestId('insurance-smoker-no').click();
@@ -90,16 +129,22 @@ async function main() {
     await expect(page.getByTestId('insurance-quote-contract')).toBeEnabled();
     await expect(page.getByTestId('insurance-quote-price')).toContainText('650');
     await page.getByTestId('insurance-detail-back').click();
+    await planRows(page);
     await page.getByTestId('insurance-plan-integral').getByText(/^Desde /).click();
+    await chooseFromDetail(page, 'integral');
     await expect(page.getByText('Plan Integral', { exact: true })).toBeVisible();
     await expect(page.getByTestId('insurance-quote-age')).toHaveValue('40');
     await expect(page.getByTestId('insurance-quote-price')).toContainText('1,250');
     await page.getByTestId('insurance-detail-back').click();
+    await planRows(page);
     await page.getByTestId('insurance-plan-family').getByText('Familiar', { exact: true }).click();
+    await chooseFromDetail(page, 'family');
     await expect(page.getByText('Plan Familiar', { exact: true })).toBeVisible();
     await expect(page.getByTestId('insurance-quote-price')).toContainText('1,850');
     await page.getByTestId('insurance-detail-back').click();
+    await planRows(page);
     await page.getByTestId('insurance-plan-integral').click();
+    await chooseFromDetail(page, 'integral');
     await expect(page.getByTestId('insurance-quote-price')).toContainText('1,250');
     await mintButton(page, 'insurance-quote-contract');
     expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
@@ -110,8 +155,9 @@ async function main() {
     await expect(page.getByRole('heading', { name: 'Revisa tu solicitud', exact: true })).toBeVisible();
     await mintButton(page, 'insurance-review-sign');
     await page.getByTestId('insurance-review-change-plan').click();
-    await expect(page.getByTestId('insurance-enrollment-next')).toHaveCount(0);
+    await planRows(page);
     await page.getByTestId('insurance-plan-integral').click();
+    await chooseFromDetail(page, 'integral');
     await expect(page.getByTestId('insurance-quote-age')).toHaveValue('40');
     await expect(page.getByTestId('insurance-occupation')).toContainText('Administrativo');
     await page.getByTestId('insurance-quote-contract').click();
@@ -186,7 +232,8 @@ async function main() {
     expect(restored.records.find(record => record.id === applications[0].id)).toEqual(applications[0]);
     expect(restored.policies).toEqual(initial.policies);
     expect(errors).toEqual([]);
-    console.log('PASS insurance enrollment: one-tap plan rows including price, independent plan details, three plan prices, no Next footer, form validation, quote, edit, contract, real synthetic video recording, invalidating old acceptance, failed persistence rollback and retry, one local record, unchanged policies, reload persistence, mint CTAs and 320px');
+    expect(blockedRequests, 'No provider, remote submission or POST is contacted').toEqual([]);
+    console.log('PASS insurance enrollment: full plan rows including price/name open details, no nested plan buttons/radios, explicit choice from details, three plan prices, no Next footer, form validation, quote, edit, contract, synthetic video recording without physical hardware, invalidating old acceptance, failed persistence rollback and retry, one local record, unchanged policies, reload persistence, mint CTAs, 320px and zero provider/submission requests');
   } finally {
     await context.close();
     await browser.close();

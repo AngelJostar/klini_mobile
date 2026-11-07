@@ -20,22 +20,32 @@ import { usePopupAlreadyOpen } from './PopupTransition';
 
 export default function TeleconsultPopup({
   title,
+  titleTestID,
+  contentKey = title,
+  backLabel,
   onClose,
   onBack,
   children,
   footer,
+  overlay,
   footerAlignment = 'center',
   variant = 'teleconsult',
   animateEntrance = false,
+  hideBack = false,
 }: PropsWithChildren<{
   title: string;
+  titleTestID?: string;
+  contentKey?: string;
+  backLabel?: string;
   onClose: () => void;
   onBack?: () => void;
   footer?: ReactNode;
+  overlay?: ReactNode;
   footerAlignment?: 'center' | 'right';
   compact?: boolean;
   variant?: 'teleconsult' | 'insurance' | 'archive';
   animateEntrance?: boolean;
+  hideBack?: boolean;
 }>) {
   const sessionAlreadyOpen = usePopupAlreadyOpen();
   const alreadyOpen = sessionAlreadyOpen && !animateEntrance;
@@ -131,19 +141,20 @@ export default function TeleconsultPopup({
           ]}
         >
           <View style={s.handle} />
-          <View style={s.controls}>
-            {
+          <View style={s.controls} accessibilityElementsHidden={!!overlay} importantForAccessibility={overlay ? 'no-hide-descendants' : 'auto'}>
+            {!hideBack &&
               <Pressable
                 accessibilityRole="button"
-                accessibilityLabel="Volver"
+                accessibilityLabel={backLabel ? `Volver a ${backLabel}` : 'Volver'}
                 testID={`${variant}-detail-back`}
                 onPress={back}
-                style={s.back}
+                style={[s.back, backLabel && s.labeledBack]}
               >
-                <Icon name="back" size={24} />
+                <Icon name="back" size={backLabel ? 18 : 24} color={backLabel ? colors.tealDark : colors.navy} />
+                {!!backLabel && <Text numberOfLines={1} style={s.backLabel}>{backLabel}</Text>}
               </Pressable>
             }
-            <Text accessibilityRole="header" style={s.heading}>
+            <Text testID={titleTestID} accessibilityRole="header" style={s.heading}>
               {title}
             </Text>
             <Pressable
@@ -158,13 +169,16 @@ export default function TeleconsultPopup({
           </View>
           <ScrollView
             style={{ flex: 1 }}
-            key={title}
+            key={contentKey}
+            accessibilityElementsHidden={!!overlay}
+            importantForAccessibility={overlay ? 'no-hide-descendants' : 'auto'}
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={s.content}
           >
             {children}
           </ScrollView>
-          {footer && <View style={[s.footer, footerAlignment === 'right' && { alignSelf: 'flex-end', minWidth: 0, marginRight: 24 }]}>{footer}</View>}
+          {footer && <View accessibilityElementsHidden={!!overlay} importantForAccessibility={overlay ? 'no-hide-descendants' : 'auto'} style={[s.footer, footerAlignment === 'right' && { alignSelf: 'flex-end', minWidth: 0, marginRight: 24 }]}>{footer}</View>}
+          {overlay}
         </Animated.View>
       </KeyboardAvoidingView>
     </View>
@@ -192,6 +206,8 @@ const s = StyleSheet.create({
   },
   controls: { flexDirection: 'row', paddingHorizontal: 16, marginTop: 3, alignItems: 'center' },
   back: { flexDirection: 'row', alignItems: 'center', minHeight: 44, width: 28, gap: 2 },
+  labeledBack: { width: 'auto', flexShrink: 1, maxWidth: '80%', paddingRight: 8 },
+  backLabel: { color: colors.tealDark, fontSize: 12, lineHeight: 17, flexShrink: 1 },
   close: {
     width: 44,
     height: 44,

@@ -109,44 +109,50 @@ export default function InsuranceEnrollmentScreen({ onClose, onBack }: { onClose
 
   return <View style={s.root}>
     <View style={s.root} pointerEvents={blocked ? 'none' : 'auto'} accessibilityElementsHidden={blocked} importantForAccessibility={blocked ? 'no-hide-descendants' : 'auto'}>
-      <InsurancePanel title={title} onClose={onClose} onBack={back} footer={footer}>
+      <InsurancePanel title={title} inlineTitle={page === 'quote'} onClose={onClose} onBack={back} footer={footer}>
         {!!storageError && <Text accessibilityRole="alert" style={s.error}>{storageError}</Text>}
         {!!error && <Text accessibilityRole="alert" style={s.error}>{error}</Text>}
 
         {page === 'plans' && <>
           <Text style={s.subtitle}>Encuentra una opción para ti.</Text>
-          {INSURANCE_PLANS.map(item => <View style={s.planRow} key={item.id}>
-            <Pressable testID={`insurance-plan-${item.id}`} accessibilityRole="button" accessibilityLabel={`Seleccionar plan ${item.name} y continuar`} onPress={() => choosePlan(item.id)} style={({ pressed }) => [s.planSelection, pressed && s.planPressed]}>
-              <View style={[s.radio, item.id === planId && s.radioSelected]}>{item.id === planId && <Icon name="check" color="white" size={13} />}</View>
+          {INSURANCE_PLANS.map(item => <Pressable key={item.id} testID={`insurance-plan-${item.id}`} accessibilityRole="button" accessibilityLabel={`Ver detalle del plan ${item.name}. Desde ${money(item.baseMonthly)}`} onPress={() => setPopup({ kind: 'plan', planId: item.id })} style={({ pressed }) => [s.planRow, s.planSelection, pressed && s.planPressed]}>
               <Icon name={item.icon} size={27} color={colors.teal} />
               <View style={s.flex}><Text style={s.rowTitle}>{item.name}</Text><Text style={s.small}>{item.subtitle}</Text></View>
               <View style={s.planPrice}><Text style={s.fromPrice}>Desde {money(item.baseMonthly)}</Text></View>
-            </Pressable>
-            <Pressable testID={`insurance-plan-detail-${item.id}`} accessibilityRole="button" accessibilityLabel={`Ver detalle del plan ${item.name}`} hitSlop={5} onPress={() => setPopup({ kind: 'plan', planId: item.id })} style={s.planDetail}>
+            <View testID={`insurance-plan-detail-${item.id}`} style={s.planDetail}>
               <View style={s.detailLink}><Text style={s.linkSmall}>Ver detalle</Text><Icon name="chevronRight" size={13} color={colors.tealDark} /></View>
-            </Pressable>
-          </View>)}
+            </View>
+          </Pressable>)}
           <Text style={s.demoNote}>Planes y precios de ejemplo para esta demostración.</Text>
         </>}
 
         {page === 'quote' && <>
-          <Text style={s.planBadge}>Plan {plan.name}</Text>
-          <Text style={s.quoteHeading}>Necesitamos un poco de información para darte el precio de tu seguro.</Text>
-          <Text style={s.label}>Edad</Text>
-          <TextInput testID="insurance-quote-age" accessibilityLabel="Edad en años" placeholder="Años" placeholderTextColor="#8DA1B5" value={details.age} onChangeText={age => changeDetails({ age: age.replace(/\D/g, '').slice(0, 2) })} keyboardType="number-pad" maxLength={2} style={s.input} />
-          {!!details.age && (Number(details.age) < 18 || Number(details.age) > 80) && <Text style={s.fieldHint}>Para esta demostración, escribe una edad de 18 a 80 años.</Text>}
-          <Text style={s.label}>Sexo</Text>
-          <View style={s.choices}>{(['Mujer', 'Hombre'] as const).map((value, index) => <Pressable key={value} testID={`insurance-sex-${index === 0 ? 'female' : 'male'}`} accessibilityRole="radio" accessibilityState={{ checked: details.sex === value }} aria-checked={details.sex === value} onPress={() => changeDetails({ sex: value })} style={[s.choice, details.sex === value && s.choiceSelected]}><Text style={[s.choiceText, details.sex === value && s.choiceTextSelected]}>{value}</Text></Pressable>)}</View>
-          <Text style={s.label}>¿Fumas?</Text>
-          <View style={s.choices}>{(['Sí', 'No'] as const).map((value, index) => <Pressable key={value} testID={`insurance-smoker-${index === 0 ? 'yes' : 'no'}`} accessibilityRole="radio" accessibilityState={{ checked: details.smoker === value }} aria-checked={details.smoker === value} onPress={() => changeDetails({ smoker: value })} style={[s.choice, details.smoker === value && s.choiceSelected]}><Text style={[s.choiceText, details.smoker === value && s.choiceTextSelected]}>{value}</Text></Pressable>)}</View>
-          <Text style={s.label}>Ocupación</Text>
-          <Pressable testID="insurance-occupation" accessibilityRole="button" accessibilityLabel={`Ocupación: ${occupation?.label ?? 'Selecciona tu ocupación'}`} onPress={() => setPopup({ kind: 'occupation' })} style={s.select}>
-            <Text style={[s.selectText, !occupation && s.placeholder]}>{occupation?.label ?? 'Selecciona tu ocupación'}</Text><Icon name="chevronDown" size={17} color="#8DA1B5" />
-          </Pressable>
-          <Text style={s.fieldHint}>Completa tus datos para ver el precio de ejemplo.</Text>
-          <View style={[s.priceCard, monthly !== null && s.priceReady]} testID="insurance-quote-price">
-            {monthly === null && <Icon name="lock" size={23} color="#9AAFC0" />}
-            <View style={s.flex}><Text style={s.small}>Precio de ejemplo</Text><Text style={[s.price, monthly === null && s.pricePending]}>{monthly === null ? '— MXN / mes' : `${money(monthly)} / mes`}</Text><Text style={s.tiny}>{monthly === null ? 'Completa tus datos para ver el precio.' : 'Cotización ficticia para practicar el proceso.'}</Text></View>
+          <Text style={s.quotePlan}>Plan {plan.name}</Text>
+          <Text style={s.quoteIntro}>Completa tus datos para ver tu precio.</Text>
+          <View style={[s.quoteRow, s.quoteFirstRow]}>
+            <Text style={s.quoteLabel}>Edad</Text>
+            <TextInput testID="insurance-quote-age" accessibilityLabel="Edad en años" placeholder="Años" placeholderTextColor="#8DA1B5" value={details.age} onChangeText={age => changeDetails({ age: age.replace(/\D/g, '').slice(0, 2) })} keyboardType="number-pad" maxLength={2} style={s.quoteAge} />
+          </View>
+          <View style={s.quoteRow}>
+            <Text style={s.quoteLabel}>Sexo</Text>
+            <View style={s.quoteChoices} accessibilityRole="radiogroup" accessibilityLabel="Sexo">{(['Mujer', 'Hombre'] as const).map((value, index) => <Pressable key={value} testID={`insurance-sex-${index === 0 ? 'female' : 'male'}`} accessibilityRole="radio" accessibilityState={{ checked: details.sex === value }} aria-checked={details.sex === value} hitSlop={4} onPress={() => changeDetails({ sex: value })} style={[s.quoteChoice, index === 1 && s.quoteSecondChoice, details.sex === value && s.quoteChoiceSelected]}><Text style={[s.quoteChoiceText, details.sex === value && s.quoteChoiceTextSelected]}>{value}</Text></Pressable>)}</View>
+          </View>
+          <View style={s.quoteRow}>
+            <Text style={s.quoteLabel}>¿Fumas?</Text>
+            <View style={s.quoteChoices} accessibilityRole="radiogroup" accessibilityLabel="¿Fumas?">{(['Sí', 'No'] as const).map((value, index) => <Pressable key={value} testID={`insurance-smoker-${index === 0 ? 'yes' : 'no'}`} accessibilityRole="radio" accessibilityState={{ checked: details.smoker === value }} aria-checked={details.smoker === value} hitSlop={4} onPress={() => changeDetails({ smoker: value })} style={[s.quoteChoice, index === 1 && s.quoteSecondChoice, details.smoker === value && s.quoteChoiceSelected]}><Text style={[s.quoteChoiceText, details.smoker === value && s.quoteChoiceTextSelected]}>{value}</Text></Pressable>)}</View>
+          </View>
+          <View style={s.quoteRow}>
+            <Text style={s.quoteLabel}>Ocupación</Text>
+            <Pressable testID="insurance-occupation" accessibilityRole="button" accessibilityLabel={`Ocupación: ${occupation?.label ?? 'Seleccionar'}`} onPress={() => setPopup({ kind: 'occupation' })} hitSlop={4} style={s.quoteSelect}>
+              <Text numberOfLines={1} style={[s.quoteSelectText, !occupation && s.placeholder]}>{occupation?.label ?? 'Seleccionar'}</Text><Icon name="chevronDown" size={15} color="#8DA1B5" />
+            </Pressable>
+          </View>
+          <View style={s.quoteRow} testID="insurance-quote-price">
+            <Text style={s.quoteLabel}>Tu precio</Text>
+            <View style={s.quotePriceValue}>
+              {monthly === null && <Icon name="lock" size={17} color="#9AAFC0" />}
+              <Text style={[s.quotePrice, monthly === null && s.quotePricePending]}>{monthly === null ? '— / mes' : `${money(monthly)} / mes`}</Text>
+            </View>
           </View>
         </>}
 
@@ -205,7 +211,7 @@ export default function InsuranceEnrollmentScreen({ onClose, onBack }: { onClose
             <Text style={s.demoNote}>Un seguro real requiere revisión, condiciones y emisión de una aseguradora.</Text>
           </>}
         </ScrollView>
-        <BookingFooterButton title="Listo" onPress={() => setPopup(null)} />
+        <BookingFooterButton title={popup.kind === 'plan' ? 'Elegir este plan' : 'Listo'} testID={popup.kind === 'plan' ? 'insurance-plan-choose' : undefined} onPress={() => { if (popup.kind === 'plan') choosePlan(popup.planId); setPopup(null); }} />
       </View>
     </View>}
     {recording && <InsuranceAcceptanceRecorder onClose={() => setRecording(false)} onRecorded={attachment => { setAcceptance(attachment); setRecording(false); setError(''); }} />}
@@ -221,8 +227,6 @@ const s = StyleSheet.create({
   planSelection: { width: '100%', flexDirection: 'row', alignItems: 'center', gap: 11, minHeight: 96, paddingVertical: 18 },
   planPressed: { backgroundColor: '#F2FAF9', opacity: .8 },
   planPrice: { maxWidth: '35%', paddingBottom: 24 },
-  radio: { width: 20, height: 20, borderRadius: 10, borderColor: '#A6B9CB', borderWidth: 1.5, alignItems: 'center', justifyContent: 'center' },
-  radioSelected: { backgroundColor: colors.teal, borderColor: colors.teal },
   rowTitle: { color: colors.navy, fontSize: 13, fontWeight: '600', lineHeight: 19 },
   small: { color: '#8094A9', fontSize: 11, lineHeight: 16 },
   tiny: { color: '#8B9DB0', fontSize: 10, lineHeight: 15 },
@@ -231,23 +235,25 @@ const s = StyleSheet.create({
   detailLink: { flexDirection: 'row', alignItems: 'center' },
   linkSmall: { color: colors.tealDark, fontSize: 10 },
   demoNote: { color: '#8A9BAE', fontSize: 10, lineHeight: 16, marginTop: 16 },
-  planBadge: { fontSize: 10, lineHeight: 15, color: colors.tealDark, backgroundColor: '#DDF5F2', borderRadius: 6, paddingHorizontal: 7, paddingVertical: 2, alignSelf: 'flex-start', marginBottom: 10 },
-  quoteHeading: { color: colors.navy, fontSize: 20, lineHeight: 25, fontWeight: '600', maxWidth: 290, marginBottom: 8 },
-  label: { color: colors.navy, fontSize: 12, fontWeight: '600', marginTop: 13, marginBottom: 6 },
-  input: { backgroundColor: '#F0F5F8', minHeight: 36, borderRadius: 9, paddingHorizontal: 12, paddingVertical: 8, color: colors.navy, fontSize: 13 },
-  fieldHint: { color: '#8B9DB0', fontSize: 10, lineHeight: 15, marginTop: 10 },
-  choices: { flexDirection: 'row', gap: 9 },
-  choice: { flex: 1, minHeight: 36, borderRadius: 12, borderWidth: 1, borderColor: '#E0E9F0', backgroundColor: '#F8FAFC', alignItems: 'center', justifyContent: 'center' },
-  choiceSelected: { backgroundColor: '#DDF5F2', borderColor: '#95E1DD' },
-  choiceText: { color: '#8C9EB1', fontSize: 12 },
-  choiceTextSelected: { color: colors.tealDark, fontWeight: '500' },
-  select: { backgroundColor: '#F0F5F8', minHeight: 36, borderRadius: 9, paddingHorizontal: 12, paddingVertical: 9, flexDirection: 'row', alignItems: 'center', gap: 8 },
-  selectText: { color: colors.navy, fontSize: 12, flex: 1 },
+  quotePlan: { color: '#8B9DB0', fontSize: 11, lineHeight: 16, marginLeft: 20, marginTop: 2 },
+  quoteIntro: { color: '#8B9DB0', fontSize: 11, lineHeight: 17, marginTop: 5, marginBottom: 13 },
+  quoteRow: { flexDirection: 'row', alignItems: 'center', gap: 10, minHeight: 54, paddingVertical: 8, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.line },
+  quoteFirstRow: { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.line },
+  quoteLabel: { flex: 1, minWidth: 0, color: colors.navy, fontSize: 13, lineHeight: 18, fontWeight: '500' },
+  quoteAge: { width: 90, minHeight: 32, borderRadius: 8, backgroundColor: '#F3F7FA', borderWidth: 1, borderColor: '#E7EFF4', paddingHorizontal: 10, paddingVertical: 6, color: colors.navy, fontSize: 12 },
+  quoteChoices: { width: 166, flexDirection: 'row', minHeight: 32, borderRadius: 8, borderWidth: 1, borderColor: '#E7EFF4', backgroundColor: '#F3F7FA', overflow: 'hidden' },
+  quoteChoice: { flex: 1, minHeight: 32, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6 },
+  quoteSecondChoice: { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: '#E3EBF1' },
+  quoteChoiceSelected: { backgroundColor: '#DDF5F2' },
+  quoteChoiceText: { color: '#8C9EB1', fontSize: 12, lineHeight: 17 },
+  quoteChoiceTextSelected: { color: colors.tealDark, fontWeight: '600' },
+  quoteSelect: { maxWidth: 166, minWidth: 98, minHeight: 32, borderRadius: 8, borderWidth: 1, borderColor: '#E7EFF4', backgroundColor: '#F3F7FA', paddingHorizontal: 9, paddingVertical: 6, flexDirection: 'row', alignItems: 'center', gap: 7 },
+  quoteSelectText: { flexShrink: 1, minWidth: 0, color: colors.navy, fontSize: 12, lineHeight: 18 },
+  quotePriceValue: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 7, maxWidth: '70%' },
+  quotePrice: { color: colors.navy, fontSize: 13, lineHeight: 19, fontWeight: '600', textAlign: 'right', flexShrink: 1 },
+  quotePricePending: { color: '#9AAFC0', fontWeight: '500' },
   placeholder: { color: '#8DA1B5' },
-  priceCard: { backgroundColor: '#F0F5F8', borderRadius: 9, padding: 13, flexDirection: 'row', alignItems: 'center', gap: 13, marginTop: 12 },
-  priceReady: { backgroundColor: '#E0F7F4' },
   price: { color: colors.navy, fontSize: 18, lineHeight: 25, fontWeight: '700' },
-  pricePending: { color: '#9AAFC0', fontSize: 15 },
   summaryRow: { flexDirection: 'row', alignItems: 'center', gap: 15, paddingVertical: 16, borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth },
   documentRow: { flexDirection: 'row', alignItems: 'center', gap: 15, minHeight: 49, borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth },
   documentLink: { color: colors.tealDark, fontSize: 12, flex: 1 },

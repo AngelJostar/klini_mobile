@@ -7,8 +7,9 @@ import { savePhotoAttachment } from '../services/files';
 import { transcribePhoto } from '../services/transcription';
 import type { Transcription } from '../domain/transcription';
 import type { Attachment } from '../domain/types';
+import RecordFlowSteps from './RecordFlowSteps';
 
-export default function RecordPhotoPopup({ title = 'Foto', enableTranscription = false, onClose, onCapture }: { title?: string; enableTranscription?: boolean; onClose: () => void; onCapture: (attachment: Attachment, transcription?: Transcription) => void }) {
+export default function RecordPhotoPopup({ title = 'Foto', enableTranscription = false, savePhoto = savePhotoAttachment, onClose, onBack, onCapture, showSteps = false, initialAttachment }: { title?: string; enableTranscription?: boolean; savePhoto?: (uri: string) => Promise<Attachment>; onClose: () => void; onBack?: () => void; onCapture: (attachment: Attachment, transcription?: Transcription) => void; showSteps?: boolean; initialAttachment?: Attachment }) {
   const camera = useRef<CameraView>(null);
   const alive = useRef(true);
   const [permission, requestPermission] = useCameraPermissions();
@@ -17,7 +18,8 @@ export default function RecordPhotoPopup({ title = 'Foto', enableTranscription =
   const [busy, setBusy] = useState(false);
   const [transcribing, setTranscribing] = useState(false);
   const request = useRef<AbortController | null>(null);
-  const [photo, setPhoto] = useState<string | null>(null);
+  const [photo, setPhoto] = useState<string | null>(initialAttachment?.uri ?? null);
+  const [originalAttachment, setOriginalAttachment] = useState(initialAttachment);
   const [error, setError] = useState('');
   const [demo, setDemo] = useState(false);
   async function loadDemo() {
@@ -25,21 +27,21 @@ export default function RecordPhotoPopup({ title = 'Foto', enableTranscription =
     setBusy(true); setError('');
     try {
       const asset = await Asset.fromModule(require('../../assets/demo-prescription.jpg')).downloadAsync();
-      if (alive.current) { setPhoto(asset.localUri ?? asset.uri); setDemo(true); }
+      if (alive.current) { setPhoto(asset.localUri ?? asset.uri); setOriginalAttachment(undefined); setDemo(true); }
     } catch { if (alive.current) setError('No se pudo cargar la receta de ejemplo. Intenta nuevamente.'); }
     finally { if (alive.current) setBusy(false); }
   }
   useEffect(() => { alive.current = true; return () => { alive.current = false; request.current?.abort(); }; }, []);
   useEffect(() => {
-    const back = BackHandler.addEventListener('hardwareBackPress', () => { onClose(); return true; });
+    const back = BackHandler.addEventListener('hardwareBackPress', () => { (onBack ?? onClose)(); return true; });
     return () => back.remove();
-  }, [onClose]);
+  }, [onClose, onBack]);
   async function capture() {
     if (!ready || busy || !camera.current) return;
     setBusy(true); setError('');
     try {
       const picture = await camera.current.takePictureAsync({ quality: .45 });
-      if (alive.current && picture?.uri) { setPhoto(picture.uri); setDemo(false); }
+      if (alive.current && picture?.uri) { setPhoto(picture.uri); setOriginalAttachment(undefined); setDemo(false); }
     } catch { if (alive.current) setError('No se pudo tomar la foto. Intenta de nuevo.'); }
     finally { if (alive.current) { setBusy(false); setTranscribing(false); } }
   }
@@ -50,7 +52,7 @@ export default function RecordPhotoPopup({ title = 'Foto', enableTranscription =
       request.current = new AbortController();
       const transcription = withTranscription ? await transcribePhoto(photo, request.current.signal) : undefined;
       if (!alive.current) return;
-      const attachment = await savePhotoAttachment(photo);
+      const attachment = originalAttachment?.uri === photo ? originalAttachment : await savePhoto(photo);
       if (alive.current) onCapture(attachment, transcription);
     } catch (e) { if (alive.current) setError(e instanceof Error ? e.message : 'No se pudo guardar la foto.'); }
     finally { if (alive.current) { setBusy(false); setTranscribing(false); } }
@@ -58,7 +60,8 @@ export default function RecordPhotoPopup({ title = 'Foto', enableTranscription =
   return <View style={s.overlay}>
     <Pressable style={StyleSheet.absoluteFill} accessibilityRole="button" accessibilityLabel="Cerrar foto" onPress={onClose} />
     <View style={s.card} testID="record-photo-popup" role="dialog" accessibilityLabel={title} accessibilityViewIsModal>
-      <View style={s.header}><Text style={s.title}>{title}</Text><Pressable testID="record-photo-close" accessibilityRole="button" accessibilityLabel="Cerrar foto" onPress={onClose} style={s.close}><Icon name="close" size={18} /></Pressable></View>
+      <View style={s.header}>{onBack && <Pressable testID="record-photo-back" accessibilityRole="button" accessibilityLabel="Volver al tipo de registro" onPress={onBack} style={s.close}><Icon name="back" size={20} /></Pressable>}<Text style={s.title}>{title}</Text><Pressable testID="record-photo-close" accessibilityRole="button" accessibilityLabel="Cerrar foto" onPress={onClose} style={s.close}><Icon name="close" size={18} /></Pressable></View>
+      {showSteps && <RecordFlowSteps activeStep={2} />}
       <View style={s.preview}>
         {permission?.granted ? <CameraView ref={camera} style={StyleSheet.absoluteFill} facing={facing} onCameraReady={() => setReady(true)} onMountError={() => { setReady(false); setError('No se pudo abrir la cámara. Comprueba que esté disponible.'); }} /> : <View style={s.permission}>
           <Icon name="camera" size={36} color={colors.teal} />
