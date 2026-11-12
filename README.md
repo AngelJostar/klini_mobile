@@ -52,3 +52,11 @@ npx expo-doctor
 - `docs/android-development.md`: emulador, Expo Go y development build.
 
 El proyecto sigue el plan `Plan_de_construccion_Klini_Mobile.docx` de Dr. Sam.
+
+
+## Parámetros corporales integrados
+
+El portal incluye un acceso al módulo nativo de parámetros en `/parameters`.
+La UI, filtros, historial y adaptación Apple Health están en `src/features/body-parameters/`.
+Es un espacio local de demostración separado del expediente Laravel.
+Consulta [alcance, comandos y pendientes](docs/parameters-integration-2026-11-09.md).

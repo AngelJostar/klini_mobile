@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { useRef } from 'react';
+import { AccessibilityInfo, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { colors, Icon } from './ui';
+import { useDirectoryOptions, type DirectoryFilterMode, type DirectoryOptionField } from './DirectoryOptionsProvider';
 import type { Doctor } from '../domain/types';
+import { directoryInsurers } from '../domain/directoryInsurers';
 
 const countries = ['🇲🇽 México', '🇺🇸 Estados Unidos', '🇨🇴 Colombia', '🇪🇸 España', '🇦🇷 Argentina'];
-const normalize = (value: string) =>
-  value
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase();
+const normalizeInsurer = (name: string) => name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/\s+/g, ' ');
 type Props = {
   doctors: Doctor[];
   country: string;
@@ -22,207 +20,87 @@ type Props = {
   query: string;
   setQuery: (value: string) => void;
 };
-export default function DirectorySearch(p: Props) {
-  const [open, setOpen] = useState<string | null>(null);
-  const [search, setSearch] = useState('');
-  const cities = p.country === 'México' ? [...new Set(p.doctors.map((d) => d.city))].sort() : [];
-  const specialties = [...new Set(p.doctors.map((d) => d.specialty))].sort();
-  const insurers = [...new Set(p.doctors.flatMap((d) => d.insurers))].sort();
-  const toggle = (key: string) => {
-    setSearch('');
-    setOpen(open === key ? null : key);
-  };
-  function field(
-    key: string,
-    label: string,
-    value: string,
-    placeholder: string,
-    options: string[],
-    choose: (value: string) => void,
-    optional = false,
-  ) {
-    return (
-      <View style={s.field}>
-        <Pressable
-          testID={`directory-${key}`}
-          accessibilityRole="button"
-          accessibilityState={{ expanded: open === key }}
-          onPress={() => toggle(key)}
-          style={s.trigger}
-        >
-          <View style={s.flex}>
-            <Text style={s.label}>
-              {label}
-              {optional && <Text style={s.optional}> · Opcional</Text>}
-            </Text>
-            <Text style={[s.value, !value && s.placeholder]}>{value || placeholder}</Text>
-          </View>
-          <Icon name={open === key ? 'chevronUp' : 'chevronRight'} size={18} color={colors.muted} />
-        </Pressable>
-        {open === key && (
-          <View style={s.dropdown}>
-            <View style={s.search}>
-              <Icon name="search" size={16} color={colors.muted} />
-              <TextInput
-                testID={`directory-${key}-search`}
-                accessibilityLabel={`Buscar ${label.toLowerCase()}`}
-                value={search}
-                onChangeText={setSearch}
-                placeholder={`Buscar ${label.toLowerCase()}`}
-                placeholderTextColor={colors.muted}
-                style={s.input}
-              />
-            </View>
-            <ScrollView
-              style={{ maxHeight: 180 }}
-              nestedScrollEnabled
-              keyboardShouldPersistTaps="handled"
-            >
-              {key !== 'country' && (
-                <Pressable
-                  onPress={() => {
-                    choose('');
-                    setOpen(null);
-                  }}
-                  style={s.option}
-                >
-                  <Text style={s.optionText}>
-                    {key === 'city'
-                      ? 'Todas las ciudades'
-                      : key === 'specialty'
-                        ? 'Todas las especialidades'
-                        : 'Cualquier aseguradora'}
-                  </Text>
-                </Pressable>
-              )}
-              {options
-                .filter((option) => normalize(option).includes(normalize(search)))
-                .map((option) => (
-                  <Pressable
-                    key={option}
-                    testID={`directory-option-${option}`}
-                    accessibilityRole="button"
-                    accessibilityState={{ selected: value === option }}
-                    onPress={() => {
-                      choose(option);
-                      setOpen(null);
-                      setSearch('');
-                    }}
-                    style={[s.option, value === option && s.chosen]}
-                  >
-                    <Text style={s.optionText}>{option}</Text>
-                    {value === option && <Icon name="check" color={colors.teal} size={18} />}
-                  </Pressable>
-                ))}
-              {!options.filter((option) => normalize(option).includes(normalize(search)))
-                .length && (
-                <Text style={s.empty}>
-                  {key === 'city' && p.country !== 'México'
-                    ? 'Aún no hay ciudades disponibles en este país.'
-                    : 'Sin resultados'}
-                </Text>
-              )}
-            </ScrollView>
-          </View>
-        )}
+
+function DirectoryField({ field, label, value, placeholder, options, onSelect, optional, allLabel, emptyMessage, optionPrefix }: {
+  field: DirectoryOptionField;
+  label: string;
+  value: string;
+  placeholder: string;
+  options: string[];
+  onSelect: (value: string) => void;
+  optional?: boolean;
+  allLabel?: string;
+  emptyMessage?: string;
+  optionPrefix?: string;
+}) {
+  const picker = useDirectoryOptions();
+  const trigger = useRef<React.ComponentRef<typeof View>>(null);
+  return <View style={s.field}>
+    <Pressable
+      ref={trigger}
+      testID={`directory-${field}`}
+      accessibilityRole="button"
+      accessibilityState={{ expanded: picker.active === field }}
+      aria-expanded={picker.active === field}
+      onPress={() => picker.open({ kind: 'options', field, label, value, options, optionPrefix, allLabel, emptyMessage, onSelect, restoreNativeFocus: () => { if (trigger.current) AccessibilityInfo.sendAccessibilityEvent(trigger.current, 'focus'); } })}
+      style={s.trigger}
+    >
+      <View style={s.flex}>
+        <Text style={s.label}>{label}{optional && <Text style={s.optional}> · Opcional</Text>}</Text>
+        <Text style={[s.value, !value && s.placeholder]}>{value || placeholder}</Text>
       </View>
-    );
-  }
-  return (
-    <View>
-      {field(
-        'country',
-        'País',
-        countries.find((c) => c.endsWith(p.country)) ?? p.country,
-        'Selecciona país',
-        countries,
-        (value) => {
-          p.setCountry(value.slice(5));
-          p.setCity('');
-        },
-      )}
-      {field('city', 'Ciudad', p.city, 'Selecciona ciudad', cities, p.setCity)}
-      {field(
-        'specialty',
-        'Especialidad',
-        p.specialty,
-        'Todas las especialidades',
-        specialties,
-        p.setSpecialty,
-        true,
-      )}
-      {field(
-        'insurer',
-        'Aseguradora',
-        p.insurer,
-        'Selecciona aseguradora',
-        insurers,
-        p.setInsurer,
-        true,
-      )}
-      <View style={s.field}>
-        <Text style={s.label}>
-          Nombre del médico<Text style={s.optional}> · Opcional</Text>
-        </Text>
-        <View style={s.nameInput}>
-          <Icon name="search" size={17} color={colors.muted} />
-          <TextInput
-            testID="booking-search"
-            accessibilityLabel="Nombre del médico"
-            placeholder="Escribe su nombre"
-            placeholderTextColor="#94A5B7"
-            value={p.query}
-            onChangeText={p.setQuery}
-            style={s.input}
-          />
-        </View>
+      <Icon name="chevronRight" size={18} color={colors.muted} />
+    </Pressable>
+  </View>;
+}
+
+export default function DirectorySearch(p: Props) {
+  const countryFlag = countries.find(country => country.endsWith(p.country))?.split(' ')[0];
+  const cities = p.country === 'México' ? [...new Set(p.doctors.map(d => d.city))].sort() : [];
+  const specialties = [...new Set(p.doctors.map(d => d.specialty))].sort();
+  const catalogNames: string[] = directoryInsurers.map(insurer => insurer.name);
+  const seenInsurers = new Set(catalogNames.map(normalizeInsurer));
+  const otherInsurers = p.doctors.flatMap(d => d.insurers).filter(name => {
+    const key = normalizeInsurer(name);
+    if (seenInsurers.has(key)) return false;
+    seenInsurers.add(key);
+    return true;
+  }).sort();
+  const insurers = [...catalogNames, ...otherInsurers];
+  return <View>
+    <DirectoryField field="country" label="País" value={countries.find(c => c.endsWith(p.country)) ?? p.country} placeholder="Selecciona país" options={countries} onSelect={value => { p.setCountry(value.slice(5)); p.setCity(''); }} />
+    <DirectoryField field="city" label="Ciudad" value={p.city} placeholder="Selecciona ciudad" options={cities} optionPrefix={countryFlag} onSelect={p.setCity} allLabel="Todas las ciudades" emptyMessage={p.country !== 'México' ? 'Aún no hay ciudades disponibles en este país.' : undefined} />
+    <DirectoryField field="specialty" label="Especialidad" value={p.specialty} placeholder="Todas las especialidades" options={specialties} onSelect={p.setSpecialty} optional allLabel="Todas las especialidades" />
+    <DirectoryField field="insurer" label="Aseguradora" value={p.insurer} placeholder="Selecciona aseguradora" options={insurers} onSelect={p.setInsurer} optional allLabel="Cualquier aseguradora" />
+    <View style={s.field}>
+      <Text style={s.label}>Nombre del médico<Text style={s.optional}> · Opcional</Text></Text>
+      <View style={s.nameInput}>
+        <Icon name="search" size={17} color={colors.muted} />
+        <TextInput testID="booking-search" accessibilityLabel="Nombre del médico" placeholder="Escribe su nombre" placeholderTextColor="#94A5B7" value={p.query} onChangeText={p.setQuery} style={s.input} />
       </View>
     </View>
-  );
+  </View>;
 }
+
+export function DirectoryMoreFilters({ mode, onlyFavorites, onApply }: { mode: DirectoryFilterMode; onlyFavorites: boolean; onApply: (mode: DirectoryFilterMode, favorites: boolean) => void }) {
+  const picker = useDirectoryOptions();
+  const trigger = useRef<React.ComponentRef<typeof View>>(null);
+  const count = Number(mode !== 'Todas') + Number(onlyFavorites);
+  return <Pressable ref={trigger} testID="directory-more-filters" accessibilityRole="button" accessibilityState={{ expanded: picker.active === 'filters' }} aria-expanded={picker.active === 'filters'} onPress={() => picker.open({ kind: 'filters', mode, onlyFavorites, onApply, restoreNativeFocus: () => { if (trigger.current) AccessibilityInfo.sendAccessibilityEvent(trigger.current, 'focus'); } })} style={s.moreFilters}>
+    <Text style={s.moreText}>Más filtros{count ? ` · ${count}` : ''}</Text>
+  </Pressable>;
+}
+
 const s = StyleSheet.create({
   flex: { flex: 1 },
-  subtitle: { color: colors.muted, fontSize: 14, marginBottom: 14 },
   field: { borderBottomWidth: 1, borderBottomColor: colors.line, paddingVertical: 9 },
   trigger: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 8 },
   label: { fontSize: 12, fontWeight: '600', color: colors.navy },
   optional: { fontWeight: '400', color: colors.tealDark, fontSize: 11 },
   value: { fontSize: 14, color: colors.navy, marginTop: 5 },
   placeholder: { color: '#94A5B7', fontSize: 12 },
-  dropdown: {
-    borderRadius: 18,
-    padding: 6,
-    borderWidth: 1,
-    borderColor: '#EDF1F5',
-    backgroundColor: 'white',
-    marginTop: 5,
-    boxShadow: '0px 4px 16px rgba(8,36,65,.08)',
-  },
-  search: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F4F7FA',
-    borderRadius: 12,
-    paddingHorizontal: 10,
-  },
-  input: {
-    flex: 1,
-    minWidth: 0,
-    minHeight: 40,
-    color: colors.navy,
-    fontSize: 12,
-    paddingHorizontal: 8,
-  },
-  option: {
-    minHeight: 40,
-    paddingHorizontal: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderRadius: 10,
-  },
-  chosen: { backgroundColor: '#EAF7F8' },
-  optionText: { color: colors.navy, fontSize: 12 },
-  empty: { color: colors.muted, padding: 12, fontSize: 12 },
+  input: { flex: 1, minWidth: 0, minHeight: 40, color: colors.navy, fontSize: 12, paddingHorizontal: 8 },
   nameInput: { flexDirection: 'row', alignItems: 'center' },
+  moreFilters: { minHeight: 44, alignSelf: 'stretch', justifyContent: 'center' },
+  moreText: { color: colors.tealDark, fontSize: 14, fontWeight: '600' },
 });

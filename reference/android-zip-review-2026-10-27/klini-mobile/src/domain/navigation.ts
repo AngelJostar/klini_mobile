@@ -41,7 +41,6 @@ export const menuItems: MenuItem[] = [
     id: 'alerts',
     title: 'Alertas',
     icon: 'notifications',
-    pending: true,
     destination: { section: 'alerts' },
   },
   {
@@ -80,6 +79,20 @@ export const menuItems: MenuItem[] = [
     destination: { section: 'devices' },
   },
   {
+    id: 'pharmacy',
+    title: 'Farmacia digital',
+    icon: 'bag-add-outline',
+    keywords: 'farmacia digital',
+    destination: { section: 'pharmacy' },
+  },
+  {
+    id: 'adherence-programs',
+    title: 'Programas de apego',
+    icon: 'checkbox-outline',
+    keywords: 'programas apego adherencia',
+    destination: { section: 'adherence-programs' },
+  },
+  {
     id: 'communities',
     title: 'Comunidad',
     icon: 'people',
@@ -114,6 +127,31 @@ export const menuItems: MenuItem[] = [
     icon: 'folder',
     keywords: 'historial expediente',
     destination: { section: 'archive' },
+  },
+];
+
+// Kept separate so patient search and shortcuts do not expose professional services.
+export const professionalMenuItems: MenuItem[] = [
+  {
+    id: 'professional-agenda',
+    title: 'Administración de agenda',
+    icon: 'calendar',
+    pending: true,
+    destination: { section: 'professional-agenda' },
+  },
+  {
+    id: 'professional-office',
+    title: 'Administración de consultorio',
+    icon: 'business-outline',
+    pending: true,
+    destination: { section: 'professional-office' },
+  },
+  {
+    id: 'professional-services',
+    title: 'Servicios integrales',
+    icon: 'apps-outline',
+    pending: true,
+    destination: { section: 'professional-services' },
   },
 ];
 

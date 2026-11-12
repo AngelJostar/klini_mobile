@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="bootstrap.php" colors="true" cacheDirectory="runtime/phpunit-cache">
+  <testsuites><testsuite name="Klini pharmacy seller staging">
+    <file>../tests/Feature/PharmacyKliniSellerTest.php</file>
+    <file>C:/laragon/www/dr-sam/tests/Feature/PharmacyStoreAdminTest.php</file>
+    <file>C:/laragon/www/dr-sam/tests/Feature/UniversalPharmacyPublicationTest.php</file>
+    <file>C:/laragon/www/dr-sam/tests/Feature/PharmacyStoreApiTest.php</file>
+  </testsuite></testsuites>
+</phpunit>

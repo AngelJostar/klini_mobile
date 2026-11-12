@@ -1,0 +1,74 @@
+[
+  {
+    "path": "app/Services/Wallet/MobileWalletConsultationService.php",
+    "sha256": "b2f7de1f02851fcf358d8131e808ca5414c7e702b9f0cfe80ad964200132f5dc"
+  },
+  {
+    "path": "app/Services/Wallet/MobileWalletService.php",
+    "sha256": "5ddc8f166a199e1a17769edc1dbd989935254123e679c78e8e5b7ec1516e8ec2"
+  },
+  {
+    "path": "app/Models/Appointment.php",
+    "sha256": "efd5877ae16760447492a77a7606274212dbbec710b0f0ce68cadf39ea3c2b39"
+  },
+  {
+    "path": "app/Models/MobileWalletConsultationQuote.php",
+    "sha256": "53e0ed892b6535a39bd19ff8d386598fe4ea1ad0a5438b25727f4ad98834880b"
+  },
+  {
+    "path": "app/Models/MobileWalletServicePayment.php",
+    "sha256": "b045b6a9858638eb8d3eefc9921ee3e9367f98706433d13f9e3306d74176b78b"
+  },
+  {
+    "path": "app/Models/MobileWalletMovement.php",
+    "sha256": "ccfad14dfe13679cb181b27ddd30ca9e7327dc350e1a08ef1255a82a790f5a03"
+  },
+  {
+    "path": "app/Http/Controllers/Api/Mobile/V1/WalletController.php",
+    "sha256": "5bcfae863555aac76d32c1e4b9654189b3cebd2da0d5ab8e49102745087fb1dd"
+  },
+  {
+    "path": "app/Console/Commands/WalletPreflightCommand.php",
+    "sha256": "e33aa378f21fa3d9b6babec2b88966942aa9f91cdd2bc27e8aeed71ce79bfd5f"
+  },
+  {
+    "path": "database/migrations/2026_11_12_000003_create_wallet_consultation_payments.php",
+    "sha256": "df4c9436a8ec71d2ef6a3c531b9291994607684e1448d5b7586c5453bee29bd0"
+  },
+  {
+    "path": "tests/Feature/Api/Mobile/MobileWalletConsultationTest.php",
+    "sha256": "91314bcf64a2808e9eb04e2e5b693ff32d5bfb5a466d2339f783f7ad8ab1abe9"
+  },
+  {
+    "path": "tests/Feature/Api/Mobile/MobileWalletPaymentTest.php",
+    "sha256": "011d7015fac22936b896f5049849c8b972717044a06ea55b9d9861826063d6ed"
+  },
+  {
+    "path": "tests/Feature/StateTransitionTest.php",
+    "sha256": "218500434a13466965678f9ea80416f8045e3e365cdd0832d80b10b84cfa6386"
+  },
+  {
+    "path": "app/Http/Controllers/Doctor/DoctorPortalController.php",
+    "sha256": "4b5d75ecbbd00bac7a4b72414d74775e45b94ff5ebb5870d49604b8416542112"
+  },
+  {
+    "path": "app/Http/Controllers/Api/Mobile/V1/DoctorController.php",
+    "sha256": "07fc64a20ee6ea7347b3e51035c902bdb53f3e2efa7744e31460693582920a61"
+  },
+  {
+    "path": "app/Http/Controllers/Unit/UnitDashboardController.php",
+    "sha256": "774086f44241fc7c80d304779d293e1f85cbca0da7837d6db38d215cbada0c15"
+  },
+  {
+    "path": "app/Http/Controllers/Operational/OutpatientDashboardController.php",
+    "sha256": "d04b97186bd18842ddf76e12a33cc5db3d996dfdc1835415b72dd5d540ab9652"
+  },
+  {
+    "path": "routes/api.php",
+    "sha256": "7e1816626bd8d6708032f4d4ef8c52a8bc7b9167caef85fb84b07e57b9528c91"
+  },
+  {
+    "path": "docs/mobile-wallet-payments.md",
+    "sha256": "4e0f301ef0d455c1e298435aa0f371e5c70cf9301ff77e370c58df04d58ee2e4"
+  }
+]

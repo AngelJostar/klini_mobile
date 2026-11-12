@@ -21,7 +21,7 @@ import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, Icon } from './ui';
-import { menuItems, searchHome, type MenuItem } from '../domain/navigation';
+import { menuItems, professionalMenuItems, searchHome, type MenuItem } from '../domain/navigation';
 import { useAppStore } from '../state/store';
 import { hasAiAccess } from '../domain/aiSubscription';
 import type { AiAction } from '../domain/kliniAi';
@@ -32,8 +32,11 @@ import AiAttachmentMenu, { type AiAttachmentChoice } from './AiAttachmentMenu';
 import AiAttachmentChips from './AiAttachmentChips';
 import AiSparkles from './AiSparkles';
 import RecordPhotoPopup from './RecordPhotoPopup';
+import ProfessionalAvatar from './ProfessionalAvatar';
+import { professionalProfileLabel } from '../domain/managedProfiles';
 
 export const TOOLBAR_HEIGHT = 68;
+const KEYBOARD_FADE_DURATION_MS = 1200;
 
 export default function HomeToolbar({
   onOverlayChange,
@@ -44,10 +47,13 @@ export default function HomeToolbar({
   onAttachmentHeightChange?: (height: number) => void;
   onRegister?: () => void;
 }) {
-  const { state } = useAppStore();
+  const { state, professionalProfile } = useAppStore();
   const [panel, setPanel] = useState<'menu' | 'search' | 'ai' | null>(null);
   const [query, setQuery] = useState('');
   const [questionFocused, setQuestionFocused] = useState(false);
+  const [keyboardBackingVisible, setKeyboardBackingVisible] = useState(false);
+  const [keyboardFade] = useState(() => new Animated.Value(0));
+  const keyboardBackingRequested = useRef(false);
   const [question, setQuestion] = useState('');
   const [conversationId, setConversationId] = useState(0);
   const [attachments, setAttachments] = useState<AiAttachment[]>([]);
@@ -95,6 +101,29 @@ export default function HomeToolbar({
     reopenKeyboardAfterTap.current = false;
     ignoreKeyboardHide.current = false;
   }, []);
+  const showKeyboardBacking = useCallback(() => {
+    keyboardBackingRequested.current = true;
+    setKeyboardBackingVisible(true);
+    keyboardFade.stopAnimation();
+    Animated.timing(keyboardFade, {
+      toValue: 1,
+      duration: reduceMotion ? 0 : KEYBOARD_FADE_DURATION_MS,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: Platform.OS !== 'web',
+    }).start();
+  }, [keyboardFade, reduceMotion]);
+  const hideKeyboardBacking = useCallback(() => {
+    keyboardBackingRequested.current = false;
+    keyboardFade.stopAnimation();
+    Animated.timing(keyboardFade, {
+      toValue: 0,
+      duration: reduceMotion ? 0 : KEYBOARD_FADE_DURATION_MS,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: Platform.OS !== 'web',
+    }).start(({ finished }) => {
+      if (finished && !keyboardBackingRequested.current && alive.current) setKeyboardBackingVisible(false);
+    });
+  }, [keyboardFade, reduceMotion]);
   const focusQuestionKeyboard = () => {
     const target = input.current;
     if (!target || attachmentLocked) return;
@@ -115,15 +144,18 @@ export default function HomeToolbar({
     });
   };
   useEffect(() => {
-    if (Platform.OS !== 'android') return;
-    const shown = Keyboard.addListener('keyboardDidShow', () => { ignoreKeyboardHide.current = false; });
+    const shown = Keyboard.addListener(Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow', () => {
+      ignoreKeyboardHide.current = false;
+      if (input.current?.isFocused()) showKeyboardBacking();
+    });
     const hidden = Keyboard.addListener('keyboardDidHide', () => {
-      if (ignoreKeyboardHide.current || keyboardRefocusFrame.current !== null) return;
+      if (Platform.OS === 'android' && (ignoreKeyboardHide.current || keyboardRefocusFrame.current !== null)) return;
+      hideKeyboardBacking();
       // Release stale Android focus so the next ordinary tap takes the native focus path.
-      if (input.current?.isFocused()) input.current.blur();
+      if (Platform.OS === 'android' && input.current?.isFocused()) input.current.blur();
     });
     return () => { shown.remove(); hidden.remove(); cancelKeyboardRefocus(); };
-  }, [cancelKeyboardRefocus]);
+  }, [cancelKeyboardRefocus, hideKeyboardBacking, showKeyboardBacking]);
   useEffect(() => {
     onAttachmentHeightChange?.(attachmentHeight);
     return () => onAttachmentHeightChange?.(0);
@@ -136,8 +168,8 @@ export default function HomeToolbar({
   }, []);
   useEffect(() => {
     alive.current = true;
-    return () => { alive.current = false; selectionGeneration.current += 1; selectedAttachments.current = []; cancelKeyboardRefocus(); };
-  }, [cancelKeyboardRefocus]);
+    return () => { alive.current = false; selectionGeneration.current += 1; selectedAttachments.current = []; cancelKeyboardRefocus(); keyboardFade.stopAnimation(); };
+  }, [cancelKeyboardRefocus, keyboardFade]);
   // App keys this toolbar by profile ID; unmount drops every ephemeral attachment.
   useEffect(() => {
     let active = true;
@@ -305,11 +337,11 @@ export default function HomeToolbar({
         testID="header-profile"
         hitSlop={4}
         accessibilityRole="button"
-        accessibilityLabel="Abrir mi perfil"
+        accessibilityLabel={professionalProfile ? `Perfil activo: ${state.profile.name}, ${professionalProfileLabel(professionalProfile)}. Abrir mi perfil` : `Perfil activo: ${state.profile.name}. Abrir mi perfil`}
         onPress={() => openItem(item('profile'))}
-        style={({ pressed }) => [s.avatar, pressed && s.pressed]}
+        style={({ pressed }) => [s.avatar, professionalProfile && s.professionalAvatar, pressed && s.pressed]}
       >
-        <Text style={s.initials}>{initials}</Text>
+        {professionalProfile ? <ProfessionalAvatar initials={initials} testID="header-professional-avatar" /> : <Text style={s.initials}>{initials}</Text>}
       </Pressable>
       {panel && (
         <Animated.View style={[s.backdrop, { bottom: conversationOpen ? 0 : TOOLBAR_HEIGHT + attachmentHeight, opacity: progress }]}>
@@ -331,6 +363,25 @@ export default function HomeToolbar({
           transform: [{ translateY: progress.interpolate({ inputRange: [0, 1], outputRange: [height, 0] }) }],
         }] : s.toolbarLayer}
       >
+      {keyboardBackingVisible && !conversationOpen && <View
+        testID="home-keyboard-backing"
+        pointerEvents="none"
+        accessible={false}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+        style={[s.keyboardBacking, { height: TOOLBAR_HEIGHT + attachmentHeight }]}
+      >
+        <Animated.View pointerEvents="none" style={[s.keyboardFade, { opacity: keyboardFade }]}>
+        <LinearGradient
+          testID="home-keyboard-fade"
+          colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.92)', '#FFFFFF']}
+          locations={[0, 0.65, 1]}
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
+          style={StyleSheet.absoluteFill}
+        />
+        </Animated.View>
+      </View>}
       <View testID="home-bottom-toolbar" style={s.bar}>
         <Pressable
           testID="header-menu"
@@ -384,6 +435,7 @@ export default function HomeToolbar({
             }}
             onFocus={() => {
               setQuestionFocused(true);
+              showKeyboardBacking();
               if (!aiEnabled) { showPanel('search'); return; }
               if (panel === 'ai') { setAttachmentMenuOpen(false); return; }
               progress.stopAnimation();
@@ -391,7 +443,10 @@ export default function HomeToolbar({
               setAttachmentMenuOpen(false);
               setInteractionsOpen(false);
             }}
-            onBlur={() => setQuestionFocused(false)}
+            onBlur={() => {
+              setQuestionFocused(false);
+              if (!Keyboard.isVisible()) hideKeyboardBacking();
+            }}
             onKeyPress={(event) => {
               if (event.nativeEvent.key === 'Escape') close();
             }}
@@ -532,9 +587,13 @@ export default function HomeToolbar({
                   </View>
                 )}
                 <Text style={s.sectionLabel}>SOPORTE MÉDICO</Text>
-                {['studies', 'directory', 'devices'].map((id) =>
+                {['studies', 'devices', 'pharmacy', 'adherence-programs'].map((id) =>
                   row(item(id)),
                 )}
+                {!!professionalProfile && <>
+                  <Text style={s.sectionLabel}>SERVICIOS PROFESIONALES</Text>
+                  {professionalMenuItems.map(service => row(service))}
+                </>}
               </>
             ) : (
               <>
@@ -568,6 +627,8 @@ const s = StyleSheet.create({
   layer: { ...StyleSheet.absoluteFill, zIndex: 20 },
   overlayContent: { flex: 1 },
   toolbarLayer: { ...StyleSheet.absoluteFill, transform: [{ translateY: 0 }] },
+  keyboardBacking: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: 'white' },
+  keyboardFade: { position: 'absolute', left: 0, right: 0, top: -24, height: 25 },
   aiSheet: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: 'white', borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: 'hidden' },
   bar: {
     position: 'absolute',
@@ -632,6 +693,7 @@ const s = StyleSheet.create({
     backgroundColor: '#DDF4EF',
   },
   initials: { color: colors.tealDark, fontSize: 11, fontWeight: '600' },
+  professionalAvatar: { top: 2, right: 20, width: 44, height: 44, borderRadius: 22, backgroundColor: 'transparent' },
   registerTarget: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
   register: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, borderColor: '#55D4D6', boxShadow: '0 3px 5px rgba(8,36,65,.24)', alignItems: 'center', justifyContent: 'center' },
   backdrop: {

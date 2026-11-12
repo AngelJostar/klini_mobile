@@ -1,0 +1,399 @@
+--- a/app/Models/PharmacyStoreSetting.php
++++ b/app/Models/PharmacyStoreSetting.php
+@@ -6,7 +6,7 @@
+ {
+     protected function casts(): array
+     {
+-        return ['enabled' => 'boolean', 'shipping_fee' => 'decimal:2'];
++        return ['enabled' => 'boolean', 'shipping_fee' => 'decimal:2', 'klini_provider_id' => 'integer'];
+     }
+ 
+     public static function current(): self
+@@ -19,6 +19,7 @@
+         return ['enabled' => (bool) $this->enabled, 'title' => $this->title, 'subtitle' => $this->subtitle,
+             'banner_image_url' => $this->banner_image_url, 'accent_color' => $this->accent_color, 'currency' => 'MXN',
+             'shipping_fee' => $this->shipping_fee, 'delivery_estimate' => $this->delivery_estimate, 'purchase_terms' => $this->purchase_terms,
++            'klini_provider_id' => $this->klini_provider_id,
+             'checkout_available' => false, 'orders_available' => (bool) $this->enabled,
+             'notice' => 'Solicitud sin cobro ni reserva de inventario. Sujeta a revisión administrativa y de la receta cuando corresponda.'];
+     }
+--- a/app/Services/PharmacyCatalogPublication.php
++++ b/app/Services/PharmacyCatalogPublication.php
+@@ -2,7 +2,7 @@
+ 
+ namespace App\Services;
+ 
+-use App\Models\{MedicationCatalogItem, PharmacyProduct, Provider};
++use App\Models\{MedicationCatalogItem, PharmacyProduct, PharmacyStoreSetting, Provider};
+ use Illuminate\Http\Request;
+ 
+ class PharmacyCatalogPublication
+@@ -16,7 +16,7 @@
+         return isset($data['latitude'], $data['longitude']) ? [(float)$data['latitude'], (float)$data['longitude']] : null;
+     }
+ 
+-    public function providerData(Provider $provider, ?array $coordinates): array
++    public function providerData(Provider $provider, ?array $coordinates, ?int $kliniProviderId = null): array
+     {
+         $distance = null;
+         if ($coordinates !== null && $provider->pharmacy_latitude !== null && $provider->pharmacy_longitude !== null) {
+@@ -26,7 +26,7 @@
+             $a = sin(($providerLat - $lat) / 2) ** 2 + cos($lat) * cos($providerLat) * sin(($providerLng - $lng) / 2) ** 2;
+             $distance = round(6371.0088 * 2 * asin(sqrt(min(1, max(0, $a)))), 2);
+         }
+-        return ['id' => $provider->id, 'name' => $provider->name, 'address' => $provider->pharmacy_address,
++        return ['id' => $provider->id, 'name' => $provider->name, 'is_klini' => $kliniProviderId !== null && $provider->id === $kliniProviderId, 'address' => $provider->pharmacy_address,
+             'latitude' => $provider->pharmacy_latitude, 'longitude' => $provider->pharmacy_longitude,
+             'distance_km' => $distance];
+     }
+@@ -34,6 +34,10 @@
+     public function offerData(PharmacyProduct $product, ?array $coordinates, Request $request): array
+     {
+         $item = $product->catalogItem;
++        // Cache configuration only on this request, never across requests or accounts.
++        if (!$request->attributes->has('pharmacy.klini_provider_id')) {
++            $request->attributes->set('pharmacy.klini_provider_id', PharmacyStoreSetting::current()->klini_provider_id);
++        }
+         return [
+             'id' => $product->id, 'catalog_item_id' => $item?->id, 'sku' => $item?->sku ?? $product->sku,
+             'name' => $item?->name ?? $product->name, 'description' => $item?->description ?? $product->description,
+@@ -48,7 +52,7 @@
+             'requires_prescription' => $item?->requires_prescription ?? $product->requires_prescription,
+             'featured' => $product->featured, 'presentation' => $item?->presentation ?? $product->presentation,
+             'laboratory' => $product->laboratory,
+-            'provider' => $this->providerData($product->provider, $coordinates),
++            'provider' => $this->providerData($product->provider, $coordinates, $request->attributes->get('pharmacy.klini_provider_id')),
+         ];
+     }
+ 
+--- a/app/Http/Controllers/Pharmacy/PharmacyStoreAdminController.php
++++ b/app/Http/Controllers/Pharmacy/PharmacyStoreAdminController.php
+@@ -24,6 +24,12 @@
+         return Provider::where('user_id', $request->user()->id)->whereIn('provider_type', ['medicines', 'medication', 'distributor'])->where('status', 'active')->firstOrFail();
+     }
+ 
++    private function kliniProviders()
++    {
++        return Provider::query()->whereIn('provider_type', ['medicines', 'medication', 'distributor'])->where('status', 'active')
++            ->whereHas('user', fn ($user) => $user->where('role', 'provider')->where('status', 'active'));
++    }
++
+     public function index(Request $request)
+     {
+         $this->admin($request);
+@@ -40,9 +46,13 @@
+         if (array_key_exists($filters['status'] ?? '', \App\Models\MedicationCatalogItem::STATUS_LABELS)) {
+             $query->where('status', $filters['status']);
+         }
++        $settings = PharmacyStoreSetting::find(1) ?? new PharmacyStoreSetting(['enabled' => false]);
+         return view('pharmacy-store.admin', [
+             'section' => 'pharmacy',
+-            'settings' => PharmacyStoreSetting::find(1) ?? new PharmacyStoreSetting(['enabled' => false]),
++            'settings' => $settings,
++            'kliniProviders' => $this->kliniProviders()->orderBy('name')->get(['id', 'name']),
++            'kliniProvider' => $settings->klini_provider_id ? Provider::find($settings->klini_provider_id) : null,
++            'kliniOffers' => request('section') === 'klini' ? PharmacyProduct::with('catalogItem')->where('provider_id', $settings->klini_provider_id ?? 0)->orderBy('name')->paginate(30)->withQueryString() : null,
+             'orders' => PharmacyStoreOrder::with('user')->latest()->paginate(20),
+             'catalog' => $catalog,
+             'records' => $query->paginate($catalog['per_page'])->withQueryString(),
+@@ -94,9 +104,29 @@
+     public function settings(Request $request)
+     {
+         $this->admin($request);
+-        $data = $request->validate(['title' => 'required|string|max:120', 'subtitle' => 'nullable|string|max:255', 'banner_image_url' =>  $this->publicUrlRules(), 'accent_color' => ['required', 'regex:/^#[a-fA-F0-9]{6}$/'], 'shipping_fee' => 'required|numeric|min:0|max:999999|decimal:0,2', 'delivery_estimate' => 'nullable|string|max:255', 'purchase_terms' =>  $this->publicUrlRules(), 'enabled' => 'required|boolean']);
+-        PharmacyStoreSetting::updateOrCreate(['id' => 1], $data);
++        $data = $request->validate(['title' => 'required|string|max:120', 'subtitle' => 'nullable|string|max:255', 'banner_image_url' =>  $this->publicUrlRules(), 'accent_color' => ['required', 'regex:/^#[a-fA-F0-9]{6}$/'], 'shipping_fee' => 'required|numeric|min:0|max:999999|decimal:0,2', 'delivery_estimate' => 'nullable|string|max:255', 'purchase_terms' =>  $this->publicUrlRules(), 'enabled' => 'required|boolean', 'klini_provider_id' => 'sometimes|nullable|integer|min:1']);
++        DB::transaction(function () use ($data) {
++            PharmacyStoreSetting::query()->whereKey(1)->lockForUpdate()->first();
++            if (!empty($data['klini_provider_id']) && !$this->kliniProviders()->whereKey($data['klini_provider_id'])->lockForUpdate()->exists()) {
++                throw \Illuminate\Validation\ValidationException::withMessages(['klini_provider_id' => 'Selecciona un distribuidor con cuenta activa o deja la venta Klini sin configurar.']);
++            }
++            PharmacyStoreSetting::updateOrCreate(['id' => 1], $data);
++        }, 3);
+         return back()->with('status', 'Presentación de la farmacia guardada.');
++    }
++
++    public function kliniOfferPrice(Request $request, PharmacyProduct $product)
++    {
++        $this->admin($request);
++        $data = $request->validate(['price' => 'required|numeric|min:0.01|max:999999.99|decimal:0,2']);
++        DB::transaction(function () use ($product, $data) {
++            $settings = PharmacyStoreSetting::query()->whereKey(1)->lockForUpdate()->first();
++            abort_unless($settings?->klini_provider_id, 404);
++            $offer = PharmacyProduct::query()->whereKey($product->id)->where('provider_id', $settings->klini_provider_id)->lockForUpdate()->firstOrFail();
++            abort_unless($this->kliniProviders()->whereKey($settings->klini_provider_id)->exists(), 404);
++            $offer->update($data);
++        }, 3);
++        return back()->with('status', 'Precio Klini actualizado. Los precios de otros distribuidores se conservaron.');
+     }
+ 
+     public function downloadPrescriptionUpload(Request $request, PharmacyStoreOrder $order, \App\Services\Platform\PlatformAuditService $audit)
+--- a/resources/views/pharmacy-store/admin.blade.php
++++ b/resources/views/pharmacy-store/admin.blade.php
+@@ -8,7 +8,7 @@
+ @include('superadmin._sidebar', ['active' => $section === 'distributors' ? 'distributors' : 'digital-pharmacy'])
+ <section class="superadmin-native-workspace pharmacy-store-admin">
+ <h1 class="superadmin-native-page-title">{{ $section === 'distributors' ? 'Distribuidores' : 'Farmacia digital' }}</h1>
+-@include('superadmin._filter-carousel', ['carouselOptions' => $section === 'distributors' ? ['list' => 'Distribuidores', 'create' => 'Nuevo distribuidor'] : ['catalog' => 'Catálogo', 'visual' => 'Presentación', 'orders' => 'Solicitudes'], 'carouselSelected' => $section === 'distributors' ? 'list' : request('section', 'catalog'), 'carouselParameter' => 'section'])
++@include('superadmin._filter-carousel', ['carouselOptions' => $section === 'distributors' ? ['list' => 'Distribuidores', 'create' => 'Nuevo distribuidor'] : ['catalog' => 'Catálogo', 'visual' => 'Presentación', 'klini' => 'Ofertas Klini', 'orders' => 'Solicitudes'], 'carouselSelected' => $section === 'distributors' ? 'list' : request('section', 'catalog'), 'carouselParameter' => 'section'])
+ @if($errors->any() && !$distributorErrors)<div role="alert" class="pharmacy-notice">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>@endif
+ @if(session('status'))<p role="status" class="pharmacy-notice">{{ session('status') }}</p>@endif
+ @if($section === 'distributors')
+@@ -24,6 +24,8 @@
+ @php($next = ['submitted'=>['reviewing'=>'Revisar', 'cancelled'=>'Cancelar'], 'reviewing'=>['ready'=>'Marcar lista', 'cancelled'=>'Cancelar'], 'ready'=>['cancelled'=>'Cancelar']][$order->status] ?? [])
+ @if($next)<form method="POST" action="{{ route('superadmin.digital-pharmacy.orders.status', $order) }}">@csrf @method('PATCH')<label class="sr-only" for="status-{{ $order->id }}">Nuevo estado</label><select id="status-{{ $order->id }}" name="status">@foreach($next as $value=>$label)<option value="{{ $value }}">{{ $label }}</option>@endforeach</select><button>Actualizar</button></form>@endif</td></tr>
+ @empty<tr><td colspan="6">Aún no hay solicitudes.</td></tr>@endforelse</tbody></table></div>{{ $orders->links() }}</section>
++@elseif(request('section') === 'klini')
++@include('pharmacy-store.klini-offers')
+ @elseif(request('section', 'catalog') === 'catalog')
+ @include('superadmin.medications.table')
+ @else
+@@ -31,6 +33,7 @@
+ <form method="POST" action="{{ route('superadmin.digital-pharmacy.settings') }}" class="pharmacy-form">@csrf @method('PUT')
+ <label>Título<input name="title" value="{{ old('title', $settings->title ?? 'Farmacia digital') }}" required maxlength="120"></label>
+ <label>Subtítulo<input name="subtitle" value="{{ old('subtitle', $settings->subtitle) }}" maxlength="255"></label>
++<label>Distribuidor de venta Klini<select name="klini_provider_id"><option value="" @selected(!old('klini_provider_id', $settings->klini_provider_id))>Sin configurar</option>@if($kliniProvider && !$kliniProviders->contains('id', $kliniProvider->id))<option value="{{ $kliniProvider->id }}" selected>{{ $kliniProvider->name }} · Cuenta no disponible</option>@endif @foreach($kliniProviders as $candidate)<option value="{{ $candidate->id }}" @selected((string)old('klini_provider_id', $settings->klini_provider_id) === (string)$candidate->id)>{{ $candidate->name }}</option>@endforeach</select><small>Identifica una cuenta existente. No cambia su nombre, autorización de publicación, inventario ni precios.</small></label>
+ <label>Imagen de portada (HTTPS)<input name="banner_image_url" type="url" value="{{ old('banner_image_url', $settings->banner_image_url) }}"><small>Usa una imagen publicada sin información personal.</small></label>
+ <label>Color principal<input type="color" name="accent_color" value="{{ old('accent_color', $settings->accent_color ?? '#176B65') }}"></label>
+ <label>Visibilidad<select name="enabled"><option value="0" @selected(!old('enabled', $settings->enabled))>Tienda cerrada</option><option value="1" @selected(old('enabled', $settings->enabled))>Tienda abierta</option></select></label>
+--- a/routes/web.php
++++ b/routes/web.php
+@@ -547,6 +547,7 @@
+     Route::get('/superadmin/medications/{medication}/barcode.svg', [\App\Http\Controllers\SuperAdmin\MedicationIdentifierController::class, 'barcode'])->whereNumber('medication')->name('superadmin.medications.barcode');
+     Route::get('/superadmin/digital-pharmacy/orders/{order}/prescription', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'downloadPrescriptionUpload'])->name('superadmin.digital-pharmacy.orders.prescription');
+     Route::put('/superadmin/digital-pharmacy/settings', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'settings'])->name('superadmin.digital-pharmacy.settings');
++    Route::patch('/superadmin/digital-pharmacy/klini-offers/{product}', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'kliniOfferPrice'])->whereNumber('product')->name('superadmin.digital-pharmacy.klini-offers.price');
+     Route::patch('/superadmin/digital-pharmacy/orders/{order}/status', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'orderStatus'])->name('superadmin.digital-pharmacy.orders.status');
+     Route::get('/superadmin/distributors', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'distributors'])->name('superadmin.distributors');
+     Route::post('/superadmin/distributors', [\App\Http\Controllers\Pharmacy\PharmacyStoreAdminController::class, 'storeDistributor'])->name('superadmin.distributors.store');
+--- a/app/Http/Controllers/Api/Mobile/V1/PharmacyStoreController.php
++++ b/app/Http/Controllers/Api/Mobile/V1/PharmacyStoreController.php
+@@ -182,7 +182,7 @@
+                 $priceCents = (int) round((float) $product->price * 100);
+                 $lineCents = $priceCents * $item['quantity'];
+                 $subtotalCents += $lineCents;
+-                $items[] = ['product_id' => $product->id, 'catalog_item_id' => $product->medication_catalog_item_id, 'sku' => $product->sku, 'provider_id' => $product->provider_id, 'provider_name' => $provider->name, 'name' => $product->name, 'quantity' => $item['quantity'],
++                $items[] = ['product_id' => $product->id, 'catalog_item_id' => $product->medication_catalog_item_id, 'sku' => $product->sku, 'provider_id' => $product->provider_id, 'provider_name' => $provider->name, 'provider_is_klini' => $settings->klini_provider_id !== null && $provider->id === $settings->klini_provider_id, 'name' => $product->name, 'quantity' => $item['quantity'],
+                     'unit_price' => number_format($priceCents / 100, 2, '.', ''), 'total' => number_format($lineCents / 100, 2, '.', ''), 'requires_prescription' => (bool) $product->requires_prescription];
+             }
+             $shippingCents = (int) round((float) $settings->shipping_fee * 100);
+--- /dev/null
++++ b/database/migrations/2026_11_12_000008_configure_klini_pharmacy_seller.php
+@@ -0,0 +1,20 @@
++<?php
++
++use Illuminate\Database\Migrations\Migration;
++use Illuminate\Database\Schema\Blueprint;
++use Illuminate\Support\Facades\Schema;
++
++return new class extends Migration
++{
++    public function up(): void
++    {
++        Schema::table('pharmacy_store_settings', function (Blueprint $table): void {
++            $table->foreignId('klini_provider_id')->nullable()->constrained('providers')->nullOnDelete();
++        });
++    }
++
++    public function down(): void
++    {
++        Schema::table('pharmacy_store_settings', fn (Blueprint $table) => $table->dropConstrainedForeignId('klini_provider_id'));
++    }
++};
+--- /dev/null
++++ b/resources/views/pharmacy-store/klini-offers.blade.php
+@@ -0,0 +1,14 @@
++<section class="superadmin-native-catalog-card">
++<h2>Ofertas Klini</h2>
++@if(!$kliniProvider)
++<p class="pharmacy-notice">Selecciona el distribuidor de venta Klini en Presentación. No se asignará un distribuidor ni un precio automáticamente.</p>
++@else
++<p>Distribuidor configurado: <strong>{{ $kliniProvider->name }}</strong>. Cada precio Klini pertenece a una oferta existente de esta cuenta.</p>
++<p class="pharmacy-notice">Las ofertas se crean desde el panel de este distribuidor. La visibilidad sigue dependiendo de la autorización de publicación y del estado del producto y de la cuenta. Guardar un precio no publica ni vende el producto.</p>
++<div class="superadmin-native-catalog-scroll"><table class="superadmin-native-catalog-table"><thead><tr><th>Producto</th><th>Presentación</th><th>Existencias</th><th>Estado</th><th>Precio Klini (MXN)</th></tr></thead><tbody>
++@forelse($kliniOffers as $offer)
++<tr><td>{{ $offer->catalogItem?->name ?? $offer->name }}<small>SKU: {{ $offer->catalogItem?->sku ?? $offer->sku ?? 'Sin SKU' }}</small></td><td>{{ $offer->catalogItem?->presentation ?? $offer->presentation ?? 'No indicada' }}</td><td>{{ $offer->stock }}</td><td>{{ $offer->status === 'active' ? 'Activo' : 'Inactivo' }}</td><td><form method="POST" action="{{ route('superadmin.digital-pharmacy.klini-offers.price', $offer) }}">@csrf @method('PATCH')<label class="sr-only" for="klini-price-{{ $offer->id }}">Precio Klini de {{ $offer->catalogItem?->name ?? $offer->name }} en MXN</label><input id="klini-price-{{ $offer->id }}" name="price" type="number" step="0.01" min="0.01" max="999999.99" value="{{ $offer->price }}" required><button>Guardar precio Klini</button></form></td></tr>
++@empty<tr><td colspan="5">Este distribuidor todavía no tiene ofertas. No se crearon precios de ejemplo.</td></tr>@endforelse
++</tbody></table></div>{{ $kliniOffers->links() }}
++@endif
++</section>
+--- /dev/null
++++ b/tests/Feature/PharmacyKliniSellerTest.php
+@@ -0,0 +1,177 @@
++<?php
++
++namespace Tests\Feature;
++
++use App\Models\MedicationCatalogItem;
++use App\Models\Patient;
++use App\Models\PharmacyProduct;
++use App\Models\PharmacyStoreSetting;
++use App\Models\Provider;
++use App\Models\User;
++use Illuminate\Foundation\Testing\RefreshDatabase;
++use Illuminate\Support\Str;
++use Laravel\Sanctum\Sanctum;
++use Tests\TestCase;
++
++class PharmacyKliniSellerTest extends TestCase
++{
++    use RefreshDatabase;
++
++    private function user(string $role = 'provider', array $attributes = []): User
++    {
++        return User::create($attributes + ['name' => 'Cuenta prueba', 'username' => (string) Str::uuid(), 'role' => $role, 'status' => 'active', 'module' => $role === 'provider' ? 'provider_medicines' : $role]);
++    }
++
++    private function provider(array $attributes = [], ?User $user = null): Provider
++    {
++        return Provider::create($attributes + ['user_id' => ($user ?? $this->user())->id, 'name' => 'Distribuidor '.Str::uuid(), 'provider_type' => 'medicines', 'status' => 'active', 'digital_pharmacy_enabled' => true]);
++    }
++
++    private function settings(array $attributes = []): PharmacyStoreSetting
++    {
++        return PharmacyStoreSetting::create($attributes + ['id' => 1, 'enabled' => true, 'title' => 'Farmacia', 'shipping_fee' => '0.00']);
++    }
++
++    private function settingsPayload(array $attributes = []): array
++    {
++        return $attributes + ['title' => 'Farmacia', 'accent_color' => '#008c95', 'shipping_fee' => '0.00', 'enabled' => true];
++    }
++
++    private function item(): MedicationCatalogItem
++    {
++        return MedicationCatalogItem::create(['name' => 'Producto canónico prueba', 'sku' => (string) Str::uuid(), 'presentation' => 'Caja', 'status' => 'active', 'digital_pharmacy_enabled' => true]);
++    }
++
++    private function offer(Provider $provider, MedicationCatalogItem $item, string $price = '35.50'): PharmacyProduct
++    {
++        return PharmacyProduct::create(['provider_id' => $provider->id, 'medication_catalog_item_id' => $item->id, 'name' => $item->name, 'price' => $price, 'stock' => 10, 'status' => 'active']);
++    }
++
++    public function test_no_klini_seller_or_price_is_created_automatically(): void
++    {
++        $provider = $this->provider();
++        $offer = $this->offer($provider, $this->item());
++        $this->getJson('/api/mobile/v1/pharmacy/settings')->assertOk()->assertJsonPath('data.klini_provider_id', null);
++        $this->settings();
++        $this->getJson('/api/mobile/v1/pharmacy/products/'.$offer->id)->assertOk()->assertJsonPath('data.provider.is_klini', false);
++        $this->assertDatabaseCount('providers', 1);
++        $this->assertDatabaseCount('pharmacy_products', 1);
++        $this->assertSame('35.50', $offer->fresh()->price);
++    }
++
++    public function test_superadmin_configures_and_clears_a_real_seller_without_renaming_or_publication_changes(): void
++    {
++        $provider = $this->provider(['digital_pharmacy_enabled' => false]);
++        $before = $provider->fresh()->getAttributes();
++        $this->actingAs($this->user('superadmin'))->put(route('superadmin.digital-pharmacy.settings'), $this->settingsPayload(['klini_provider_id' => $provider->id]))->assertRedirect()->assertSessionHasNoErrors();
++        $this->assertSame($provider->id, PharmacyStoreSetting::current()->klini_provider_id);
++        $this->assertSame($before, $provider->fresh()->getAttributes());
++        $this->put(route('superadmin.digital-pharmacy.settings'), $this->settingsPayload())->assertRedirect()->assertSessionHasNoErrors();
++        $this->assertSame($provider->id, PharmacyStoreSetting::current()->klini_provider_id);
++        $this->put(route('superadmin.digital-pharmacy.settings'), $this->settingsPayload(['klini_provider_id' => null]))->assertRedirect()->assertSessionHasNoErrors();
++        $this->assertNull(PharmacyStoreSetting::current()->klini_provider_id);
++        $this->assertDatabaseCount('pharmacy_products', 0);
++    }
++
++    public function test_configuration_rejects_inactive_wrong_type_missing_and_ineligible_accounts(): void
++    {
++        $settings = $this->settings();
++        $invalid = [
++            $this->provider(['status' => 'inactive']), $this->provider(['provider_type' => 'equipment']),
++            $this->provider([], $this->user('provider', ['status' => 'inactive'])),
++            $this->provider([], $this->user('patient')), $this->provider(['user_id' => null]),
++        ];
++        $this->actingAs($this->user('superadmin'));
++        foreach (array_merge(array_map(fn ($provider) => $provider->id, $invalid), [999999]) as $id) {
++            $this->putJson(route('superadmin.digital-pharmacy.settings'), $this->settingsPayload(['klini_provider_id' => $id]))->assertUnprocessable()->assertJsonValidationErrors('klini_provider_id');
++            $this->assertNull($settings->fresh()->klini_provider_id);
++        }
++    }
++
++    public function test_only_active_superadmin_can_configure_or_edit_klini_prices(): void
++    {
++        $provider = $this->provider();
++        $settings = $this->settings(['klini_provider_id' => $provider->id]);
++        $offer = $this->offer($provider, $this->item());
++        foreach ([$this->user('provider'), $this->user('admin'), $this->user('patient'), $this->user('superadmin', ['status' => 'inactive'])] as $user) {
++            $this->actingAs($user)->putJson(route('superadmin.digital-pharmacy.settings'), $this->settingsPayload(['klini_provider_id' => null]))->assertForbidden();
++            $this->patchJson(route('superadmin.digital-pharmacy.klini-offers.price', $offer), ['price' => '77.00'])->assertForbidden();
++        }
++        $this->assertSame('35.50', $offer->fresh()->price);
++        $this->assertSame($provider->id, $settings->fresh()->klini_provider_id);
++    }
++
++    public function test_klini_price_is_independent_and_old_or_foreign_offer_urls_cannot_change_another_price(): void
++    {
++        $item = $this->item();
++        $klini = $this->provider();
++        $other = $this->provider();
++        $settings = $this->settings(['klini_provider_id' => $klini->id]);
++        $own = $this->offer($klini, $item);
++        $foreign = $this->offer($other, $item, '87.00');
++        $this->actingAs($this->user('superadmin'))->patch(route('superadmin.digital-pharmacy.klini-offers.price', $own), ['price' => '42.25', 'provider_id' => $other->id, 'stock' => 999])->assertRedirect()->assertSessionHasNoErrors();
++        $this->assertSame('42.25', $own->fresh()->price);
++        $this->assertSame(10, $own->fresh()->stock);
++        $this->assertSame('87.00', $foreign->fresh()->price);
++        $this->patchJson(route('superadmin.digital-pharmacy.klini-offers.price', $foreign), ['price' => '1.00'])->assertNotFound();
++        foreach (['0', '-1', '12.345', '1000000', 'invalid'] as $price) {
++            $this->patchJson(route('superadmin.digital-pharmacy.klini-offers.price', $own), ['price' => $price])->assertUnprocessable();
++        }
++        $settings->update(['klini_provider_id' => $other->id]);
++        $this->patchJson(route('superadmin.digital-pharmacy.klini-offers.price', $own), ['price' => '1.00'])->assertNotFound();
++        $this->assertSame('42.25', $own->fresh()->price);
++        $this->assertSame('87.00', $foreign->fresh()->price);
++    }
++
++    public function test_public_flags_are_configuration_based_and_do_not_bypass_publication(): void
++    {
++        $item = $this->item();
++        $klini = $this->provider();
++        $other = $this->provider(['name' => 'Klini']);
++        $settings = $this->settings(['klini_provider_id' => $klini->id]);
++        $own = $this->offer($klini, $item);
++        $foreign = $this->offer($other, $item, '87.00');
++        $this->getJson('/api/mobile/v1/pharmacy/products/'.$own->id)->assertOk()->assertJsonPath('data.provider.is_klini', true)->assertJsonPath('data.price', '35.50');
++        $this->getJson('/api/mobile/v1/pharmacy/products/'.$foreign->id)->assertOk()->assertJsonPath('data.provider.is_klini', false);
++        $response = $this->getJson('/api/mobile/v1/pharmacy/catalog-items/'.$item->id)->assertOk()->assertJsonCount(2, 'data.offers');
++        $offers = collect($response->json('data.offers'))->keyBy('id');
++        $this->assertTrue($offers[$own->id]['provider']['is_klini']);
++        $this->assertFalse($offers[$foreign->id]['provider']['is_klini']);
++        $this->getJson('/api/mobile/v1/pharmacy/catalog')->assertJsonPath('data.settings.klini_provider_id', $klini->id)->assertJsonCount(2, 'data.products');
++        $klini->update(['digital_pharmacy_enabled' => false]);
++        $this->getJson('/api/mobile/v1/pharmacy/products/'.$own->id)->assertNotFound();
++        $this->getJson('/api/mobile/v1/pharmacy/catalog-items/'.$item->id)->assertJsonCount(1, 'data.offers')->assertJsonPath('data.offers.0.provider.is_klini', false);
++        $settings->update(['klini_provider_id' => null]);
++        $this->getJson('/api/mobile/v1/pharmacy/products/'.$foreign->id)->assertJsonPath('data.provider.is_klini', false);
++    }
++
++    public function test_admin_controls_render_only_existing_offers_and_preserve_other_seller_prices(): void
++    {
++        $klini = $this->provider(['name' => 'Cuenta Klini prueba']);
++        $other = $this->provider();
++        $this->settings(['klini_provider_id' => $klini->id]);
++        $this->offer($klini, $this->item());
++        $this->offer($other, $this->item(), '87654.32');
++        $this->actingAs($this->user('superadmin'))->get(route('superadmin.digital-pharmacy', ['section' => 'visual']))->assertOk()->assertSee('Distribuidor de venta Klini')->assertSee('Cuenta Klini prueba');
++        $this->get(route('superadmin.digital-pharmacy', ['section' => 'klini']))->assertOk()->assertSee('Precio Klini (MXN)')->assertSee('35.50')->assertDontSee('87654.32');
++    }
++
++    public function test_order_snapshot_keeps_selected_price_and_historical_klini_flag_after_reconfiguration(): void
++    {
++        $klini = $this->provider();
++        $other = $this->provider();
++        $settings = $this->settings(['klini_provider_id' => $klini->id]);
++        $item = $this->item();
++        $own = $this->offer($klini, $item);
++        $foreign = $this->offer($other, $item, '87.00');
++        $patientUser = $this->user('patient');
++        Patient::create(['user_id' => $patientUser->id, 'full_name' => 'Paciente prueba', 'status' => 'active']);
++        Sanctum::actingAs($patientUser, ['mobile:access']);
++        $payload = ['client_request_id' => (string) Str::uuid(), 'items' => [['product_id' => $own->id, 'quantity' => 1], ['product_id' => $foreign->id, 'quantity' => 1]], 'delivery_method' => 'delivery', 'terms_accepted' => true, 'address' => ['name' => 'Prueba', 'street' => 'Calle', 'neighborhood' => 'Centro', 'postal_code' => '01000']];
++        $response = $this->postJson('/api/mobile/v1/pharmacy/orders', $payload)->assertCreated()->assertJsonPath('data.items.0.provider_is_klini', true)->assertJsonPath('data.items.1.provider_is_klini', false)->assertJsonPath('data.items.0.unit_price', '35.50')->assertJsonPath('data.subtotal', '122.50')->assertJsonPath('data.payment_status', 'not_configured');
++        $settings->update(['klini_provider_id' => $other->id]);
++        $this->getJson('/api/mobile/v1/pharmacy/orders/'.$response->json('data.id'))->assertOk()->assertJsonPath('data.items.0.provider_is_klini', true)->assertJsonPath('data.items.1.provider_is_klini', false);
++        $this->postJson('/api/mobile/v1/pharmacy/orders', $payload)->assertOk()->assertJsonPath('data.items.0.provider_is_klini', true);
++        $this->assertDatabaseCount('pharmacy_store_orders', 1);
++    }
++}

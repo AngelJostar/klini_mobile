@@ -1,0 +1,11 @@
+provider_check: not_run (use --provider for read-only verification)
+production_domain: not_ready
+credentials_binding: not_ready
+collection_enabled: not_ready
+live_enabled: not_ready
+service_redemption_enabled: not_ready
+production_mode: not_ready
+sql_tables: ready
+wallet_preflight: not_ready_for_live
+No schema, flags, credentials, bookings or funds were changed. Redemption implementation must be reviewed separately.
+exit_code: 1

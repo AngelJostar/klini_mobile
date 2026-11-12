@@ -15,6 +15,11 @@ import { initialWallet, isWallet, rechargeWallet } from './wallet';
 import { isAiSubscription, setProfileAiSubscription, type AiSubscription } from './aiSubscription';
 import { provisionSofiaDemoAi } from './demoAccount';
 import { isAppleHealthPreferences } from './appleHealth';
+import { applyMedicationCareAction, isMedicationCare, provisionSofiaDemoMedicationCare, pruneMedicationCare, setProfileMedicationCare, type MedicationCareAction } from './medicationCare';
+
+import { isPharmacyState, setProfilePharmacy, type PharmacyAction } from './pharmacy';
+import { editStoredProfile, isProfessionalProfileDescriptor } from './family';
+import { applySubscriptionUpgrade, isSubscriptionPlan, type SubscriptionPlanAction } from './subscriptionPlan';
 
 export const STORAGE_KEY = "@klini/app-state:v1";
 export const APPOINTMENT_DURATION_MINUTES = 30;
@@ -257,19 +262,35 @@ export function validateAppState(
     !guardedArray(v.messages, isMessage) ||
     !allStrings(v.favorites) ||
     !isSettings(v.settings) ||
+    (v.pharmacy !== undefined && !isPharmacyState(v.pharmacy)) ||
     (v.wallet !== undefined && !isWallet(v.wallet)) ||
-    (v.aiSubscription !== undefined && !isAiSubscription(v.aiSubscription))
+    (v.aiSubscription !== undefined && !isAiSubscription(v.aiSubscription)) ||
+    (v.subscriptionPlan !== undefined && !isSubscriptionPlan(v.subscriptionPlan)) ||
+    (v.medicationCare !== undefined && !isMedicationCare(v.medicationCare, v.medications, now)) ||
+    (v.medicationReminderDemoVersion !== undefined && v.medicationReminderDemoVersion !== 1)
   )
     return false;
   const doctors = new Set(v.doctors.map((x) => x.id));
+  let accountId = v.profile.id;
   if (v.family !== undefined) {
     if (!isObject(v.family) || !nonempty(v.family.ownerId) || !isObject(v.family.profiles)) return false;
     if (!v.family.profiles[v.family.ownerId] || !v.family.profiles[v.profile.id]) return false;
+    accountId = v.family.ownerId;
+    const ownerScope = v.family.profiles[v.family.ownerId];
+    if (!isObject(ownerScope) || !isObject(ownerScope.profile) || ownerScope.kind === 'Profesional de la salud') return false;
+    const ownerName = v.profile.id === v.family.ownerId ? v.profile.name : ownerScope.profile.name;
+    if (!text(ownerName)) return false;
     for (const [id, scope] of Object.entries(v.family.profiles)) {
-      if (!isObject(scope) || !isObject(scope.profile) || scope.profile.id !== id || !text(scope.kind) ||
-        !validateAppState({ ...v, ...scope, family: undefined }, now)) return false;
+      if (!isObject(scope) || !isObject(scope.profile) || scope.profile.id !== id || !text(scope.kind) || scope.subscriptionPlan !== undefined ||
+        !validateAppState({ ...v, ...scope, subscriptionPlan: undefined, medicationCare: scope.medicationCare, pharmacy: scope.pharmacy, family: undefined }, now)) return false;
+      if (scope.kind === 'Profesional de la salud') {
+        if (!isProfessionalProfileDescriptor(scope.professional) || scope.professional.id !== id ||
+          scope.professional.name !== scope.profile.name || scope.professional.name !== ownerName.trim() ||
+          (id === v.profile.id && v.profile.name !== ownerName.trim())) return false;
+      } else if (scope.professional !== undefined) return false;
     }
   }
+  if (v.subscriptionPlan !== undefined && v.subscriptionPlan.receipt.accountId !== accountId) return false;
   const appointments = new Set(v.appointments.map((x) => x.id));
   const policies = new Set(v.policies.map((x) => x.id));
   return (
@@ -295,10 +316,10 @@ export function hydrateState(
   raw: string | null,
   fallback: AppState = createDemoState(),
 ): { state: AppState; error: string | null } {
-  if (raw === null) return { state: fallback, error: null };
+  if (raw === null) return { state: provisionSofiaDemoMedicationCare(fallback), error: null };
   try {
     const state = parseStoredState(raw);
-    return { state: provisionSofiaDemoAi({ ...state, wallet: state.wallet ?? { ...initialWallet, movements: [] } }), error: null };
+    return { state: provisionSofiaDemoMedicationCare(provisionSofiaDemoAi({ ...state, wallet: state.wallet ?? { ...initialWallet, movements: [] } })), error: null };
   } catch {
     return {
       state: fallback,
@@ -404,6 +425,9 @@ export function assertAppointmentCanBeSaved(
 }
 
 export type AppAction =
+  | SubscriptionPlanAction
+  | PharmacyAction
+  | MedicationCareAction
   | { type: 'SET_AI_SUBSCRIPTION'; profileId: string; subscription: AiSubscription }
   | { type: "UPDATE_PROFILE"; patch: Partial<Patient> }
   | { type: "ADD_APPOINTMENT"; appointment: Appointment }
@@ -456,6 +480,20 @@ export function appReducer(
 ): AppState {
   let next: AppState;
   switch (action.type) {
+    case 'UPGRADE_SUBSCRIPTION_PLAN':
+      next = applySubscriptionUpgrade(state, action.quote, action.now);
+      break;
+    case 'SET_PHARMACY':
+      if (!isPharmacyState(action.pharmacy)) throw new Error('Los datos de farmacia no tienen un formato válido.');
+      next = setProfilePharmacy(state, action.profileId, action.pharmacy);
+      break;
+    case 'SAVE_MEDICATION_TREATMENT':
+    case 'SAVE_MEDICATION_TAKE':
+    case 'SAVE_MEDICATION_ALERT':
+    case 'DELETE_MEDICATION_TAKE':
+    case 'DELETE_MEDICATION_ALERT':
+      next = applyMedicationCareAction(state, action, now);
+      break;
     case 'SET_AI_SUBSCRIPTION':
       if (!isAiSubscription(action.subscription)) throw new Error('La activación de Klini IA no tiene un formato compatible.');
       next = setProfileAiSubscription(state, action.profileId, action.subscription);
@@ -466,25 +504,7 @@ export function appReducer(
     case "UPDATE_PROFILE": {
       if (action.patch.id !== undefined && action.patch.id !== state.profile.id)
         throw new Error("No se puede cambiar el identificador del paciente.");
-      const profile = { ...state.profile, ...action.patch };
-      const appointments =
-        profile.name !== state.profile.name
-          ? state.appointments.map((appointment) => {
-              const owned =
-                appointment.patientId === state.profile.id ||
-                (!appointment.patientId &&
-                  patientKey(appointment.patientName) ===
-                    patientKey(state.profile.name));
-              return owned
-                ? {
-                    ...appointment,
-                    patientId: profile.id,
-                    patientName: profile.name,
-                  }
-                : appointment;
-            })
-          : state.appointments;
-      next = { ...state, profile, appointments };
+      next = editStoredProfile(state, state.profile.id, action.patch);
       break;
     }
     case "ADD_APPOINTMENT":
@@ -618,6 +638,7 @@ export function appReducer(
         ...state,
         medications: deleteItem(state.medications, action.id),
       };
+      next = setProfileMedicationCare(next, next.profile.id, pruneMedicationCare(next.medicationCare, next.medications));
       break;
     case "ADD_MESSAGE":
       next = { ...state, messages: addUnique(state.messages, action.message) };

@@ -6,6 +6,7 @@ import { colors, Icon } from './ui';
 import { appleHealthUnavailable, requestAppleHealthAccess } from '../services/appleHealth';
 import { HEALTH_CATEGORIES, type HealthCategory } from '../services/appleHealthReader';
 import { AppleHealthSetupError } from '../services/appleHealthErrors';
+import { canUseAppleHealthRuntime } from '../domain/appleHealth';
 
 export default function AppleHealthOptionsPopup({ selected, onSelectedChange, onClose, requested = [], onSave, permitted = true }: {
   requested?: readonly HealthCategory[];
@@ -16,7 +17,7 @@ export default function AppleHealthOptionsPopup({ selected, onSelectedChange, on
   onClose: () => void;
 }) {
   const insets = useSafeAreaInsets();
-  const canUseHealth = permitted && Platform.OS === 'ios' && Constants.executionEnvironment !== 'storeClient';
+  const canUseHealth = permitted && canUseAppleHealthRuntime(Platform.OS, Constants.executionEnvironment);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const generation = useRef(0);

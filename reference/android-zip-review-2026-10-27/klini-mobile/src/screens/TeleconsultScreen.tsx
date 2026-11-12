@@ -225,6 +225,12 @@ export default function TeleconsultScreen({
     setPage('appointment');
   }
 
+  function joinAppointment(item: Appointment) {
+    if (item.status !== 'scheduled') return;
+    setSelectedId(item.id);
+    setPage('prepare');
+  }
+
   function onClose() {
     setSessionStart(null);
     closeParent();
@@ -641,19 +647,7 @@ export default function TeleconsultScreen({
                     ? 'Finalizada sin registro'
                     : 'Confirmada';
             return (
-              <Pressable
-                key={item.id}
-                testID={'teleconsult-appointment-' + item.id}
-                accessibilityRole="button"
-                accessibilityLabel={
-                  'Ver teleconsulta del ' +
-                  displayDate(item.date) +
-                  ' con ' +
-                  (professional?.name || 'profesional')
-                }
-                onPress={() => selectAppointment(item)}
-                style={local.simpleAppointment}
-              >
+              <View key={item.id} style={local.simpleAppointment}>
                 <Text style={local.nextLabel}>
                   {filter === 'scheduled'
                     ? index === 0
@@ -673,19 +667,45 @@ export default function TeleconsultScreen({
                   <Text style={local.simpleTime}>{item.time} h</Text>
                 </View>
                 <View style={local.simpleDoctor}>
-                  {professional ? (
-                    <DoctorPortrait doctor={professional} size={50} />
-                  ) : (
-                    <Icon name="doctor" size={36} />
+                  <Pressable
+                    testID={'teleconsult-appointment-' + item.id}
+                    accessibilityRole="button"
+                    accessibilityLabel={
+                      'Ver teleconsulta del ' +
+                      displayDate(item.date) +
+                      ' con ' +
+                      (professional?.name || 'profesional')
+                    }
+                    onPress={() => selectAppointment(item)}
+                    style={local.simpleDoctorDetails}
+                  >
+                    {professional ? (
+                      <DoctorPortrait doctor={professional} size={50} />
+                    ) : (
+                      <Icon name="doctor" size={36} />
+                    )}
+                    <View style={local.flex}>
+                      <Text style={local.simpleDoctorName}>
+                        {professional?.name || 'Profesional no disponible'}
+                      </Text>
+                      <Text style={local.simpleSpecialty}>
+                        {professional?.specialty || 'Teleconsulta'} · 30 min
+                      </Text>
+                    </View>
+                  </Pressable>
+                  {item.status === 'scheduled' && (
+                    <Pressable
+                      testID={'teleconsult-join-' + item.id}
+                      accessibilityRole="button"
+                      accessibilityLabel={'Unirse a la teleconsulta con ' + (professional?.name || 'profesional')}
+                      onPress={() => joinAppointment(item)}
+                      style={({ pressed }) => [local.joinTarget, pressed && { opacity: 0.7 }]}
+                    >
+                      <View style={local.joinButton}>
+                        <Text style={local.joinText}>Unirse</Text>
+                      </View>
+                    </Pressable>
                   )}
-                  <View style={local.flex}>
-                    <Text style={local.simpleDoctorName}>
-                      {professional?.name || 'Profesional no disponible'}
-                    </Text>
-                    <Text style={local.simpleSpecialty}>
-                      {professional?.specialty || 'Teleconsulta'} · 30 min
-                    </Text>
-                  </View>
                 </View>
                 <View style={local.simplePatient}>
                   <Text style={local.patientNameText}>{item.patientName}</Text>
@@ -706,7 +726,7 @@ export default function TeleconsultScreen({
                     </Text>
                   </View>
                 </View>
-              </Pressable>
+              </View>
             );
           })
         )}
@@ -1152,9 +1172,26 @@ const local = StyleSheet.create({
   simpleDoctor: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 14,
+    gap: 8,
     paddingVertical: 16,
   },
+  simpleDoctorDetails: {
+    flex: 1,
+    minWidth: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  joinTarget: { minHeight: 44, justifyContent: 'center', flexShrink: 0 },
+  joinButton: {
+    backgroundColor: colors.tealDark,
+    borderRadius: 18,
+    minWidth: 65,
+    paddingHorizontal: 15,
+    paddingVertical: 7,
+    alignItems: 'center',
+  },
+  joinText: { color: colors.white, fontSize: 12, fontWeight: '600' },
   simpleDoctorName: { fontSize: 15, fontWeight: '700', color: colors.navy },
   simpleSpecialty: { fontSize: 13, color: '#6E8DB4', marginTop: 4 },
   simplePatient: {

@@ -1,39 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BackHandler, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import AccountProfileForm from '../components/AccountProfileForm';
+import ProfessionalProfileFlow from '../components/ProfessionalProfileFlow';
 import ProfileDrawer from '../components/ProfileDrawer';
 import ProfileInfoPopup from '../components/ProfileInfoPopup';
 import ProfileEditPopup, { type EditableProfile } from '../components/ProfileEditPopup';
-import { Button, Chip, Icon, TextField, colors } from '../components/ui';
-import { useManagedProfiles, profileKinds, type ManagedProfile } from '../state/managedProfiles';
+import { Button, Icon, TextField, colors } from '../components/ui';
+import { useManagedProfiles, isProfessionalProfile, professionalProfileLabel, type ManagedPatientProfile, type ManagedProfile, type ManagedProfessionalProfile } from '../state/managedProfiles';
 import { useAppStore } from '../state/store';
+import { createId } from '../domain/reducer';
+import ProfessionalPickerProvider from '../components/ProfessionalPickerProvider';
+import ProfessionalAvatar from '../components/ProfessionalAvatar';
 
-type Page = 'home' | 'edit' | 'logout' | 'managed';
+type Page = 'home' | 'edit' | 'logout' | 'managed' | 'professional';
 
-export default function SocialProfileScreen({ onClose }: { onClose: () => void }) {
+export default function SocialProfileScreen({ onClose, onProfileSelected }: { onClose: () => void; onProfileSelected: () => void }) {
+  const [busy, setBusy] = useState(false);
+  const [selectionComplete, setSelectionComplete] = useState(false);
+  const { ownerProfile } = useAppStore();
   return (
-    <ProfileDrawer onClose={onClose}>{(close) => <ProfileContent onClose={close} />}</ProfileDrawer>
+    <ProfessionalPickerProvider key={ownerProfile.id}>
+      <ProfileDrawer onClose={onClose} dismissible={!busy} selectionComplete={selectionComplete} onSelectionClose={onProfileSelected}>
+        {(close, closing) => <ProfileContent key={ownerProfile.id} onClose={close} onProfileSelected={() => setSelectionComplete(true)} busy={busy || selectionComplete || closing} setBusy={setBusy} />}
+      </ProfileDrawer>
+    </ProfessionalPickerProvider>
   );
 }
-function ProfileContent({ onClose }: { onClose: () => void }) {
+function ProfileContent({ onClose, onProfileSelected, busy, setBusy }: { onClose: () => void; onProfileSelected: () => void; busy: boolean; setBusy: (busy: boolean) => void }) {
   const { state, ownerProfile, selectProfile, editFamilyProfile } = useAppStore();
-  const managed = useManagedProfiles(ownerProfile.id);
+  const managed = useManagedProfiles(ownerProfile.id, ownerProfile.name);
   const [managedDraft, setManagedDraft] = useState<ManagedProfile>({
     id: '',
     name: '',
     kind: 'Niño',
   });
+  const [professionalDraft, setProfessionalDraft] = useState<ManagedProfessionalProfile>();
   const [page, setPage] = useState<Page>('home');
+  const scroll = useRef<React.ComponentRef<typeof ScrollView>>(null);
   const [editing, setEditing] = useState<EditableProfile | null>(null);
   const [infoId, setInfoId] = useState<string | null>(null);
   const [name, setName] = useState(ownerProfile.name);
-  const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const selecting = useRef(false);
+  useEffect(() => () => setBusy(false), [setBusy]);
   const back = () => {
+    if (busy) return;
     setError('');
     setPage('home');
   };
+  useEffect(() => { scroll.current?.scrollTo({ y: 0, animated: false }); }, [page]);
   useEffect(() => {
     const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (busy) return true;
       if (page === 'home') onClose();
       else {
         setPage('home');
@@ -42,7 +61,7 @@ function ProfileContent({ onClose }: { onClose: () => void }) {
       return true;
     });
     return () => sub.remove();
-  }, [page, onClose]);
+  }, [page, onClose, busy]);
   async function changeName() {
     if (!name.trim()) {
       setError('Escribe tu nombre.');
@@ -59,33 +78,42 @@ function ProfileContent({ onClose }: { onClose: () => void }) {
       setBusy(false);
     }
   }
-  async function saveManaged() {
-    setBusy(true);
-    setError('');
-    try {
-      await managed.save({
-        ...managedDraft,
-        id:
-          managedDraft.id ||
-          'profile-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8),
-      });
-      setPage('home');
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'No se pudo guardar el perfil.');
-    } finally {
-      setBusy(false);
+  async function saveManaged(profile: ManagedProfile) {
+    await managed.save({ ...profile, id: profile.id || createId('profile') });
+    setPage('home');
+  }
+  async function saveProfessional(profile: ManagedProfessionalProfile) {
+    if (profile.name.trim() !== ownerProfile.name.trim()) throw new Error('El nombre profesional debe coincidir con el de tu cuenta.');
+    const result = { ...profile, name: ownerProfile.name.trim(), id: profile.id || createId('profile') };
+    await managed.save(result);
+    if (state.profile.id === result.id) {
+      // The video is already saved with the managed profile. A view-sync failure must not discard it.
+      try { await selectProfile(result); }
+      catch { setError('El perfil se guardó. Selecciónalo de nuevo para actualizar la vista activa.'); }
     }
+    return result;
+  }
+  function editProfessional(profile: ManagedProfessionalProfile) {
+    setProfessionalDraft(profile);
+    setError('');
+    setPage('professional');
   }
   async function chooseProfile(profile?: ManagedProfile) {
+    if (selecting.current || busy) return;
+    selecting.current = true;
     setBusy(true); setError('');
-    try { await selectProfile(profile); }
-    catch (e) { setError(e instanceof Error ? e.message : 'No se pudo cambiar de perfil.'); }
-    finally { setBusy(false); }
+    try {
+      await selectProfile(profile);
+      onProfileSelected();
+    } catch (e) {
+      selecting.current = false;
+      setError(e instanceof Error ? e.message : 'No se pudo cambiar de perfil.');
+    } finally { setBusy(false); }
   }
   async function saveProfile(profile: EditableProfile) {
     const { id, kind, ...patch } = profile;
     if (id !== ownerProfile.id) {
-      await managed.save({ ...profile, kind: kind as ManagedProfile['kind'] });
+      await managed.save({ ...profile, kind: kind as ManagedPatientProfile['kind'] });
     }
     await editFamilyProfile(id, { ...patch, kind });
   }
@@ -105,6 +133,7 @@ function ProfileContent({ onClose }: { onClose: () => void }) {
             accessibilityLabel="Volver a tu cuenta"
             accessibilityRole="button"
             onPress={back}
+            disabled={busy}
             style={s.close}
           >
             <Icon name="back" />
@@ -116,27 +145,29 @@ function ProfileContent({ onClose }: { onClose: () => void }) {
           accessibilityLabel="Cerrar perfil"
           accessibilityRole="button"
           onPress={onClose}
+          disabled={busy}
           style={s.close}
         >
           <Icon name="close" />
         </Pressable>
       </View>
-      <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={s.content}>
+      <ScrollView ref={scroll} keyboardShouldPersistTaps="handled" contentContainerStyle={s.content}>
         {page === 'home' && (
           <>
             <View style={[s.account, state.profile.id === ownerProfile.id && s.principal]}>
-              <Pressable style={s.avatar} testID="profile-info-avatar" accessibilityRole="button" accessibilityLabel={'Ver información de ' + ownerProfile.name} onPress={(event) => { event.stopPropagation(); setInfoId(ownerProfile.id); }}>
+              <Pressable style={s.avatar} testID="profile-info-avatar" accessibilityRole="button" accessibilityLabel={'Ver información de ' + ownerProfile.name} disabled={busy} onPress={(event) => { event.stopPropagation(); setInfoId(ownerProfile.id); }}>
                 <Text style={s.initials}>{initials}</Text>
               </Pressable>
-              <Pressable style={s.profileSelect} testID="profile-select-owner" accessibilityRole="button" accessibilityLabel={'Seleccionar perfil de ' + ownerProfile.name} accessibilityState={{ selected: state.profile.id === ownerProfile.id, disabled: busy }} disabled={busy} onPress={() => void chooseProfile()}>
+              <Pressable style={s.profileSelect} testID="profile-select-owner" accessibilityRole="button" accessibilityLabel={'Seleccionar perfil general de ' + ownerProfile.name} accessibilityState={{ selected: state.profile.id === ownerProfile.id, disabled: busy }} aria-pressed={state.profile.id === ownerProfile.id} disabled={busy} onPress={() => void chooseProfile()}>
                 <Text style={s.name}>{ownerProfile.name}</Text>
-                <Text style={s.muted}>Perfil principal</Text>
+                <Text style={s.muted}>Usuario general</Text>
               </Pressable>
               <Pressable
               testID="profile-edit"
               accessibilityRole="button"
               accessibilityLabel={'Editar perfil de ' + ownerProfile.name}
-              accessibilityState={{ selected: state.profile.id === ownerProfile.id }}
+              accessibilityState={{ selected: state.profile.id === ownerProfile.id, disabled: busy }}
+              disabled={busy}
               onPress={() => {
                 setEditing({ ...ownerProfile, kind: 'Perfil principal' });
                 setError('');
@@ -150,40 +181,39 @@ function ProfileContent({ onClose }: { onClose: () => void }) {
                 </View>
               </Pressable>
             </View>
-            {managed.profiles.map((profile) => (
-              <View key={profile.id} style={[s.account, state.profile.id === profile.id && s.principal]}>
-                <Pressable style={s.avatar} testID={'profile-info-avatar-' + profile.id} accessibilityRole="button" accessibilityLabel={'Ver información de ' + profile.name} onPress={(event) => { event.stopPropagation(); setInfoId(profile.id); }}>
-                  <Text style={s.initials}>
-                    {profile.name
-                      .trim()
-                      .split(/\s+/)
-                      .slice(0, 2)
-                      .map((word) => word[0])
-                      .join('')
-                      .toUpperCase()}
-                  </Text>
+            {managed.profiles.map((profile) => {
+              const professional = isProfessionalProfile(profile);
+              const selected = state.profile.id === profile.id;
+              const profileInitials = (professional ? ownerProfile.name : profile.name).trim().split(/\s+/).slice(0, 2).map(word => word[0]).join('').toUpperCase();
+              return <View key={profile.id} style={[s.account, selected && s.principal]}>
+                <Pressable style={s.avatarButton} testID={'profile-info-avatar-' + profile.id} accessibilityRole="button" accessibilityLabel={(professional ? 'Seleccionar perfil profesional de ' + ownerProfile.name + ', ' + professionalProfileLabel(profile) : 'Ver información de ' + profile.name)} accessibilityState={{ selected: professional && selected, disabled: busy }} disabled={busy} onPress={(event) => { event.stopPropagation(); if (professional) void chooseProfile(profile); else setInfoId(profile.id); }}>
+                  {professional ? <ProfessionalAvatar initials={profileInitials} testID={'professional-avatar-' + profile.id} /> : <View style={s.avatar}><Text style={s.initials}>{profileInitials}</Text></View>}
                 </Pressable>
-                <Pressable style={s.profileSelect} testID={'profile-select-' + profile.id} accessibilityRole="button" accessibilityLabel={'Seleccionar perfil de ' + profile.name} accessibilityState={{ selected: state.profile.id === profile.id, disabled: busy }} disabled={busy} onPress={() => void chooseProfile(profile)}>
-                  <Text style={s.name}>{profile.name}</Text>
-                  <Text style={s.muted}>{profile.kind}</Text>
+                <Pressable style={s.profileSelect} testID={'profile-select-' + profile.id} accessibilityRole="button" accessibilityLabel={(professional ? 'Seleccionar perfil profesional de ' + ownerProfile.name + ', ' + professionalProfileLabel(profile) : 'Seleccionar perfil de ' + profile.name)} accessibilityState={{ selected, disabled: busy }} aria-pressed={selected} disabled={busy} onPress={() => void chooseProfile(profile)}>
+                  <Text style={s.name}>{professional ? ownerProfile.name : profile.name}</Text>
+                  <Text style={s.muted}>{professional ? professionalProfileLabel(profile) : profile.kind}</Text>
+                  {professional && profile.verification && <Text testID={`professional-review-status-${profile.id}`} style={s.muted}>En revisión · Demostración</Text>}
+                  {professional && !profile.verification && <Text testID={`professional-demo-status-${profile.id}`} style={s.muted}>Demostración · sin verificar</Text>}
                 </Pressable>
               <Pressable
                 testID={'managed-profile-' + profile.id}
                 accessibilityRole="button"
-                accessibilityLabel={'Editar perfil de ' + profile.name}
-                accessibilityState={{ selected: state.profile.id === profile.id }}
+              accessibilityLabel={'Editar perfil de ' + (professional ? ownerProfile.name : profile.name)}
+                accessibilityState={{ selected, disabled: busy }}
+                disabled={busy}
                 onPress={() => {
-                  setEditing({ ...profile });
+                  if (isProfessionalProfile(profile)) editProfessional(profile);
+                  else setEditing({ ...profile });
                   setError('');
                 }}
                 style={s.profileActions}
               >
 
                   <Icon name="edit" size={18} color={colors.tealDark} />
-                  <View style={s.selectedMark}>{state.profile.id === profile.id && <Icon name="check" size={16} color={colors.tealDark} />}</View>
+                  <View style={s.selectedMark}>{selected && <Icon name="check" size={16} color={colors.tealDark} />}</View>
                 </Pressable>
-              </View>
-            ))}
+              </View>;
+            })}
             {!!managed.error && (
               <Text accessibilityRole="alert" style={s.error}>
                 {managed.error}
@@ -192,9 +222,9 @@ function ProfileContent({ onClose }: { onClose: () => void }) {
             <Pressable
               testID="profile-add"
               accessibilityRole="button"
-              accessibilityState={{ disabled: !managed.ready }}
+              accessibilityState={{ disabled: !managed.ready || busy }}
               style={s.simpleAction}
-              disabled={!managed.ready}
+              disabled={!managed.ready || busy}
               onPress={() => {
                 setManagedDraft({ id: '', name: '', kind: 'Niño' });
                 setError('');
@@ -205,8 +235,25 @@ function ProfileContent({ onClose }: { onClose: () => void }) {
               <Text style={s.actionLabel}>Agregar perfil</Text>
             </Pressable>
             <Pressable
+              testID="profile-add-professional"
+              accessibilityRole="button"
+              accessibilityState={{ disabled: !managed.ready || busy }}
+              style={s.simpleAction}
+              disabled={!managed.ready || busy}
+              onPress={() => {
+                setProfessionalDraft(undefined);
+                setError('');
+                setPage('professional');
+              }}
+            >
+              <FontAwesome name="stethoscope" size={19} color={colors.tealDark} />
+              <Text style={s.actionLabel}>Agregar profesional de la salud</Text>
+            </Pressable>
+            <Pressable
               testID="profile-logout"
               accessibilityRole="button"
+              disabled={busy}
+              accessibilityState={{ disabled: busy }}
               style={s.simpleAction}
               onPress={() => {
                 setPage('logout');
@@ -218,36 +265,8 @@ function ProfileContent({ onClose }: { onClose: () => void }) {
             </Pressable>
           </>
         )}
-        {page === 'managed' && (
-          <View style={s.form}>
-            <Text style={s.section}>{managedDraft.id ? 'Editar perfil' : 'Agregar perfil'}</Text>
-            <TextField
-              testID="managed-profile-name"
-              label="Nombre"
-              value={managedDraft.name}
-              maxLength={255}
-              onChangeText={(name) => setManagedDraft((d) => ({ ...d, name }))}
-            />
-            <Text style={s.name}>Tipo de perfil</Text>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-              {profileKinds.map((kind) => (
-                <Chip
-                  key={kind}
-                  label={kind}
-                  selected={managedDraft.kind === kind}
-                  onPress={() => setManagedDraft((d) => ({ ...d, kind }))}
-                />
-              ))}
-            </View>
-            <Button
-              testID="managed-profile-save"
-              title="Guardar perfil"
-              disabled={busy}
-              onPress={() => void saveManaged()}
-            />
-            <Button title="Cancelar" secondary onPress={back} />
-          </View>
-        )}
+        {page === 'managed' && <AccountProfileForm mode="family" profile={managedDraft} busy={busy} onBusyChange={setBusy} onSave={saveManaged} />}
+        {page === 'professional' && <ProfessionalProfileFlow profile={professionalDraft} ownerName={ownerProfile.name} busy={busy} onBusyChange={setBusy} onSave={saveProfessional} onReturn={back} />}
         {page === 'edit' && (
           <View style={s.form}>
             <Text style={s.section}>Cambiar perfil</Text>
@@ -330,7 +349,7 @@ const s = StyleSheet.create({
     borderBottomColor: '#E7EFF2',
   },
   principal: { backgroundColor: '#EAF7F7', borderRadius: 9, borderBottomWidth: 0 },
-  profileActions: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  profileActions: { flexDirection: 'row', alignItems: 'center', gap: 10, minHeight: 44, minWidth: 44 },
   selectedMark: { width: 16, height: 18, alignItems: 'center', justifyContent: 'center' },
   simpleAction: { flexDirection: 'row', alignItems: 'center', gap: 10, minHeight: 44, paddingHorizontal: 8 },
   actionLabel: { fontSize: 12, color: colors.tealDark },
@@ -342,9 +361,10 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#E2F7F4',
   },
+  avatarButton: { width: 44, height: 44, flexShrink: 0, alignItems: 'center', justifyContent: 'center' },
   initials: { color: colors.tealDark, fontSize: 12, fontWeight: '600' },
   flex: { flex: 1 },
-  profileSelect: { flex: 1, minHeight: 40, justifyContent: 'center' },
+  profileSelect: { flex: 1, minWidth: 0, minHeight: 40, justifyContent: 'center' },
   name: { fontSize: 12, fontWeight: '600', color: colors.navy },
   muted: { fontSize: 11, lineHeight: 16, color: colors.muted, marginTop: 2 },
   small: { fontSize: 10, color: colors.muted, marginTop: 5, lineHeight: 16 },

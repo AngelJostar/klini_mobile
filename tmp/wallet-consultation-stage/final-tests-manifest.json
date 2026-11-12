@@ -1,0 +1,10 @@
+[
+  {
+    "path": "tests/Feature/StateTransitionTest.php",
+    "sha256": "2ABB98E7152DBF62057877CA64EA2A3C8A18D1D6E761485D7035071EC5F76BBA"
+  },
+  {
+    "path": "tests/Feature/Api/Mobile/MobileWalletConsultationTest.php",
+    "sha256": "30CDFE3FDD3C3EF5DF87B15212FCAB664F595EF0DF12C43938B8B05230D3D76A"
+  }
+]

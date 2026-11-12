@@ -1,0 +1,9 @@
+{
+  "checked_at_utc": "2026-11-12T04:42:29.4368580Z",
+  "method": "GET",
+  "status": 401,
+  "success": false,
+  "error_code": "unauthenticated",
+  "url": "http://192.168.100.250:8002/api/mobile/v1/patient/wallet",
+  "credentials_sent": false
+}

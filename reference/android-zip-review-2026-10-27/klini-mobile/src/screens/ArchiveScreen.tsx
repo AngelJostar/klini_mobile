@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
@@ -22,11 +22,14 @@ import { useAppStore } from '../state/store';
 import Sheet from '../components/ArchivePopup';
 import HistoryFiltersPopup from '../components/HistoryFiltersPopup';
 import RecordRegistrationFlow from '../components/RecordRegistrationFlow';
+import RegistrationChoiceSheet from '../components/RegistrationChoiceSheet';
+import MedicationRegistrationForm from '../components/MedicationRegistrationForm';
+import MedicationsScreen from './MedicationsScreen';
 import { emptyHistoryFilters, matchesHistoryFilters } from '../domain/historyFilters';
 
 type RecordDraft = Omit<ClinicalRecord, 'id'>;
 type MedicationDraft = Omit<Medication, 'id'>;
-type Page = 'history' | 'list' | 'record' | 'recordMode' | 'recordForm' | 'medicationForm';
+type Page = 'history' | 'list' | 'record' | 'registrationKind' | 'recordMode' | 'recordForm' | 'medicationForm';
 const recordTypes: ClinicalRecord['type'][] = ['Consulta', 'Estudio', 'Receta', 'Vacuna', 'Nota', 'Procedimiento', 'Hospitalización', 'Alergia', 'Antecedente'];
 const historyCategories: { label: string; type: ClinicalRecord['type'] | 'Todos'; icon: string }[] = [
   { label: 'Mi historial', type: 'Todos', icon: 'folder' },
@@ -98,12 +101,12 @@ export default function ArchiveScreen({
     addRecord,
     updateRecord,
     deleteRecord,
-    addMedication,
+    addMedicationPersisted,
     updateMedication,
     deleteMedication,
   } = useAppStore();
   const [tab, setTab] = useState<'records' | 'medications'>(initialTab);
-  const [page, setPage] = useState<Page>(initialCreate ? 'recordMode' : initialHistory && !initialListTitle ? 'history' : 'list');
+  const [page, setPage] = useState<Page>(initialCreate ? 'registrationKind' : initialHistory && !initialListTitle ? 'history' : 'list');
   const [createReturn, setCreateReturn] = useState<'history' | 'list' | null>(initialCreate ? null : initialHistory && !initialListTitle ? 'history' : 'list');
   const [historyList, setHistoryList] = useState(!!initialListTitle);
   const [query, setQuery] = useState('');
@@ -118,10 +121,16 @@ export default function ArchiveScreen({
   const [editingId, setEditingId] = useState<string | null>(null);
   const [recordDraft, setRecordDraft] = useState<RecordDraft>(newRecord);
   const [medicationDraft, setMedicationDraft] = useState<MedicationDraft>(newMedication);
+  const [medicationReturn, setMedicationReturn] = useState<'registrationKind' | 'list'>('registrationKind');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [sharingId, setSharingId] = useState<string | null>(null);
   const sharePending = useRef(false);
+  const medicationSaving = useRef(false);
+  const medicationSavedAt = useRef(0);
+  const [medicationSavedTime, setMedicationSavedTime] = useState(0);
+  const alive = useRef(true);
+  useEffect(() => { alive.current = true; return () => { alive.current = false; }; }, []);
   async function sendRecord(record: ClinicalRecord) {
     if (sharePending.current) return;
     sharePending.current = true; setSharingId(record.id);
@@ -176,7 +185,8 @@ export default function ArchiveScreen({
       setRecordDraft(newRecord());
       setCreateReturn(page === 'history' ? 'history' : 'list');
       setError('');
-      setPage('recordMode');
+      setMedicationDraft(newMedication());
+      setPage('registrationKind');
       return;
     }
     setEditingId(record?.id ?? null);
@@ -200,6 +210,9 @@ export default function ArchiveScreen({
     setPage('recordForm');
   }
   function startMedication(item?: Medication) {
+    // The list's Add action occupies the former Save button's touch area.
+    if (!item && Date.now() - medicationSavedAt.current < 450) return;
+    setMedicationReturn('list');
     setEditingId(item?.id ?? null);
     setMedicationDraft(
       item
@@ -284,7 +297,8 @@ export default function ArchiveScreen({
       },
     );
   }
-  function saveMedication() {
+  async function saveMedication() {
+    if (medicationSaving.current) return;
     if (!medicationDraft.name.trim()) return setError('Escribe el nombre del medicamento.');
     if (!medicationDraft.dose.trim())
       return setError('Escribe la dosis tal como aparece en tu receta.');
@@ -304,15 +318,24 @@ export default function ArchiveScreen({
       frequency: medicationDraft.frequency.trim(),
       endDate: medicationDraft.endDate || undefined,
     };
+    medicationSaving.current = true;
+    setBusy(true);
+    setError('');
     try {
       if (editingId) updateMedication(editingId, data);
-      else addMedication(data);
+      else await addMedicationPersisted(data);
+      if (!alive.current) return;
+      medicationSavedAt.current = Date.now();
+      setMedicationSavedTime(medicationSavedAt.current);
       setError('');
       setPage('list');
       setTab('medications');
       setMedicationFilter(data.active ? 'Vigentes' : 'Anteriores');
     } catch (e) {
-      setError(`No se pudo guardar el medicamento. ${errorMessage(e)}`);
+      if (alive.current) setError(`No se pudo guardar el medicamento. ${errorMessage(e)}`);
+    } finally {
+      medicationSaving.current = false;
+      if (alive.current) setBusy(false);
     }
   }
   function removeMedication(item: Medication) {
@@ -356,6 +379,7 @@ export default function ArchiveScreen({
       }
     }}
   />;
+  if (page === 'list' && tab === 'medications') return <MedicationsScreen onClose={onClose} initialTab="treatments" lastSavedAt={medicationSavedTime} />;
   if (page === 'history') return (
     <Sheet title="Historial" onClose={onClose} footerAlignment="right" footer={
       <Pressable testID="add-archive-item" accessibilityRole="button" accessibilityLabel="Agregar registro al historial" onPress={() => startRecord()} style={({ pressed }) => [local.historyAdd, { opacity: pressed ? .7 : 1 }]}>
@@ -386,9 +410,15 @@ export default function ArchiveScreen({
       </View>}
     </Sheet>
   );
-  if (page === 'recordMode') return <RecordRegistrationFlow
+  if (page === 'registrationKind') return <RegistrationChoiceSheet
     onClose={onClose}
     onBack={() => { if (createReturn) setPage(createReturn); else onClose(); }}
+    onDocument={() => { setError(''); setEditingId(null); setPage('recordMode'); }}
+    onMedication={() => { setError(''); setEditingId(null); setMedicationReturn('registrationKind'); setPage('medicationForm'); }}
+  />;
+  if (page === 'recordMode') return <RecordRegistrationFlow
+    onClose={onClose}
+    onBack={() => setPage('registrationKind')}
     storageError={storageError || undefined}
     onSave={draft => {
       addRecord(draft);
@@ -506,78 +536,21 @@ export default function ArchiveScreen({
     );
 
   if (page === 'medicationForm')
-    return (
-      <Sheet
-        title={editingId ? 'Editar medicamento' : 'Agregar medicamento'}
-        onClose={onClose}
-        onBack={back}
-        footer={
-          <Button
-            title="Guardar medicamento"
-            onPress={saveMedication}
-            testID="save-medication"
-            icon="check"
-          />
-        }
-      >
-        <Text style={styles.body}>
-          Copia los datos de tu receta. El registro no indica cambios de tratamiento.
-        </Text>
-        <View style={{ height: 14 }} />
-        <TextField
-          label="Medicamento *"
-          value={medicationDraft.name}
-          onChangeText={(name) => setMedicationDraft((draft) => ({ ...draft, name }))}
-          maxLength={120}
-          testID="medication-name"
-        />
-        <TextField
-          label="Dosis registrada *"
-          value={medicationDraft.dose}
-          onChangeText={(dose) => setMedicationDraft((draft) => ({ ...draft, dose }))}
-          placeholder="Tal como aparece en la receta"
-          maxLength={120}
-          testID="medication-dose"
-        />
-        <TextField
-          label="Frecuencia registrada *"
-          value={medicationDraft.frequency}
-          onChangeText={(frequency) => setMedicationDraft((draft) => ({ ...draft, frequency }))}
-          placeholder="Tal como aparece en la receta"
-          maxLength={180}
-          testID="medication-frequency"
-        />
-        <TextField
-          label="Inicio * (AAAA-MM-DD)"
-          value={medicationDraft.startDate}
-          onChangeText={(startDate) => setMedicationDraft((draft) => ({ ...draft, startDate }))}
-          maxLength={10}
-          keyboardType="numbers-and-punctuation"
-        />
-        <TextField
-          label="Fin (opcional, AAAA-MM-DD)"
-          value={medicationDraft.endDate || ''}
-          onChangeText={(endDate) => setMedicationDraft((draft) => ({ ...draft, endDate }))}
-          maxLength={10}
-          keyboardType="numbers-and-punctuation"
-        />
-        <Card>
-          <View style={local.switchRow}>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.rowTitle}>Tratamiento vigente</Text>
-              <Text style={styles.small}>Estado del registro en tu archivo.</Text>
-            </View>
-            <Switch
-              accessibilityLabel="Tratamiento vigente"
-              value={medicationDraft.active}
-              onValueChange={(active) => setMedicationDraft((draft) => ({ ...draft, active }))}
-              trackColor={{ true: colors.teal, false: colors.line }}
-            />
-          </View>
-        </Card>
-        {errorView}
-      </Sheet>
-    );
+    return <MedicationRegistrationForm
+      draft={medicationDraft}
+      onChange={setMedicationDraft}
+      onSave={() => void saveMedication()}
+      onClose={() => { if (!medicationSaving.current) onClose(); }}
+      onBack={() => {
+        if (medicationSaving.current) return;
+        setError('');
+        setPage(medicationReturn);
+        if (medicationReturn === 'list') setTab('medications');
+      }}
+      editing={!!editingId}
+      error={error || storageError || undefined}
+      busy={busy}
+    />;
 
   if ((initialHistory || initialCreate) && page === 'record' && selectedRecord) return <>
     <Sheet title={historyCategories.find(category => category.type === selectedRecord.type)?.label.replace('\n', ' ') ?? selectedRecord.type} onClose={onClose} onBack={back}>
@@ -662,7 +635,7 @@ export default function ArchiveScreen({
       </Sheet>
     );
 
-  if ((initialHistory || initialCreate) && page === 'list') {
+  if ((initialHistory || initialCreate) && page === 'list' && tab === 'records') {
     const categoryTitle = initialListTitle ?? historyCategories.find(category => category.type === type)?.label.replace('\n', ' ') ?? 'Historial';
     return <>
       <Sheet title={categoryTitle} onClose={onClose} onBack={initialListTitle ? onClose : () => { setHistoryList(false); setType('Todos'); setQuery(''); setPage('history'); }} footerAlignment="right" footer={

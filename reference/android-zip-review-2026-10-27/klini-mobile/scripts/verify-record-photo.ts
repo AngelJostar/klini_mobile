@@ -26,6 +26,7 @@ async function main() {
     await page.getByTestId('home-tab-archive').click();
     await page.getByTestId('menu-history').click();
     await page.getByTestId('add-archive-item').click();
+    await page.getByTestId('registration-document').click();
     await step(page.getByTestId('record-entry-screen'), 1);
     await page.getByTestId('record-type-photo').click();
     await expect(page.getByTestId('record-categories')).toHaveCount(0);

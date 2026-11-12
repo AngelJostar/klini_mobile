@@ -4,7 +4,7 @@ import { Card, Chip, Empty, Icon, TextField, colors, notify } from '../component
 import { useAppStore } from '../state/store';
 import Sheet from '../components/DirectoryPopup';
 import DoctorPortrait from '../components/DoctorPortrait';
-import DirectorySearch from '../components/DirectorySearch';
+import DirectorySearch, { DirectoryMoreFilters } from '../components/DirectorySearch';
 import BookingFooterButton from '../components/BookingFooterButton';
 import { addDays, dateLabel, futureDates, money, monthLabel, parseDate, todayISO } from '../domain/dates';
 import { APPOINTMENT_DURATION_MINUTES, appointmentTimestamp } from '../domain/reducer';
@@ -26,7 +26,6 @@ type PatientFields = {
 type PatientErrors = Partial<Record<keyof PatientFields | 'reason', string>>;
 type ProfileTab = 'Experiencia' | 'Opiniones' | 'Horarios';
 type FilterMode = Mode | 'Todas';
-const MODES: Mode[] = ['Presencial', 'Teleconsulta'];
 const HOURS = [
   '09:00',
   '09:30',
@@ -105,7 +104,6 @@ export default function DirectoryFlow({
   const [specialty, setSpecialty] = useState('');
   const [filterMode, setFilterMode] = useState<FilterMode>(initialMode ?? 'Todas');
   const [filterInsurer, setFilterInsurer] = useState('');
-  const [moreFilters, setMoreFilters] = useState(false);
   const [onlyFavorites, setOnlyFavorites] = useState(false);
   const [doctorId, setDoctorId] = useState(initialDoctor?.id ?? '');
   const [profileTab, setProfileTab] = useState<ProfileTab>('Experiencia');
@@ -573,28 +571,7 @@ export default function DirectoryFlow({
           query={query}
           setQuery={setQuery}
         />
-        <Pressable accessibilityRole="button" onPress={() => setMoreFilters(!moreFilters)}>
-          <Text style={s.link}>{moreFilters ? 'Menos filtros' : 'Más filtros'}</Text>
-        </Pressable>
-        {moreFilters && (
-          <>
-            <View style={s.wrap}>
-              {(['Todas', ...MODES] as FilterMode[]).map((item) => (
-                <Chip
-                  key={item}
-                  label={item}
-                  selected={filterMode === item}
-                  onPress={() => setFilterMode(item)}
-                />
-              ))}
-            </View>
-            <Chip
-              label="Mis favoritos"
-              selected={onlyFavorites}
-              onPress={() => setOnlyFavorites(!onlyFavorites)}
-            />
-          </>
-        )}
+        <DirectoryMoreFilters mode={filterMode} onlyFavorites={onlyFavorites} onApply={(nextMode, favorites) => { setFilterMode(nextMode); setOnlyFavorites(favorites); }} />
       </>
     );
     footer = (

@@ -1,0 +1,14 @@
+{
+  "localBackend": "C:/laragon/www/dr-sam",
+  "reviewedFilesApplied": 9,
+  "baselineGuard": "matched_before_application",
+  "migration": "2026_11_12_000008_configure_klini_pharmacy_seller",
+  "migrationResult": "DONE",
+  "publicCatalogReadSucceeded": true,
+  "kliniProviderFieldPresent": true,
+  "kliniProviderConfigured": false,
+  "legacyProducts": 34,
+  "publishedUniversalCatalogItems": 0,
+  "accountsOffersOrPriceDataChanged": false,
+  "ordersPaymentsOrPrescriptionUploadsSubmitted": false
+}

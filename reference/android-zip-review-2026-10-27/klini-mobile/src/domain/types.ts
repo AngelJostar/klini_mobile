@@ -108,6 +108,10 @@ export interface Settings {
   meetingBaseUrl: string;
 }
 export interface AppState {
+  subscriptionPlan?: import('./subscriptionPlan').SubscriptionPlan;
+  pharmacy?: import('./pharmacy').PharmacyState;
+  medicationReminderDemoVersion?: 1;
+  medicationCare?: import('./medicationCare').MedicationCare;
   aiSubscription?: import('./aiSubscription').AiSubscription;
   family?: { ownerId: string; profiles: Record<string, ProfileScope> };
   wallet?: import('./wallet').Wallet;
@@ -123,15 +127,26 @@ export interface AppState {
   favorites: string[];
   settings: Settings;
 }
-export type ProfileScope = Pick<AppState, 'profile' | 'appointments' | 'policies' | 'claims' | 'records' | 'medications' | 'messages' | 'favorites' | 'aiSubscription'> & { kind: string };
+export type ProfessionalProfileDescriptor =
+  | Readonly<Omit<import('./managedProfiles').ManagedDoctorProfile, 'verification'>>
+  | Readonly<Omit<import('./managedProfiles').ManagedLicensedProfile, 'verification'>>
+  | Readonly<Omit<import('./managedProfiles').LegacyManagedProfessionalProfile, 'verification'>>;
+export type ProfileScope = Pick<AppState, 'profile' | 'appointments' | 'policies' | 'claims' | 'records' | 'medications' | 'messages' | 'favorites' | 'aiSubscription' | 'medicationCare' | 'pharmacy'> & { kind: string; professional?: ProfessionalProfileDescriptor };
 export type NewAppointment = Omit<Appointment, "id" | "createdAt">;
 export interface StoreContext {
+  setPharmacyCartPersisted: (cart: import('./pharmacy').CartLine[]) => Promise<void>;
+  createPharmacyDemoOrderPersisted: (input: import('./pharmacy').PharmacyDemoOrderInput) => Promise<string>;
+  requestPharmacyProgramPersisted: (programId: string) => Promise<void>;
+  cancelPharmacyDemoOrderPersisted: (id: string) => Promise<void>;
+  togglePharmacyFavoritePersisted: (id: string) => Promise<void>;
   ownerProfile: Patient;
   profileKind: string;
+  professionalProfile?: ProfessionalProfileDescriptor;
   selectProfile: (profile?: import('../state/managedProfiles').ManagedProfile) => Promise<void>;
   editFamilyProfile: (id: string, patch: Partial<Patient> & { kind?: string }) => Promise<void>;
   rechargeWallet: (amount: number) => Promise<void>;
   setAiSubscription: (active: boolean) => Promise<void>;
+  upgradeSubscription: (quote: import('./subscriptionPlan').SubscriptionUpgradeQuote) => Promise<void>;
   state: AppState;
   ready: boolean;
   storageError: string | null;
@@ -149,8 +164,19 @@ export interface StoreContext {
   updateRecord: (id: string, p: Partial<ClinicalRecord>) => void;
   deleteRecord: (id: string) => void;
   addMedication: (m: Omit<Medication, "id">) => string;
+  addMedicationPersisted: (m: Omit<Medication, "id">) => Promise<string>;
   updateMedication: (id: string, p: Partial<Medication>) => void;
   deleteMedication: (id: string) => void;
+  updateMedicationPersisted: (id: string, p: Partial<Medication>) => Promise<void>;
+  deleteMedicationPersisted: (id: string) => Promise<void>;
+  saveMedicationTreatment: (input: Omit<import('./medicationCare').MedicationTreatment, 'id'>, id?: string) => Promise<string>;
+  saveMedicationTreatmentWithMedication: (input: Omit<import('./medicationCare').MedicationTreatment, 'id'>, medication: Omit<Medication, 'id'>, treatmentId?: string) => Promise<string>;
+  saveMedicationTake: (input: Omit<import('./medicationCare').MedicationTake, 'id'>, id?: string) => Promise<string>;
+  saveMedicationAlert: (input: Omit<import('./medicationCare').MedicationAlert, 'id'>, id?: string) => Promise<string>;
+  deleteMedicationTake: (id: string) => Promise<void>;
+  deleteMedicationAlert: (id: string) => Promise<void>;
+  setMedicationTreatmentAlertsEnabled: (treatmentId: string, enabled: boolean) => Promise<void>;
+  acknowledgeMedicationReminder: (alertId: string, date: string, time: string, status: 'taken' | 'skipped', occurrenceKey?: string) => Promise<void>;
   addMessage: (m: Omit<Message, "id" | "createdAt">) => void;
   toggleFavorite: (id: string) => void;
   updateSettings: (s: Partial<Settings>) => void;

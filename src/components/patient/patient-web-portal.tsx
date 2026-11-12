@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, BackHandler, Linking, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -38,6 +39,8 @@ export function PatientWebPortal() {
   }
 
   return <SafeAreaView style={styles.container}>
+    <Pressable accessibilityRole="button" accessibilityLabel="Abrir parámetros corporales locales" onPress={() => router.push('/parameters')} style={styles.parametersLink}><Text style={styles.parametersLabel}>Parámetros corporales · espacio local</Text></Pressable>
+    <View style={styles.container} testID="patient-portal-content">
     {allowed && <WebView
       ref={webView}
       source={{ uri: `${origin}/patient` }}
@@ -72,10 +75,13 @@ export function PatientWebPortal() {
       <Text style={styles.message}>{allowed ? 'Comprueba tu conexión con Dr. Sam e intenta de nuevo.' : 'Configura un servidor HTTPS para este ambiente.'}</Text>
       {allowed && <Pressable accessibilityRole="button" style={styles.button} onPress={() => { setFailed(false); webView.current?.reload(); }}><Text style={styles.buttonText}>Reintentar</Text></Pressable>}
     </View>}
+    </View>
   </SafeAreaView>;
 }
 
 const styles = StyleSheet.create({
+  parametersLink: { paddingHorizontal: 20, paddingVertical: 12, backgroundColor: '#FFFFFF', alignItems: 'center', minHeight: 44 },
+  parametersLabel: { color: '#007D79', fontSize: 14, fontWeight: '600' },
   container: { flex: 1, backgroundColor: '#f5fbfa' },
   loading: { ...StyleSheet.absoluteFillObject, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5fbfa' },
   error: { ...StyleSheet.absoluteFillObject, justifyContent: 'center', padding: 28, backgroundColor: '#f5fbfa', gap: 16 },

@@ -1,0 +1,15 @@
+{
+    "checked_at_utc": "2026-11-12T04:42:28+00:00",
+    "local_database_guard": true,
+    "flags": {
+        "enabled": false,
+        "live_enabled": false,
+        "service_redemption_enabled": false
+    },
+    "table_counts": {
+        "mobile_wallet_accounts": 0,
+        "mobile_wallet_recharges": 0,
+        "mobile_wallet_movements": 0,
+        "mobile_wallet_webhook_events": 0
+    }
+}

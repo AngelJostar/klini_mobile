@@ -1,0 +1,50 @@
+{
+  "destination": "C:\\laragon\\www\\dr-sam",
+  "files": [
+    {
+      "path": "app/Models/PharmacyStoreSetting.php",
+      "baseline_sha256": "1825d4c48d25fea4e0edf11ab584c5ebed433c9fe0c6cb9343d12beb77b8f901",
+      "staged_sha256": "0cc38d3250a5ec4cb95c5aed845b67845bb2acb50336527393af4b97d8f1a675"
+    },
+    {
+      "path": "app/Services/PharmacyCatalogPublication.php",
+      "baseline_sha256": "c36156f0ea4baa35da985ac3b60a3d6d89fbb61e6c94db968ec3e9f5d3c12141",
+      "staged_sha256": "5ac300ba1124cb544fe7f4c3760c0d8d5fddb0dd9033ff3fc9e2369048631165"
+    },
+    {
+      "path": "app/Http/Controllers/Pharmacy/PharmacyStoreAdminController.php",
+      "baseline_sha256": "4b5e4645b89f0ba28a28352a4c1ad2466caf331b53165981a9ae1371de63932a",
+      "staged_sha256": "046bdf50222bd36880aa7c36ba65a57f76718b2e5c0491d2faad12489d0c1d17"
+    },
+    {
+      "path": "resources/views/pharmacy-store/admin.blade.php",
+      "baseline_sha256": "f9ceccb8827704511104bc4a9efd0441e3488770462269334a51b596e1d5f193",
+      "staged_sha256": "9586827c2c6f1ee0b588ddd95ab297ce3dab30d2d42322929f189a629155ef30"
+    },
+    {
+      "path": "routes/web.php",
+      "baseline_sha256": "69bbbf5eab1a17e6f1cd35f67884cafb2a3035004390258a46fee18cac271cf6",
+      "staged_sha256": "a0c2115d0fc0bd64daf49edf47ca1acaeade1603332b09c327caa37f20a4728c"
+    },
+    {
+      "path": "app/Http/Controllers/Api/Mobile/V1/PharmacyStoreController.php",
+      "baseline_sha256": "d730da0e3593658303a49f1e6e57596709565d6721f6a68152e33311c9dd25e0",
+      "staged_sha256": "f13f2afc7fdf64f16c19c1b514abdf345877c715ea3dacbf56e5556ff2b8c2b9"
+    },
+    {
+      "path": "database/migrations/2026_11_12_000008_configure_klini_pharmacy_seller.php",
+      "baseline_sha256": null,
+      "staged_sha256": "2d5fd8f04414dc16fc6679beeaf9b183a8da4982ecbdcab34da46685df886168"
+    },
+    {
+      "path": "resources/views/pharmacy-store/klini-offers.blade.php",
+      "baseline_sha256": null,
+      "staged_sha256": "755011d509eaabba3597a906010ce24cb5505fdd2bf5649fe1f67993b568221c"
+    },
+    {
+      "path": "tests/Feature/PharmacyKliniSellerTest.php",
+      "baseline_sha256": null,
+      "staged_sha256": "6660a95cfb2dd3c1cc1bf12d09c31b1dc4946895b8bfe480bd50f8273d10e89a"
+    }
+  ]
+}

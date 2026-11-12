@@ -1,0 +1,6 @@
+{
+  "routes/web.php": "f20328100593b6fd912d802100fbaf52dcfa314db7c83c4572652ce746ae94c8",
+  "app/Models/Doctor.php": "fff2e24fd790a0b380aa284ae1b8e50e8ab2ab9354f06939df9e3548d254b228",
+  "resources/views/doctor/dashboard.blade.php": "2acf8882741a53aabf0d2113e8cd124d3e06b493048a24a94a8dde8de0a3795e",
+  "app/Http/Controllers/Doctor/DoctorPortalController.php": "520394968a00cd41f78bfbd764b6ebfa54161911ae18550eeb855c8bc6d0b13a"
+}

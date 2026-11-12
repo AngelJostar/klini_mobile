@@ -21,11 +21,11 @@ import { AppProvider } from '../src/state/store';
 import { createDemoState } from '../src/domain/seed';
 import AppleHealthOptionsPopup from '../src/components/AppleHealthOptionsPopup';
 import { HEALTH_CATEGORIES } from '../src/services/appleHealthReader';
-const web = new URLSearchParams(location.search).has('web');
-if (!web) Object.defineProperty(Platform, 'OS', { value: 'ios', configurable: true });
-Object.defineProperty(AppState, 'currentState', { value: 'active', configurable: true });
-Object.defineProperty(Constants, 'executionEnvironment', { value: 'standalone', configurable: true });
 const params = new URLSearchParams(location.search);
+const web = params.has('web');
+Object.defineProperty(Platform, 'OS', { value: web ? 'web' : params.has('android') ? 'android' : 'ios', configurable: true });
+Object.defineProperty(AppState, 'currentState', { value: 'active', configurable: true });
+Object.defineProperty(Constants, 'executionEnvironment', { value: params.has('go') ? 'storeClient' : 'standalone', configurable: true });
 if (params.has('medications')) {
  const state = createDemoState();
  state.medications=[{id:'fixture-medication',name:'Medicamento seleccionado',dose:'Dosis literal',frequency:'Frecuencia literal',startDate:'2026-11-05',active:true},{id:'fixture-other-medication',name:'Otro medicamento',dose:'NO COMPARTIR OTRA DOSIS',frequency:'Otra frecuencia',startDate:'2026-11-04',active:true},{id:'fixture-previous-medication',name:'Medicamento anterior',dose:'Dosis anterior',frequency:'Frecuencia anterior',startDate:'2026-10-01',endDate:'2026-10-10',active:false}];
@@ -236,6 +236,27 @@ async function main() {
     await expect.poll(() => body.evaluate(() => JSON.parse(localStorage.getItem('@klini/app-state:v1')!).settings.appleHealth.enabled)).toBe(false);
     expect(await body.evaluate(() => JSON.parse(localStorage.getItem('@klini/app-state:v1')!).settings.appleHealth.selected)).toEqual(['HKQuantityTypeIdentifierHeartRate']);
     await body.close();
+    for (const runtime of ['web', 'android', 'go']) {
+      const unsupported = await browser.newPage({viewport:{width:390,height:844}});
+      unsupported.on('pageerror', error => errors.push(error.message));
+      await unsupported.goto('http://127.0.0.1:8101?body&' + runtime);
+      await expect(unsupported.getByTestId('body-row-heart-rate')).toBeVisible();
+      await expect(unsupported.getByTestId('apple-health-pinned-readings')).toHaveCount(0);
+      const toggle = unsupported.getByTestId('apple-health-toggle').locator('input');
+      await expect(toggle).not.toBeChecked();
+      await expect(toggle).toBeDisabled();
+      await expect(unsupported.getByText('Conectar con Apple Health', { exact:true })).toBeVisible();
+      const preferences = await unsupported.evaluate(() => JSON.parse(localStorage.getItem('@klini/app-state:v1')!).settings.appleHealth);
+      expect(preferences.enabled).toBe(true);
+      expect(preferences.selected).toEqual(['HKQuantityTypeIdentifierHeartRate']);
+      await unsupported.getByRole('button', { name:'Conectar con Apple Health', exact:true }).click();
+      await expect(unsupported.getByTestId('apple-health-options-popup')).toBeVisible();
+      await expect(unsupported.getByTestId('apple-health-connect')).toHaveAttribute('aria-disabled', 'true');
+      await unsupported.getByTestId('apple-health-options-close').click();
+      await expect(unsupported.getByTestId('body-row-heart-rate')).toBeVisible();
+      expect(await unsupported.evaluate(() => JSON.parse(localStorage.getItem('@klini/app-state:v1')!).settings.appleHealth)).toEqual(preferences);
+      await unsupported.close();
+    }
     for (const state of ['empty','error']) {
       const page = await browser.newPage({viewport:{width:320,height:568}});
       page.on('pageerror',error => errors.push(error.message));
@@ -292,7 +313,7 @@ async function main() {
       await meds.close();
     }
     expect(errors).toEqual([]);
-    console.log('Apple Salud shared rows: icon left/value right, long source, date details, zero/no-reading, duplicate replacement, saved history and disable/selection persistence passed. Popup: 390/320 px and landscape, selection, persistence, close/backdrop, Escape and zero-selection disabled passed. Presentation fixture; no native HealthKit access.');
+    console.log('Apple Salud shared rows: icon left/value right, long source, date details, zero/no-reading, duplicate replacement, saved history and disable/selection persistence passed. Restored enabled preferences remain inactive and unchanged in Android, web and Expo Go. Popup: 390/320 px and landscape, selection, persistence, close/backdrop, Escape and zero-selection disabled passed. Presentation fixture; no native HealthKit access.');
   } finally {
     await browser?.close();
     server.close();

@@ -1,6 +1,7 @@
 import React from 'react';
 import Constants from 'expo-constants';
 import { Platform, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
+import { canUseAppleHealthRuntime } from '../domain/appleHealth';
 import { colors, Icon } from './ui';
 
 export default function AppleHealthPanel({ onShowInfo, optionsOpen, onOptionsChange, enabled, onDisable }: {
@@ -10,14 +11,15 @@ export default function AppleHealthPanel({ onShowInfo, optionsOpen, onOptionsCha
   optionsOpen: boolean;
   onOptionsChange: (open: boolean) => void;
 }) {
-  const canUseHealth = Platform.OS === 'ios' && Constants.executionEnvironment !== 'storeClient';
+  const canUseHealth = canUseAppleHealthRuntime(Platform.OS, Constants.executionEnvironment);
+  const healthEnabled = canUseHealth && enabled === true;
   return <View style={s.panel} testID="apple-health-panel">
     <View style={s.connectionRow}>
       <View style={s.connectionLabel}>
-        <Pressable onPress={() => onOptionsChange(true)} accessibilityRole="button"><Text style={s.connectionText}>{enabled ? 'Apple Salud · administrar' : 'Conectar con Apple Health'}</Text></Pressable>
+        <Pressable onPress={() => onOptionsChange(true)} accessibilityRole="button"><Text style={s.connectionText}>{healthEnabled ? 'Apple Salud · administrar' : 'Conectar con Apple Health'}</Text></Pressable>
         <Pressable testID="apple-health-info" accessibilityRole="button" accessibilityLabel="Información de Apple Salud" accessibilityHint="Abre información sobre la conexión y disponibilidad" onPress={onShowInfo} style={s.infoButton} hitSlop={6}><Icon name="info" size={16} color={colors.teal} /></Pressable>
       </View>
-      <Switch testID="apple-health-toggle" accessibilityLabel="Mostrar opciones de conexión con Apple Health" accessibilityHint={canUseHealth ? 'Abre una ventana para elegir categorías y conectar.' : 'Consulta el botón de información para conocer la disponibilidad.'} disabled={!canUseHealth} value={enabled ?? optionsOpen} onValueChange={value => { if (!value && enabled) onDisable?.(); else onOptionsChange(true); }} thumbColor={colors.white} trackColor={{ false: '#DBE2EA', true: colors.teal }} ios_backgroundColor="#DBE2EA" />
+      <Switch testID="apple-health-toggle" accessibilityLabel="Mostrar opciones de conexión con Apple Health" accessibilityHint={canUseHealth ? 'Abre una ventana para elegir categorías y conectar.' : 'Consulta el botón de información para conocer la disponibilidad.'} disabled={!canUseHealth} value={canUseHealth && (enabled ?? optionsOpen)} onValueChange={value => { if (!canUseHealth) return; if (!value && healthEnabled) onDisable?.(); else onOptionsChange(true); }} thumbColor={colors.white} trackColor={{ false: '#DBE2EA', true: colors.teal }} ios_backgroundColor="#DBE2EA" />
     </View>
   </View>;
 }

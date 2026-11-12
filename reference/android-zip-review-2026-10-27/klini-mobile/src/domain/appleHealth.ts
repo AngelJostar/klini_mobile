@@ -6,6 +6,12 @@ export const HEALTH_CATEGORIES = [
   { id: 'HKCategoryTypeIdentifierSleepAnalysis', label: 'Sueño (último intervalo)', unit: 'min', displayUnit: 'min', icon: 'moon-outline' },
 ] as const;
 export type HealthCategory = typeof HEALTH_CATEGORIES[number]['id'];
+
+/** Native iOS builds may load HealthKit lazily; preferences alone never enable it. */
+export function canUseAppleHealthRuntime(platform: string, executionEnvironment: string | null | undefined): boolean {
+  return platform === 'ios' && (executionEnvironment === 'bare' || executionEnvironment === 'standalone');
+}
+
 export interface HealthReading {
   id: HealthCategory;
   value?: number;

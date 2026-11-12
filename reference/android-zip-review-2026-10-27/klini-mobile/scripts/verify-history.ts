@@ -70,6 +70,7 @@ async function main() {
     await page.screenshot({ path: 'test-results/history-categories.png' });
     await page.getByTestId('history-category-Alergia').click();
     await page.getByTestId('add-archive-item').click();
+    await page.getByTestId('registration-document').click();
     await expect(page.getByTestId('record-entry-screen')).toBeVisible();
     await page.getByTestId('record-type-text').click();
     await expect(page.getByTestId('record-categories')).toHaveCount(0);
@@ -107,6 +108,7 @@ async function main() {
     expect(grid!.x).toBeGreaterThanOrEqual(0);
     expect(grid!.x + grid!.width).toBeLessThanOrEqual(320);
     await page.getByTestId('add-archive-item').click();
+    await page.getByTestId('registration-document').click();
     await expect(page.getByTestId('record-entry-screen')).toBeVisible();
     await page.getByTestId('record-type-text').click();
     await expect(page.getByTestId('record-categories')).toHaveCount(0);

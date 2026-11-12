@@ -109,6 +109,8 @@ async function review(page: Page) {
 
 async function openQuick(page: Page) {
   await page.getByTestId('quick-register').click();
+  await expect(page.getByTestId('registration-choice')).toBeVisible();
+  await page.getByTestId('registration-document').click();
   await entry(page);
 }
 
@@ -169,6 +171,8 @@ async function verifyViewport(page: Page, width: number, chooserCount: () => num
   await openQuick(page);
   await page.getByTestId('archive-detail-back').click();
   await expect(page.getByTestId('record-entry-screen')).toHaveCount(0);
+  await expect(page.getByTestId('registration-choice')).toBeVisible();
+  await closeSheet(page);
   await openQuick(page);
 
   await textCapture(page);

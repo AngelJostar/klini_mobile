@@ -1,0 +1,179 @@
+{
+  "source": "reference/android-zip-review-2026-10-27/klini-mobile",
+  "date": "2026-11-09",
+  "storageNamespace": "@klini/parameters-preview:v1",
+  "files": [
+    {
+      "source": "src/components/AppleHealthHistoryPopup.tsx",
+      "sha256": "c24314bc837a83189423a3d5628a649f9ccef4be75865bfbd04c70fdc686aebd"
+    },
+    {
+      "source": "src/components/AppleHealthInfoPopup.tsx",
+      "sha256": "a2ab60c5809bc4ac1997887bdd8670c7a88e715354862a2e33b156bd66f9622d"
+    },
+    {
+      "source": "src/components/AppleHealthLiveReadings.tsx",
+      "sha256": "3746b53326342dee07fb97a4d1a1b8ed7ed25206192b3016e02300af7e8d8b2e"
+    },
+    {
+      "source": "src/components/AppleHealthOptionsPopup.tsx",
+      "sha256": "9b6ebe784a0d75fb2a0d70dea2496547d731436c2d294ec4780a0b10fa654f0b"
+    },
+    {
+      "source": "src/components/AppleHealthPanel.tsx",
+      "sha256": "fc40390436c269b913f324b73efc645a5a7d5bba8ae00df7688968d81d781661"
+    },
+    {
+      "source": "src/components/AppleHealthReadAccessHelp.tsx",
+      "sha256": "0283ec2f78410760800204cd7957feca5cb0074f1b61fe9e807fd905fe6ab37d"
+    },
+    {
+      "source": "src/components/ArchivePopup.tsx",
+      "sha256": "a16446d2c11829f917c135ea0d459b9071231582924ceaa7162661ee65918bc6"
+    },
+    {
+      "source": "src/components/BodyParameterEntryPopup.tsx",
+      "sha256": "55a5d94c5d5aeed528a8ddc13ad5f47be15211306c85f7b85f1f40203a9a6742"
+    },
+    {
+      "source": "src/components/BodyParameterFiltersPopup.tsx",
+      "sha256": "c80b719452cbeeace31a975f0b414d93acd1c578a91cc1ac309d14afbe042d95"
+    },
+    {
+      "source": "src/components/BodyParameterListRow.tsx",
+      "sha256": "510130c35b04acd12f283b6eefdd8e178e61d128136f69d86a41f85ff2d8cf69"
+    },
+    {
+      "source": "src/components/PopupTransition.tsx",
+      "sha256": "02705018216044e9f65af3171a0230c236971dd04b265fb2623fe890ca4e3f26"
+    },
+    {
+      "source": "src/components/TeleconsultPopup.tsx",
+      "sha256": "83a12eb205fbc0e718dd24aad7a77883698daa1d8c7008b27d0c509a2534d607"
+    },
+    {
+      "source": "src/components/ui.tsx",
+      "sha256": "73c1345f37cd89a31969386442e6c08a4386c88db25b336a42151d67012a9750"
+    },
+    {
+      "source": "src/components/usePopupLayout.ts",
+      "sha256": "3ec1f9cb309b78aa26451ebba042329619ceecfce3318fa85da28c15df16868f"
+    },
+    {
+      "source": "src/domain/aiSubscription.ts",
+      "sha256": "7f63ed386d263ac1394cb1c3c8469eec08f2a9d2ccf75d54ced9a82b6f7e4428"
+    },
+    {
+      "source": "src/domain/appleHealth.ts",
+      "sha256": "739db7e0b8e6cf1db6b79eac921f3b9b1ac5ff40dba2342b269b74d26781b52e"
+    },
+    {
+      "source": "src/domain/appleHealthDates.ts",
+      "sha256": "91f835aa0d76d819c1dc44808800ed25fa71755ef9eb2b0e5645bbea98fa5213"
+    },
+    {
+      "source": "src/domain/bodyParameters.ts",
+      "sha256": "20750e7fe86489a04b0c3215a11faa6ee29eab875f3ab0d1018e80212b42f4d5"
+    },
+    {
+      "source": "src/domain/dates.ts",
+      "sha256": "8241820c41287fa857e71e2c9efab432e9f5029a22ffd26c9600ccb05bb8c1d1"
+    },
+    {
+      "source": "src/domain/demoAccount.ts",
+      "sha256": "687c272f851284b42933558e060e3f4f8a2fd55717db06de43d602a0a28c2b16"
+    },
+    {
+      "source": "src/domain/family.ts",
+      "sha256": "32a49bfa58bf73f0991bfe7a4ab48b6ab1e318c8a2c0745162aaaf76e805290e"
+    },
+    {
+      "source": "src/domain/historyFilters.ts",
+      "sha256": "039046d1deee77f6fa4b0996d838f6e12b55722a7f8bbbca491528d12def93f0"
+    },
+    {
+      "source": "src/domain/managedProfiles.ts",
+      "sha256": "75673e43bc1e98c9a9406f165098035d92c3f5ab922c38320e0f292f8c45c2cf"
+    },
+    {
+      "source": "src/domain/medicalSpecialties.ts",
+      "sha256": "99b6e9f03056806bb8c10fd8ae2278e4c8bbc5925b57e53c776a33ee56a3f17a"
+    },
+    {
+      "source": "src/domain/reducer.ts",
+      "sha256": "bf8e963bd8d584e6103074dafc16e9fd5d3ffceed87ea2aac5434e603ef1a092"
+    },
+    {
+      "source": "src/domain/seed.ts",
+      "sha256": "0f443766a375466bfebd2ab7291a800007969339e1b7a95ae9ca54a7f8324826"
+    },
+    {
+      "source": "src/domain/shareRecord.ts",
+      "sha256": "58ce9d865e6165b618bcad8e8bb2a4d51486d9a55d4da2773cb198a03d4351f8"
+    },
+    {
+      "source": "src/domain/types.ts",
+      "sha256": "015184de4554a78d13b94adec96870fd11da19df17960f8fe54077a8507f1e9c"
+    },
+    {
+      "source": "src/domain/wallet.ts",
+      "sha256": "b3a876deca2a2aa725f5f231447e0cca922d50934f9462f80975b2d00c3295a6"
+    },
+    {
+      "source": "src/screens/BodyParametersScreen.tsx",
+      "sha256": "640f03c108475d5c37bd18fe4282fa9cc3567566b844e1552d0fd8507772ba34"
+    },
+    {
+      "source": "src/services/appleHealth.ios.ts",
+      "sha256": "1419820d4d0cd54f7b6420da49c618a7d96ce21e002bca4dae234f41724fd395"
+    },
+    {
+      "source": "src/services/appleHealth.ts",
+      "sha256": "2e732a7b62e72f51a63c674760ddd5ecbda11491c0575b56c89b2e30e4d16710"
+    },
+    {
+      "source": "src/services/appleHealthDayWatcher.ts",
+      "sha256": "f384d6b5ae25d1ff0c11dee7d6b9e9796b2437b8778fb1ba28fc2133feed563d"
+    },
+    {
+      "source": "src/services/appleHealthErrors.ts",
+      "sha256": "3dbe6e1333e29da5ef38d76ff6dda66cf5a43d25049c9539d10e7020f9b7268d"
+    },
+    {
+      "source": "src/services/appleHealthHistoryReader.ts",
+      "sha256": "658d426886498e940ab40f7b61668352b2b7d3e89bd2ef0cc48c86144755e13d"
+    },
+    {
+      "source": "src/services/appleHealthHistorySession.ts",
+      "sha256": "c0bffed50f430ebc559e7e904431c4533a8f720771b020fcf8ed242041ac55bc"
+    },
+    {
+      "source": "src/services/appleHealthReader.ts",
+      "sha256": "200a56db3d7e35a27cde69dce927569025486348e89bbec81572b309074c4f24"
+    },
+    {
+      "source": "src/services/appleHealthSession.ts",
+      "sha256": "4db47eea0fabeea3e3bb3b71dc5167e3cf998452cfd673dd4736a6a41d0285bb"
+    },
+    {
+      "source": "src/services/appleHealthSteps.ts",
+      "sha256": "ca2ad2ebedbfa53cd001655f45ce90709d64b35238e968ef58d3562d2568d829"
+    },
+    {
+      "source": "src/services/clinicalRecordShareWorkflow.ts",
+      "sha256": "3b2910559ad2995e84aec1d3eec9c4404f54fa0cc4286f9cf493b0d69edb92d5"
+    },
+    {
+      "source": "src/services/files.ts",
+      "sha256": "f1ea94807e55f6bdc6eb39c9bd0a635a5519c1a1296f6ffa7dd64cbc4b8cccc1"
+    },
+    {
+      "source": "src/state/managedProfiles.ts",
+      "sha256": "a198fee87dc2802c7be577f03df9309ea197b04f579c5538a800e5ecc95c1ef7"
+    },
+    {
+      "source": "src/state/store.tsx",
+      "sha256": "ddc2359bd6d6f0a15022cbff7b6f37f5f61dc1dabf45f7695ee5c59f8c5eea1d"
+    }
+  ]
+}

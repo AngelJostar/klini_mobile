@@ -10,6 +10,18 @@
         "simulator": false
       }
     },
+    "payments-test": {
+      "developmentClient": false,
+      "distribution": "internal",
+      "environment": "development",
+      "env": {
+        "EXPO_NO_DOTENV": "1"
+      },
+      "ios": {
+        "simulator": false,
+        "buildConfiguration": "Release"
+      }
+    },
     "preview": {
       "distribution": "internal",
       "android": {

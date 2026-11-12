@@ -6,6 +6,7 @@ ios/
 *.log
 .env
 .env.ai.local
+.env.payments.local
 !.env.ai.local.example
 .local/
 dist-web/

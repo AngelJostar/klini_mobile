@@ -11,13 +11,14 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useAppStore } from './src/state/store';
 import { colors, Icon } from './src/components/ui';
 import HomeToolbar, { TOOLBAR_HEIGHT } from './src/components/HomeToolbar';
+import MedicationFolderIcon from './src/components/MedicationFolderIcon';
 import { dateLabel, localDateTime } from './src/domain/dates';
 
 export default function KliniApp() {
@@ -30,7 +31,17 @@ export default function KliniApp() {
     return () => clearInterval(timer);
   }, []);
   const pager = useRef<React.ComponentRef<typeof ScrollView>>(null);
+  const today = useRef<React.ComponentRef<typeof ScrollView>>(null);
+  const { home, profileSelection } = useLocalSearchParams<{ home?: string; profileSelection?: string }>();
+  const handledSelection = useRef<string | undefined>(undefined);
   const [page, setPage] = useState(0);
+  useEffect(() => {
+    if (!ready || home !== 'today' || !profileSelection || handledSelection.current === profileSelection) return;
+    handledSelection.current = profileSelection;
+    pager.current?.scrollTo({ x: 0, animated: false });
+    today.current?.scrollTo({ y: 0, animated: false });
+    setPage(0);
+  }, [ready, home, profileSelection]);
   const [reduceMotion, setReduceMotion] = useState(false);
   useEffect(() => {
     let active = true;
@@ -98,7 +109,7 @@ export default function KliniApp() {
             <View style={s.topNavigation} testID="home-top-navigation">
               <Image testID="home-top-logo" source={require('./assets/klini-logo.png')} accessibilityLabel="Klini" resizeMode="contain" style={[s.logo, s.topLogo, { width: topLogoWidth }]} />
               <View style={s.dock}>
-                {['Hoy', 'Archivo'].map((title, index) => <Pressable key={title} testID={index === 0 ? 'home-tab-today' : 'home-tab-archive'} accessibilityRole="tab" accessibilityState={{ selected: page === index }} accessibilityLabel={title} onPress={() => changePage(index)} style={s.dockTab}>
+                {['Hoy', 'Archivo'].map((title, index) => <Pressable key={title} testID={index === 0 ? 'home-tab-today' : 'home-tab-archive'} accessibilityRole="tab" accessibilityState={{ selected: page === index }} aria-selected={page === index} accessibilityLabel={title} onPress={() => changePage(index)} style={s.dockTab}>
                   <Text style={[s.dockText, { fontWeight: page === index ? '700' : '400' }]}>{title}</Text>
                   <View style={[s.activeDot, { opacity: page === index ? 1 : 0 }]} />
                 </Pressable>)}
@@ -121,7 +132,7 @@ export default function KliniApp() {
               scrollEventThrottle={16}
             >
               {[0, 1].map(index => (
-                <ScrollView key={index} style={{ width: contentWidth }} contentContainerStyle={s.pageContent} showsVerticalScrollIndicator={false} nestedScrollEnabled accessibilityElementsHidden={page !== index} importantForAccessibility={page !== index ? 'no-hide-descendants' : 'auto'} testID={index === 0 ? 'home-today-page' : 'home-archive-page'}>
+                <ScrollView key={index} ref={index === 0 ? today : undefined} style={{ width: contentWidth }} contentContainerStyle={s.pageContent} showsVerticalScrollIndicator={false} nestedScrollEnabled accessibilityElementsHidden={page !== index} importantForAccessibility={page !== index ? 'no-hide-descendants' : 'auto'} testID={index === 0 ? 'home-today-page' : 'home-archive-page'}>
                   <Text accessibilityRole="header" style={[s.hero, { marginTop: compact ? 12 : 20, fontSize: Math.min(compact ? 62 : 86, (contentWidth - 50) * .225), lineHeight: Math.min(compact ? 65 : 90, (contentWidth - 50) * .235) }]}>
                     Tu{`\n`}{index === 0 ? 'atención' : 'archivo'}<Text style={{ color: colors.teal }}>.</Text>
                   </Text>
@@ -145,11 +156,11 @@ export default function KliniApp() {
                       </Pressable>
                     )) : [
                       { label: 'Historial', icon: 'folder', colors: ['#FFFFFF', '#E4F5F5'] as const, ink: colors.teal, action: () => archive({ archiveTab: 'history' }) },
-                      { label: 'Recetas y\nmedicamentos', icon: 'document', colors: ['#193F62', '#082441'] as const, ink: 'white', action: () => archive({ recordType: 'Receta', archiveTitle: 'Recetas y medicamentos' }) },
-                      { label: 'Análisis\nclínicos', icon: 'pill', colors: ['#12C4C8', '#00989E'] as const, ink: 'white', action: () => archive({ recordType: 'Estudio', archiveTitle: 'Análisis clínicos' }) },
+                      { label: 'Medicamentos', icon: 'folder', colors: ['#193F62', '#082441'] as const, ink: 'white', action: () => archive({ archiveTab: 'medications' }) },
+                      { label: 'Alertas', icon: 'notifications', colors: ['#12C4C8', '#00989E'] as const, ink: 'white', action: () => setRoute({ name: 'alerts' }) },
                       { label: 'Parámetros\ncorporales', icon: 'watch-outline', colors: ['#EAFFFC', '#CFF1EE'] as const, ink: colors.navy, action: () => setRoute({ name: 'body-parameters' }) },
-                    ].map((m, i) => <Pressable key={m.label} testID={['menu-history', 'menu-prescriptions', 'menu-medications', 'menu-records'][i]} accessibilityRole="button" accessibilityLabel={m.label.replace('\n', ' ')} onPress={m.action} style={({ pressed }) => [s.module, { opacity: pressed ? .65 : 1 }]}>
-                      <View style={{ height: iconSize + 16, justifyContent: 'center' }}>{i === 3 ? <Image source={require('./assets/home-body-parameters.png')} style={{ width: iconSize + 6, height: iconSize + 6 }} resizeMode="contain" accessible={false} /> : <LinearGradient colors={m.colors} style={[s.appIcon, { width: iconSize, height: iconSize, borderRadius: 14 }]}><Icon name={m.icon} size={iconSize * .58} color={m.ink} /></LinearGradient>}</View>
+                    ].map((m, i) => <Pressable key={m.label} testID={['menu-history', 'menu-medications', 'menu-alerts', 'menu-records'][i]} accessibilityRole="button" accessibilityLabel={m.label.replace('\n', ' ')} onPress={m.action} style={({ pressed }) => [s.module, { opacity: pressed ? .65 : 1 }]}>
+                      <View style={{ height: iconSize + 16, justifyContent: 'center' }}>{i === 3 ? <Image source={require('./assets/home-body-parameters.png')} style={{ width: iconSize + 6, height: iconSize + 6 }} resizeMode="contain" accessible={false} /> : <LinearGradient colors={m.colors} style={[s.appIcon, { width: iconSize, height: iconSize, borderRadius: 14 }]}>{i === 1 ? <MedicationFolderIcon size={iconSize * .62} color={m.ink} /> : <Icon name={m.icon} size={iconSize * .58} color={m.ink} />}</LinearGradient>}</View>
                       <Text style={[s.moduleLabel, { fontSize: contentWidth < 360 ? 9 : 11 }]}>{m.label}</Text>
                     </Pressable>)}
                   </View>

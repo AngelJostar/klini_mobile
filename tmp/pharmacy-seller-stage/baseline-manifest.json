@@ -1,0 +1,30 @@
+{
+  "source": "C:\\laragon\\www\\dr-sam",
+  "files": [
+    {
+      "path": "app/Models/PharmacyStoreSetting.php",
+      "baseline_sha256": "1825d4c48d25fea4e0edf11ab584c5ebed433c9fe0c6cb9343d12beb77b8f901"
+    },
+    {
+      "path": "app/Services/PharmacyCatalogPublication.php",
+      "baseline_sha256": "c36156f0ea4baa35da985ac3b60a3d6d89fbb61e6c94db968ec3e9f5d3c12141"
+    },
+    {
+      "path": "app/Http/Controllers/Pharmacy/PharmacyStoreAdminController.php",
+      "baseline_sha256": "4b5e4645b89f0ba28a28352a4c1ad2466caf331b53165981a9ae1371de63932a"
+    },
+    {
+      "path": "resources/views/pharmacy-store/admin.blade.php",
+      "baseline_sha256": "f9ceccb8827704511104bc4a9efd0441e3488770462269334a51b596e1d5f193"
+    },
+    {
+      "path": "routes/web.php",
+      "baseline_sha256": "69bbbf5eab1a17e6f1cd35f67884cafb2a3035004390258a46fee18cac271cf6"
+    },
+    {
+      "path": "app/Http/Controllers/Api/Mobile/V1/PharmacyStoreController.php",
+      "baseline_sha256": "d730da0e3593658303a49f1e6e57596709565d6721f6a68152e33311c9dd25e0"
+    }
+  ],
+  "rebase_note": "Preserved concurrent superadmin.services.formats.show route; original route baseline retained in baseline-before-rebase/routes/web.php."
+}

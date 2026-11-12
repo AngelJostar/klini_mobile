@@ -1,0 +1,18 @@
+[
+  {
+    "originalSha256": "1F255DDF3E8685EDD673CA6220BD915A14965B638EE39AE762ED7A6A10B67CEF",
+    "path": "app/Services/PharmacyProductImageService.php"
+  },
+  {
+    "originalSha256": "774646976B6D4FCCA51029709B11AB0EC09715719710CC75A6F59217C2BA4911",
+    "path": "app/Http/Controllers/Pharmacy/PharmacyStoreAdminController.php"
+  },
+  {
+    "originalSha256": "C33CB13631D32AC8106E5CCA832B3E8C13B04C3B393484CB901537050189BF16",
+    "path": "resources/views/pharmacy-store/product-fields.blade.php"
+  },
+  {
+    "originalSha256": "5D500F28EECC364599F7EE1462379542801864D1B842E92C22A94BFCBF7E26EF",
+    "path": "routes/web.php"
+  }
+]

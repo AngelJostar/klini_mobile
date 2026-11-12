@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "createdDate": "2026-11-11",
+  "purpose": "Fictional DEMO pharmacy catalog photography for Klini Mobile. No real brands or therapeutic claims.",
+  "generation": {
+    "mode": "built-in",
+    "tool": "image_gen.imagegen",
+    "callCount": 4,
+    "oneCallPerAsset": true,
+    "transparentBackgroundRequested": true,
+    "noApiKeyOrCli": true
+  },
+  "reference": {
+    "path": "C:/Users/GUILLE~1/AppData/Local/Temp/codex-clipboard-6f321752-5de2-44af-a6b3-5739a0ff40c1.png",
+    "role": "Visual style and product-composition reference only; the UI screenshot was inspected, not edited."
+  },
+  "verification": {
+    "method": "Visual inspection of all four generated outputs and PNG decoding using the existing project pngjs package.",
+    "copiedWithoutImageModification": true,
+    "format": "PNG RGBA (color type 6)",
+    "allCornersFullyTransparent": true,
+    "renderingRecommendation": "Use contain to preserve each complete product silhouette; use a larger hero area for the sunscreen and product-sized areas for catalog items.",
+    "note": "Native generated alpha, semitransparent edges and subtle shadows preserved."
+  },
+  "assets": [
+    {
+      "id": "protector-solar-fps50-50ml-v1",
+      "file": "protector-solar-fps50-50ml-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 747681,
+      "sha256": "f20b3669f7553013bb2513073a504dc12c9fd9344005a4fcfde08754d2b2cb3c",
+      "alpha": {
+        "transparent": 1102607,
+        "semitransparent": 469559,
+        "opaque": 350,
+        "corners": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "visibleBoundsAlphaOver24": {
+        "x": 355,
+        "y": 16,
+        "width": 561,
+        "height": 1226
+      },
+      "generationOutput": "$CODEX_HOME/generated_images/01a1c34c-0b18-7971-a78f-ac309945d833/exec-60e225b6-0ad0-49ec-b3ad-4750c164c663.png",
+      "prompt": "Use case: product-mockup.\nAsset type: independent transparent PNG product photograph for a premium mobile DEMO pharmacy catalog.\nPrimary request: one fictional white 50 mL sunscreen squeeze tube with a pale mint-green cap at the bottom and two restrained mint bands near the lower third. The closed tube leans slightly, approximately 10 degrees, and is fully visible.\nScene/backdrop: genuinely transparent alpha background, no backdrop or floor plane. Include only a very subtle isolated contact shadow that fades to full transparency.\nStyle/medium: photorealistic premium studio product photography, softly textured satin white plastic, realistic molded sealed top, clean mint cap and delicate highlights. Soft broad studio lighting, neutral white balance.\nComposition/framing: square canvas, product centered, full silhouette including cap and sealed top, generous clear padding, viewed at a slight three-quarter angle. Keep the entire tube sharp and crisp, suitable for display at small mobile size.\nText (verbatim): only \"FPS 50\" and \"50 mL\" in minimal dark navy sans-serif type on the tube. No brand name.\nConstraints: a single product only; commercially plausible but fictional DEMO packaging. Preserve true alpha, not a white rectangle or checkerboard pattern. No UI, price, promotional badge, human, hand, scenery, extra props, watermark, real brand, certification seal, or extra efficacy or therapeutic claims."
+    },
+    {
+      "id": "gel-limpiador-turquesa-200ml-v1",
+      "file": "gel-limpiador-turquesa-200ml-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 652638,
+      "sha256": "b4839b05b47c8fbe68f6520fe05bd64aa0fb0baac1a26ad96d0c3ee799cf8c67",
+      "alpha": {
+        "transparent": 1199933,
+        "semitransparent": 371505,
+        "opaque": 1078,
+        "corners": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "visibleBoundsAlphaOver24": {
+        "x": 445,
+        "y": 39,
+        "width": 401,
+        "height": 1175
+      },
+      "generationOutput": "$CODEX_HOME/generated_images/01a1c34c-0b18-7971-a78f-ac309945d833/exec-bcaf69ee-821e-4764-a789-8cf398acec38.png",
+      "prompt": "Use case: product-mockup.\nAsset type: independent transparent PNG product photograph for a premium mobile DEMO pharmacy catalog.\nPrimary request: one fictional transparent cylindrical 200 mL facial cleansing gel bottle, filled with clear turquoise gel, with an elegant white pump dispenser. Minimal discreet dark teal printing on the clear bottle, no opaque wraparound label. Closed pump presentation.\nScene/backdrop: genuinely transparent alpha background, no backdrop or floor plane. Include only a very subtle isolated contact shadow that fades to full transparency.\nStyle/medium: photorealistic premium studio product photography. Real transparent PET or glass-like plastic, visible gel and dip tube, restrained tiny natural bubbles, clean white pump, subtle softbox reflections and refraction. Soft broad studio lighting, neutral white balance.\nComposition/framing: square canvas, bottle upright and centered at a slight three-quarter angle, entire pump and base visible with generous clear padding. Entire product sharp and suitable for small mobile catalog display.\nText (verbatim): only \"Gel limpiador\" and \"200 mL\" in minimal dark teal sans-serif type.\nConstraints: a single bottle only; fictional DEMO packaging with no brand. Preserve true alpha, including realistic semitransparency of bottle and gel; no white rectangle or checkerboard pattern. No UI, prices, badges, people, hand, scenery, extra props, watermark, real brand, certification seal, extra efficacy or therapeutic claims."
+    },
+    {
+      "id": "tiras-glucosa-50-piezas-v1",
+      "file": "tiras-glucosa-50-piezas-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 913915,
+      "sha256": "7f1ac80e6a1e99a6f645317761a2388391bfa542446a6f0f151b1eeb7f24abc5",
+      "alpha": {
+        "transparent": 1023928,
+        "semitransparent": 547864,
+        "opaque": 724,
+        "corners": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "visibleBoundsAlphaOver24": {
+        "x": 197,
+        "y": 144,
+        "width": 895,
+        "height": 1025
+      },
+      "generationOutput": "$CODEX_HOME/generated_images/01a1c34c-0b18-7971-a78f-ac309945d833/exec-ef55c51f-de9e-4ddc-ab98-d59d13ecf260.png",
+      "prompt": "Use case: product-mockup.\nAsset type: independent transparent PNG product photograph for a premium mobile DEMO pharmacy catalog.\nPrimary request: one fictional short white cylindrical vial of glucose test strips, closed with a white ribbed cap, minimal clean white label with two slim medium-blue horizontal bands. Exactly three narrow glucose test strips rest beside it, with white bodies, small dark blue electrode tips and dark contacts, no blood or bodily fluids.\nScene/backdrop: genuinely transparent alpha background, no backdrop or floor plane. Include only a very subtle isolated contact shadow that fades to full transparency.\nStyle/medium: photorealistic premium studio product photography, matte white polypropylene vial, realistic cap ridges, crisp restrained label printing, realistic small diagnostic strip materials. Soft broad studio lighting and neutral white balance.\nComposition/framing: square canvas, centered whole composition, vial slightly left and three strips close beside its base on the right. Entire vial, cap and all three strips fully visible with generous clear padding. Clean slight three-quarter perspective, all product details sharp and suitable for small mobile display.\nText (verbatim): only \"Tiras de glucosa\" and \"50 piezas\" in minimal dark navy sans-serif type on the vial.\nConstraints: fictional DEMO packaging; no brands, invented device compatibility, certification seals or accuracy claims. Preserve true alpha, not a white rectangle or checkerboard pattern. No UI, prices, badges, humans, hand, scenery, extra objects beyond the vial and exactly three strips, watermark, or therapeutic claims."
+    },
+    {
+      "id": "medicamento-a-20-tabletas-v1",
+      "file": "medicamento-a-20-tabletas-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1044863,
+      "sha256": "8c375ed91ade716bae04b597b812e5f50b606daa9d6eb0a7a589401d85ad519d",
+      "alpha": {
+        "transparent": 880106,
+        "semitransparent": 691371,
+        "opaque": 1039,
+        "corners": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "visibleBoundsAlphaOver24": {
+        "x": 124,
+        "y": 301,
+        "width": 986,
+        "height": 689
+      },
+      "generationOutput": "$CODEX_HOME/generated_images/01a1c34c-0b18-7971-a78f-ac309945d833/exec-50204b64-0867-4481-aefe-00d6883a954a.png",
+      "prompt": "Use case: product-mockup.\nAsset type: independent transparent PNG product photograph for a premium mobile DEMO pharmacy catalog.\nPrimary request: one fictional minimal rectangular white carton labeled Medicamento A, 20 tabletas, with a single restrained pale mint-green band around the lower part of the box. Generic placeholder packaging for a demo, no active ingredient or dose stated.\nScene/backdrop: genuinely transparent alpha background, no backdrop or floor plane. Include only a very subtle isolated contact shadow that fades to full transparency.\nStyle/medium: photorealistic premium studio product photography. Fine matte white paperboard, clean folded edges, restrained mint printing, soft believable highlights and gentle side shading. Soft broad studio lighting, neutral white balance.\nComposition/framing: square canvas, one carton centered, entire box fully visible in a clean slight three-quarter perspective, front and one narrow side showing, generous clear padding. All edges sharp and suitable for small mobile product display.\nText (verbatim): only \"Medicamento A\" and \"20 tabletas\" on the front, minimal dark navy sans-serif typography, no other text or symbols.\nConstraints: a single closed carton only, entirely fictional DEMO packaging. Preserve true alpha, not a white rectangle or checkerboard pattern. No pills outside, blister, real drug or brand name, invented certification seal, therapeutic claim, UI, price, promotional badge, person, hand, scenery, extra props, or watermark."
+    }
+  ]
+}
+

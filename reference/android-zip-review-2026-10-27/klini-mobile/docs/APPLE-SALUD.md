@@ -1,5 +1,7 @@
 # Apple Salud — primera etapa
 
+Estado del código revisado el 9 de noviembre de 2026: [comparación con los avances de DOT y ajuste de disponibilidad por plataforma](APPLE-SALUD-COMPARACION-2026-11-09.md). Las secciones de instaladores que siguen documentan su validación histórica; esta revisión no genera un nuevo IPA.
+
 Implementado en la app de revisión que contiene Parámetros corporales (esta carpeta), no en el proyecto distinto de la raíz del repositorio. Su package.json actual declara Expo 58 y React Native 0.88.0; no se cambió el SDK. La referencia anterior a SDK 55 corresponde al otro proyecto.
 
 ## Estado actual de instalación

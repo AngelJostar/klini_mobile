@@ -1,12 +1,20 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHealthSession } from '../src/services/appleHealthSession';
-import { isAppleHealthPreferences } from '../src/domain/appleHealth';
+import { canUseAppleHealthRuntime, isAppleHealthPreferences } from '../src/domain/appleHealth';
 import { readAppleHealthSamples } from '../src/services/appleHealthReader';
 import { appReducer, hydrateState } from '../src/domain/reducer';
 import { createDemoState } from '../src/domain/seed';
 
 const tick = () => new Promise(resolve => setImmediate(resolve));
+test('only known native iOS runtimes can use HealthKit', () => {
+  for (const runtime of ['bare', 'standalone']) assert.equal(canUseAppleHealthRuntime('ios', runtime), true);
+  for (const platform of ['android', 'web', 'windows', 'macos']) {
+    for (const runtime of ['bare', 'standalone', 'storeClient', undefined]) assert.equal(canUseAppleHealthRuntime(platform, runtime), false);
+  }
+  for (const runtime of ['storeClient', 'unknown', '', undefined, null]) assert.equal(canUseAppleHealthRuntime('ios', runtime), false);
+});
+
 test('stopped sessions discard pending results and remove late observers', async () => {
   let finish!: (value: []) => void;
   let removeObserver!: (value: () => void) => void;

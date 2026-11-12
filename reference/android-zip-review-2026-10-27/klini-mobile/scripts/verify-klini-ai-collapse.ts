@@ -157,6 +157,8 @@ async function main() {
         await restored(page);
 
         await page.getByTestId('quick-register').click();
+        await expect(page.getByTestId('registration-choice')).toBeVisible();
+        await page.getByTestId('registration-document').click();
         await expect(page.getByTestId('record-entry-screen')).toBeVisible();
         await page.getByTestId('archive-close').last().click();
         await expect(page.getByTestId('record-entry-screen')).toHaveCount(0);

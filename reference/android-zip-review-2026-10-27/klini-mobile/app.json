@@ -25,7 +25,14 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "mx.klini.review",
-      "buildNumber": "10"
+      "buildNumber": "11",
+      "infoPlist": {
+        "NSLocalNetworkUsageDescription": "Klini se conecta al servidor de pruebas de tu red local para probar recargas con Apple Pay.",
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": false,
+          "NSAllowsLocalNetworking": true
+        }
+      }
     },
     "web": {
       "bundler": "metro",
@@ -41,8 +48,8 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Permite que Klini tome fotos para adjuntarlas a tus registros o preguntas.",
-          "microphonePermission": "Permite que Klini grabe tu voz al registrar la aceptación de una solicitud de demostración.",
+          "cameraPermission": "Permite que Klini use la cámara para tus registros, preguntas y videos de identidad.",
+          "microphonePermission": "Permite que Klini grabe tu voz en los videos de identidad y aceptación que elijas crear.",
           "recordAudioAndroid": true,
           "barcodeScannerEnabled": false
         }
@@ -53,8 +60,8 @@
         "expo-image-picker",
         {
           "photosPermission": "Permite que Klini seleccione fotos para adjuntarlas a tus preguntas.",
-          "cameraPermission": "Permite que Klini tome fotos para adjuntarlas a tus registros o preguntas.",
-          "microphonePermission": "Permite que Klini grabe tu voz al registrar la aceptación de una solicitud de demostración."
+          "cameraPermission": "Permite que Klini use la cámara para tus registros, preguntas y videos de identidad.",
+          "microphonePermission": "Permite que Klini grabe tu voz en los videos de identidad y aceptación que elijas crear."
         }
       ],
       [
@@ -64,7 +71,8 @@
           "NSHealthUpdateUsageDescription": false,
           "background": false
         }
-      ]
+      ],
+      "@stripe/stripe-react-native"
     ],
     "experiments": {
       "typedRoutes": false

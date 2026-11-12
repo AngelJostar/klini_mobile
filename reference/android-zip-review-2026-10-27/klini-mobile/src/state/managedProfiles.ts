@@ -1,69 +1,86 @@
 import { useEffect, useRef, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-export const profileKinds = ['Niño', 'Niña', 'Adulto', 'Mascota'] as const;
-export type ManagedProfile = { id: string; name: string; kind: (typeof profileKinds)[number]; birthDate?: string; sex?: string; email?: string; phone?: string };
+import { parseManagedProfiles, upsertManagedProfile, type ManagedProfile } from '../domain/managedProfiles';
+import { ensureSofiaDemoProfessionalProfile } from '../domain/managedProfessionalDemo';
+export { getProfessionalFormDefaults, healthDegreeTypes, healthProfessions, isProfessionalProfile, medicalSpecialties, professionalProfileLabel, profileKinds, sameProfessionalIdentity } from '../domain/managedProfiles';
+export type { HealthDegreeType, HealthProfession, LegacyManagedProfessionalProfile, ManagedDoctorProfile, ManagedLicensedProfile, ManagedPatientProfile, ManagedProfessionalProfile, ManagedProfile, MedicalSpecialty, ProfessionalBase, ProfessionalFormDefaults, ProfessionalType } from '../domain/managedProfiles';
+export { createProfessionalVerification, isProfessionalVerification, PROFESSIONAL_IDENTITY_CONSENT_VERSION } from '../domain/professionalVerification';
+export type { ProfessionalVerification, ProfessionalVerificationInput } from '../domain/professionalVerification';
 const examples: ManagedProfile[] = [
   { id: 'demo-mateo', name: 'Mateo Salinas', kind: 'Niño' },
   { id: 'demo-valentina', name: 'Valentina Salinas', kind: 'Niña' },
   { id: 'demo-max', name: 'Max', kind: 'Mascota' },
   { id: 'demo-luna', name: 'Luna', kind: 'Mascota' },
 ];
-export function useManagedProfiles(ownerId: string) {
-  const [profiles, setProfiles] = useState<ManagedProfile[]>([]);
-  const [ready, setReady] = useState(false);
-  const [error, setError] = useState('');
-  const saving = useRef(false);
+export function useManagedProfiles(ownerId: string, ownerName?: string) {
   const key = 'klini-managed-profiles-v1:' + encodeURIComponent(ownerId);
+  type Snapshot = { key: string; profiles: ManagedProfile[]; ready: boolean; error: string };
+  const current = useRef<Snapshot>({ key: '', profiles: [], ready: false, error: '' });
+  const [snapshot, setSnapshot] = useState<Snapshot>({ key: '', profiles: [], ready: false, error: '' });
+  const activeSession = useRef<{ key: string; active: boolean } | null>(null);
+  const pendingWrites = useRef(new Map<string, Promise<void>>());
   useEffect(() => {
-    let active = true;
+    const session = { key, active: true };
+    activeSession.current = session;
+    const isCurrent = () => session.active;
+    current.current = { key, profiles: [], ready: false, error: '' };
+    setSnapshot(current.current);
     void (async () => {
       try {
+        // Returning to an owner waits for any write started before leaving that owner.
+        await pendingWrites.current.get(key)?.catch(() => undefined);
+        if (!isCurrent()) return;
         const raw = await AsyncStorage.getItem(key);
-        const data: unknown = raw === null ? examples : JSON.parse(raw);
-        if (
-          !Array.isArray(data) ||
-          !data.every(
-            (p) =>
-              p &&
-              typeof p.id === 'string' &&
-              typeof p.name === 'string' &&
-              p.name.trim() &&
-              profileKinds.includes(p.kind) &&
-              ['birthDate', 'sex', 'email', 'phone'].every(field => p[field] === undefined || typeof p[field] === 'string'),
-          ) ||
-          new Set(data.map((p) => p.id)).size !== data.length
-        )
-          throw Error('invalid');
-        if (!active) return;
-        if (raw === null) await AsyncStorage.setItem(key, JSON.stringify(data));
-        if (active) {
-          setProfiles(data);
-          setReady(true);
+        const previous = raw === null ? examples : parseManagedProfiles(raw);
+        const data = ensureSofiaDemoProfessionalProfile(previous, { id: ownerId, name: ownerName });
+        if (!isCurrent()) return;
+        if (raw === null || data !== previous) {
+          const write = AsyncStorage.setItem(key, JSON.stringify(data));
+          pendingWrites.current.set(key, write);
+          try {
+            await write;
+          } finally {
+            if (pendingWrites.current.get(key) === write) pendingWrites.current.delete(key);
+          }
+        }
+        if (isCurrent()) {
+          current.current = { key, profiles: data, ready: true, error: '' };
+          setSnapshot(current.current);
         }
       } catch {
-        if (active)
-          setError('No se pudieron cargar los perfiles. Cierra esta ventana e intenta de nuevo.');
+        if (isCurrent()) {
+          current.current = { key, profiles: [], ready: false, error: 'No se pudieron cargar los perfiles. Cierra esta ventana e intenta de nuevo.' };
+          setSnapshot(current.current);
+        }
       }
     })();
     return () => {
-      active = false;
+      session.active = false;
     };
-  }, [key]);
+  }, [key, ownerId, ownerName]);
   async function save(profile: ManagedProfile) {
-    if (!ready || saving.current) throw Error('Espera a que terminen de cargar los perfiles.');
-    const name = profile.name.trim();
-    if (!name || name.length > 255 || !profileKinds.includes(profile.kind))
-      throw Error('Revisa el nombre y el tipo de perfil.');
-    const next = profiles.some((p) => p.id === profile.id)
-      ? profiles.map((p) => (p.id === profile.id ? { ...profile, name } : p))
-      : [...profiles, { ...profile, name }];
-    saving.current = true;
+    const saved = current.current;
+    const session = activeSession.current;
+    if (!saved.ready || saved.key !== key || !session?.active || session.key !== key || pendingWrites.current.has(key)) {
+      throw Error('Espera a que terminen de cargar los perfiles.');
+    }
+    const next = upsertManagedProfile(saved.profiles, profile);
+    const write = AsyncStorage.setItem(key, JSON.stringify(next));
+    pendingWrites.current.set(key, write);
     try {
-      await AsyncStorage.setItem(key, JSON.stringify(next));
-      setProfiles(next);
+      await write;
+      if (session.active) {
+        current.current = { key, profiles: next, ready: true, error: '' };
+        setSnapshot(current.current);
+      }
     } finally {
-      saving.current = false;
+      if (pendingWrites.current.get(key) === write) pendingWrites.current.delete(key);
     }
   }
-  return { profiles, ready, error, save };
+  return {
+    profiles: snapshot.key === key ? snapshot.profiles : [],
+    ready: snapshot.key === key && snapshot.ready,
+    error: snapshot.key === key ? snapshot.error : '',
+    save,
+  };
 }

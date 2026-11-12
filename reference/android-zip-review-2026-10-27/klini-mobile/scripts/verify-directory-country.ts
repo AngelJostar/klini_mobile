@@ -50,7 +50,7 @@ async function main() {
       await expect(country).toContainText('Colombia');
       await country.click();
       await expect(page.getByTestId('directory-country-search')).toHaveValue('');
-      await country.click();
+      await page.getByTestId('directory-options-close').click();
       await expect(country).toContainText('Colombia');
       await page.getByTestId('booking-search-submit').click();
       await page.getByTestId('directory-edit-filters').click();

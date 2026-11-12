@@ -1,0 +1,8 @@
+Backend wallet consultation verification (source only, no deployment)
+PHP 8.3.13 / PHPUnit11.5.56 / SQLite :memory: / APP_ENV testing.
+Command: php -d sys_temp_dir=storage/framework/testing-tmp vendor/phpunit/phpunit/phpunit --filter MobileWalletConsultationTest|MobileWalletPaymentTest|MobileAuthenticationTest|DoctorConsultationTariffTest|DoctorPortalTest|DoctorApiTest|OutpatientModuleTest|UnitModuleTest|StateTransitionTest|OwnershipScopeTest --do-not-cache-result
+Result: OK (137 tests, 1983 assertions), 15.549s, memory82MB.
+Stripe calls only simulated; consultation suite asserts no provider calls.
+Pint --test: 12 scoped financial PHP/test files passed. Existing-file formatting findings remain in DoctorPortal, DoctorApi, UnitDashboard, OutpatientDashboard and routes/api.php; no broad formatter used.
+Migrations000002/000003 prepared, not applied to MySQL. No env/keys/flags/deploy changed.
+Pending: MySQL concurrency verification, additive migration review, full real booking/payment TEST acceptance before LIVE.

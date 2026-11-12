@@ -1,0 +1,50 @@
+{
+  "applied": true,
+  "files": [
+    {
+      "path": "app/Models/Doctor.php",
+      "before": "fff2e24fd790a0b380aa284ae1b8e50e8ab2ab9354f06939df9e3548d254b228",
+      "after": "62d7e8e195c4f64a4c6ef98bb42664bb159f6179da77b8ecd05b98539c5d3e39"
+    },
+    {
+      "path": "app/Models/DoctorConsultationTariff.php",
+      "before": null,
+      "after": "9f33a7f88c72d3700b685a61c196eb0344b0d2dfe782edd5bda0ed5321f1e4d1"
+    },
+    {
+      "path": "app/Services/DoctorConsultationTariffService.php",
+      "before": null,
+      "after": "bc325ddae5bd673dbfe3016928086c5e733cdfacbb0821e88ff70809c5fb24e2"
+    },
+    {
+      "path": "app/Http/Controllers/Doctor/DoctorPortalController.php",
+      "before": "520394968a00cd41f78bfbd764b6ebfa54161911ae18550eeb855c8bc6d0b13a",
+      "after": "edd21632af2ea726eaaf2a9179d711cb019cb08796d23df5b2336a67717c45b8"
+    },
+    {
+      "path": "routes/web.php",
+      "before": "f20328100593b6fd912d802100fbaf52dcfa314db7c83c4572652ce746ae94c8",
+      "after": "bf244ebc0e0876fcfb5bec6417c4e22640bc875f3cc8466828a0d4b50dc3111f"
+    },
+    {
+      "path": "resources/views/doctor/dashboard.blade.php",
+      "before": "2acf8882741a53aabf0d2113e8cd124d3e06b493048a24a94a8dde8de0a3795e",
+      "after": "ee3170642a0369573ec33311d1b93226d50e3da38d7f5b12f21e6d11d50b8b59"
+    },
+    {
+      "path": "resources/views/doctor/partials/consultation-tariff.blade.php",
+      "before": null,
+      "after": "b091ac89d4f305973197636670734246ed2c990beb8a6b90dc52483ad967a1dc"
+    },
+    {
+      "path": "database/migrations/2026_11_12_000002_create_doctor_consultation_tariffs.php",
+      "before": null,
+      "after": "73c41626349cdf2168c081f2d9ce7ac3746cf1491e248347a76663917ca49c8c"
+    },
+    {
+      "path": "tests/Feature/DoctorConsultationTariffTest.php",
+      "before": null,
+      "after": "a4b082b3fbd8359882a52d3e23aa685a596bceb015add32291fbf80165300ccd"
+    }
+  ]
+}

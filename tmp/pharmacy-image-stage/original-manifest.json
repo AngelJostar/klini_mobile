@@ -1,0 +1,34 @@
+[
+  {
+    "originalSha256": "C8384F8B036D00507FE1CE2A3596C9A8B0C0A8662BB3BDE354EE930A40A175EE",
+    "path": "app/Http/Controllers/Pharmacy/PharmacyStoreAdminController.php"
+  },
+  {
+    "originalSha256": "79F5DEDF5A465C723C29BD50EB1AB0222142CAEEF2C5290CB2EA20B00F676FEF",
+    "path": "app/Http/Controllers/Api/Mobile/V1/PharmacyStoreController.php"
+  },
+  {
+    "originalSha256": "48F1B7AF0DDA9A5E38C050C51224CCDCBC09C2FAD8C00CA8DD6D6ABECA49606B",
+    "path": "app/Models/PharmacyProduct.php"
+  },
+  {
+    "originalSha256": "0E877F55EBC2F1562923416A6215F8CED568076729BF00A05EDDAB6619409726",
+    "path": "resources/views/pharmacy-store/products.blade.php"
+  },
+  {
+    "originalSha256": "B2E7451AFA220297FF35019021EE6B3C060D6AB8175F62412618EFBD48474059",
+    "path": "resources/views/pharmacy-store/product-fields.blade.php"
+  },
+  {
+    "originalSha256": "4F2EE42F2F65831B628FC3B2B34A6968A6E5E5C9D534B8404EC267379F627139",
+    "path": "routes/web.php"
+  },
+  {
+    "originalSha256": "E88189360B717FD2E463CB9376A30C00B933AC0EBA5524191946BD38D28855A0",
+    "path": "routes/api.php"
+  },
+  {
+    "originalSha256": "049E98629264A5BE73EFEA56DD2B86958EBFBED4E14A584CA3CD70EA6D3981D1",
+    "path": "resources/views/pharmacy-store/admin.blade.php"
+  }
+]

@@ -17,20 +17,28 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, Icon } from './ui';
 import { usePopupLayout } from './usePopupLayout';
 import { usePopupAlreadyOpen } from './PopupTransition';
+import DirectoryOptionsProvider, { useDirectoryOptions } from './DirectoryOptionsProvider';
 
-export default function DirectoryPopup({
-  title,
-  onClose,
-  onBack,
-  children,
-  footer,
-}: PropsWithChildren<{
+type Props = PropsWithChildren<{
   title: string;
   onClose: () => void;
   onBack?: () => void;
   footer?: ReactNode;
   step?: number;
-}>) {
+}>;
+
+export default function DirectoryPopup(props: Props) {
+  return <DirectoryOptionsProvider><DirectoryPopupContent {...props} /></DirectoryOptionsProvider>;
+}
+
+function DirectoryPopupContent({
+  title,
+  onClose,
+  onBack,
+  children,
+  footer,
+}: Props) {
+  const picker = useDirectoryOptions();
   const alreadyOpen = usePopupAlreadyOpen();
   const [progress] = useState(() => new Animated.Value(alreadyOpen ? 1 : 0));
   const [reduced, setReduced] = useState(false);
@@ -57,6 +65,7 @@ export default function DirectoryPopup({
     };
   }, [progress, alreadyOpen]);
   const close = useCallback(() => {
+    if (picker.active) { picker.close(); return; }
     Animated.timing(progress, {
       toValue: 0,
       duration: reduced ? 0 : 220,
@@ -65,15 +74,16 @@ export default function DirectoryPopup({
     }).start(({ finished }) => {
       if (finished) onClose();
     });
-  }, [onClose, progress, reduced]);
+  }, [onClose, progress, reduced, picker]);
   useEffect(() => {
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (onBack) onBack();
+      if (picker.active) picker.close();
+      else if (onBack) onBack();
       else close();
       return true;
     });
     return () => subscription.remove();
-  }, [onBack, close]);
+  }, [onBack, close, picker]);
   return (
     <View style={s.root} onLayout={onLayout}>
       <Animated.View
@@ -92,6 +102,7 @@ export default function DirectoryPopup({
         style={[s.position, anchorTop !== null && { justifyContent: 'flex-start', paddingTop: anchorTop }]}
         pointerEvents="box-none"
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        enabled={!picker.active}
       >
         <Animated.View
           testID="directory-popup"

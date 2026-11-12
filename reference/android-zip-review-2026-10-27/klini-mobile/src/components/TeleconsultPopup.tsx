@@ -28,10 +28,14 @@ export default function TeleconsultPopup({
   children,
   footer,
   overlay,
+  onOverlayDismiss,
   footerAlignment = 'center',
   variant = 'teleconsult',
   animateEntrance = false,
   hideBack = false,
+  avoidKeyboard = false,
+  titleAlign = 'left',
+  dismissible = true,
 }: PropsWithChildren<{
   title: string;
   titleTestID?: string;
@@ -41,11 +45,15 @@ export default function TeleconsultPopup({
   onBack?: () => void;
   footer?: ReactNode;
   overlay?: ReactNode;
+  onOverlayDismiss?: () => void;
   footerAlignment?: 'center' | 'right';
   compact?: boolean;
   variant?: 'teleconsult' | 'insurance' | 'archive';
   animateEntrance?: boolean;
   hideBack?: boolean;
+  avoidKeyboard?: boolean;
+  titleAlign?: 'left' | 'center';
+  dismissible?: boolean;
 }>) {
   const sessionAlreadyOpen = usePopupAlreadyOpen();
   const alreadyOpen = sessionAlreadyOpen && !animateEntrance;
@@ -74,6 +82,8 @@ export default function TeleconsultPopup({
     };
   }, [progress, alreadyOpen]);
   const close = useCallback(() => {
+    if (!dismissible) return;
+    if (overlay && onOverlayDismiss) { onOverlayDismiss(); return; }
     Animated.timing(progress, {
       toValue: 0,
       duration: reduced ? 0 : 220,
@@ -82,8 +92,10 @@ export default function TeleconsultPopup({
     }).start(({ finished }) => {
       if (finished) onClose();
     });
-  }, [onClose, progress, reduced]);
+  }, [onClose, progress, reduced, dismissible, overlay, onOverlayDismiss]);
   const back = useCallback(() => {
+    if (!dismissible) return;
+    if (overlay && onOverlayDismiss) { onOverlayDismiss(); return; }
     if (!onBack) { close(); return; }
     if (!animateEntrance) { onBack(); return; }
     Animated.timing(progress, {
@@ -94,7 +106,7 @@ export default function TeleconsultPopup({
     }).start(({ finished }) => {
       if (finished) onBack();
     });
-  }, [onBack, animateEntrance, close, progress, reduced]);
+  }, [onBack, animateEntrance, close, progress, reduced, dismissible, overlay, onOverlayDismiss]);
   useEffect(() => {
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
       back();
@@ -114,12 +126,13 @@ export default function TeleconsultPopup({
         testID={`${variant}-backdrop`}
         style={StyleSheet.absoluteFill}
         onPress={close}
+        disabled={!dismissible}
         accessibilityLabel={variant === 'archive' ? 'Cerrar archivo' : variant === 'insurance' ? 'Cerrar seguro médico' : 'Cerrar teleconsulta'}
       />
       <KeyboardAvoidingView
         style={[s.position, anchorTop !== null && { justifyContent: 'flex-start', paddingTop: anchorTop }]}
         pointerEvents="box-none"
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : avoidKeyboard && Platform.OS === 'android' ? 'height' : undefined}
       >
         <Animated.View
           testID={`${variant}-popup`}
@@ -148,13 +161,15 @@ export default function TeleconsultPopup({
                 accessibilityLabel={backLabel ? `Volver a ${backLabel}` : 'Volver'}
                 testID={`${variant}-detail-back`}
                 onPress={back}
+                disabled={!dismissible}
+                accessibilityState={{ disabled: !dismissible }}
                 style={[s.back, backLabel && s.labeledBack]}
               >
                 <Icon name="back" size={backLabel ? 18 : 24} color={backLabel ? colors.tealDark : colors.navy} />
                 {!!backLabel && <Text numberOfLines={1} style={s.backLabel}>{backLabel}</Text>}
               </Pressable>
             }
-            <Text testID={titleTestID} accessibilityRole="header" style={s.heading}>
+            <Text testID={titleTestID} accessibilityRole="header" style={[s.heading, titleAlign === 'center' && { textAlign: 'center', paddingLeft: 16 }]}>
               {title}
             </Text>
             <Pressable
@@ -162,6 +177,8 @@ export default function TeleconsultPopup({
               accessibilityRole="button"
               accessibilityLabel={variant === 'archive' ? 'Cerrar archivo' : variant === 'insurance' ? 'Cerrar seguro médico' : 'Cerrar teleconsulta'}
               onPress={close}
+              disabled={!dismissible}
+              accessibilityState={{ disabled: !dismissible }}
               style={s.close}
             >
               <Icon name="close" size={25} />

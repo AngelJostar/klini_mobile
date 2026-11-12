@@ -220,7 +220,8 @@ async function main() {
     await page.getByTestId('header-profile').click();
     await page.getByTestId('profile-select-demo-mateo').click();
     await expect.poll(async () => (await readState(page)).profile.id).toBe('demo-mateo');
-    await page.getByTestId('profile-close').click();
+    await expect(page.getByTestId('profile-drawer')).toHaveCount(0);
+    await expect(page.getByTestId('home-tab-today')).toHaveAttribute('aria-selected', 'true');
     await home(page);
     await expect(page.getByTestId('home-ai-submit')).toHaveCount(0);
     expect((await readState(page)).aiSubscription).toBeUndefined();
@@ -231,7 +232,8 @@ async function main() {
     await page.getByTestId('header-profile').click();
     await page.getByTestId('profile-select-owner').click();
     await expect.poll(async () => (await readState(page)).profile.id).toBe(baseline.profile.id);
-    await page.getByTestId('profile-close').click();
+    await expect(page.getByTestId('profile-drawer')).toHaveCount(0);
+    await expect(page.getByTestId('home-tab-today')).toHaveAttribute('aria-selected', 'true');
     await home(page);
     await expect(page.getByTestId('home-ai-submit')).toBeVisible();
     await page.reload();

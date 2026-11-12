@@ -5,7 +5,8 @@ import { KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-na
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
 import { Button, colors, Icon, Sheet } from '../components/ui';
-import { menuItems } from '../domain/navigation';
+import { menuItems, professionalMenuItems } from '../domain/navigation';
+import { useAppStore } from '../state/store';
 import DirectoryFlow from '../screens/DirectoryFlow';
 import AgendaScreen from '../screens/AgendaScreen';
 import TeleconsultScreen from '../screens/TeleconsultScreen';
@@ -14,12 +15,16 @@ import ArchiveScreen from '../screens/ArchiveScreen';
 import BodyParametersScreen from '../screens/BodyParametersScreen';
 import ProfileScreen from '../screens/SocialProfileScreen';
 import WalletScreen from '../screens/WalletScreen';
+import AlertsScreen from '../screens/AlertsScreen';
+import PharmacyScreen from '../screens/PharmacyScreen';
+import MedicationsScreen from '../screens/MedicationsScreen';
 
 export default function SectionRoute() {
   return <PopupTransitionProvider><SectionContent /></PopupTransitionProvider>;
 }
 
 function SectionContent() {
+  const { professionalProfile } = useAppStore();
   const params = useLocalSearchParams<{
     section: string;
     doctorId?: string;
@@ -29,14 +34,24 @@ function SectionContent() {
     recordType?: string;
     archiveTab?: string;
     archiveTitle?: string;
+    treatmentId?: string;
+    medicationId?: string;
+    activateAlert?: string;
   }>();
   const close = () => {
     if (router.canGoBack()) router.back();
     else router.replace('/');
   };
+  const profileSelected = () => router.dismissTo({
+    pathname: '/',
+    params: { home: 'today', profileSelection: String(Date.now()) },
+  });
   const go = (section: string, extra: Record<string, string> = {}) =>
     router.replace({ pathname: '/[section]', params: { section, ...extra } });
-  const pending = menuItems.find((item) => item.destination.section === params.section);
+  const professionalService = professionalMenuItems.find(item => item.destination.section === params.section);
+  const requiresProfessional = !!professionalService && !professionalProfile;
+  const pending = professionalService ?? menuItems.find((item) => item.destination.section === params.section);
+  if (params.section === 'archive' && params.archiveTab === 'medications') return <MedicationsScreen onClose={close} />;
   if (params.section === 'register' || params.section === 'archive') return (
     <ArchiveScreen
       key={`${params.section}-${params.recordType ?? 'all'}-${params.archiveTab ?? 'records'}`}
@@ -48,9 +63,11 @@ function SectionContent() {
       initialType={params.recordType === 'Estudio' || params.recordType === 'Receta' || params.recordType === 'Consulta' ? params.recordType : undefined}
     />
   );
+  if (params.section === 'pharmacy' || params.section === 'adherence-programs') return <PharmacyScreen onClose={close} initialTab={params.section === 'adherence-programs' ? 'programs' : 'products'} />;
   if (params.section === 'insurance') return <InsuranceScreen onClose={close} />;
+  if (params.section === 'alerts') return <AlertsScreen onClose={close} initialTreatmentId={params.treatmentId} initialMedicationId={params.medicationId} activateOnSave={params.activateAlert === 'true'} />;
   if (params.section === 'body-parameters') return <BodyParametersScreen onClose={close} />;
-  if (params.section === 'profile') return <ProfileScreen onClose={close} />;
+  if (params.section === 'profile') return <ProfileScreen onClose={close} onProfileSelected={profileSelected} />;
   if (params.section === 'teleconsult') return <TeleconsultScreen onReschedule={id => go('directory', { rescheduleId: id })} onClose={close} onBook={() => go('directory', { mode: 'Teleconsulta' })} appointmentId={params.appointmentId} />;
   if (params.section === 'wallet') return <WalletScreen onClose={close} />;
   if (params.section === 'directory') return <DirectoryFlow onClose={close} onBooked={id => go('agenda', { appointmentId: id })} initialDoctorId={params.doctorId} initialMode={params.mode === 'Presencial' || params.mode === 'Teleconsulta' ? params.mode : undefined} rescheduleId={params.rescheduleId} />;
@@ -113,20 +130,22 @@ function SectionContent() {
       );
       break;
     case 'profile':
-      content = <ProfileScreen onClose={close} />;
+      content = <ProfileScreen onClose={close} onProfileSelected={profileSelected} />;
       break;
     default:
       content = (
         <Sheet title={pending?.title ?? 'Sección no disponible'} onClose={close}>
-          <View style={s.pending}>
+          <View testID={professionalService ? `professional-service-${professionalService.id}` : undefined} style={s.pending}>
             <View style={s.icon}>
               <Icon name={pending?.icon ?? 'info'} size={32} color={colors.tealDark} />
             </View>
-            <Text style={s.title}>Este espacio está por llegar</Text>
+            <Text style={s.title}>{requiresProfessional ? 'Selecciona tu perfil profesional' : 'Este espacio está por llegar'}</Text>
             <Text style={s.description}>
-              Estamos incorporando esta sección a tu nuevo inicio. Sus funciones estarán disponibles
-              en una próxima etapa.
+              {requiresProfessional
+                ? 'Este servicio está disponible desde un perfil de profesional de la salud.'
+                : 'Estamos incorporando esta sección a tu nuevo inicio. Sus funciones estarán disponibles en una próxima etapa.'}
             </Text>
+            {requiresProfessional && <Button testID="professional-service-select-profile" title="Seleccionar perfil" onPress={() => go('profile')} />}
             <Button title="Volver al inicio" onPress={close} />
           </View>
         </Sheet>

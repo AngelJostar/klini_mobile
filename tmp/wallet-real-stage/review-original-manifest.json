@@ -1,0 +1,14 @@
+[
+  {
+    "originalSha256": "0BFCC3417DCB4F11FF48CAFC74E1403BD6967DEFA333C665EC2D408D8102729D",
+    "path": "app/Services/Wallet/MobileWalletService.php"
+  },
+  {
+    "originalSha256": "CBC26E2451C9D0E9D3812E5CDCA6CF1D3552E622CB6499E050BC3B942BCFF5EC",
+    "path": "docs/mobile-wallet-payments.md"
+  },
+  {
+    "originalSha256": "EA868EE9296C7701E511FB696133212F660769A7473646AB8CD38CBCD6DB8ABA",
+    "path": "tests/Feature/Api/Mobile/MobileWalletPaymentTest.php"
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "path": "app/Http/Controllers/Api/Mobile/V1/WalletController.php",
+    "originalSha256": "5689D0534734D518809D223AAE765CD42EADDCB7969CE4DAC00E2713FD43D249"
+  },
+  {
+    "path": "app/Models/MobileWalletAccount.php",
+    "originalSha256": "9449DC40C13B077EDE8E08AFAD9554C05C5ABADDE8515F31CA0BDECE7DC0F8F7"
+  },
+  {
+    "path": "app/Models/MobileWalletMovement.php",
+    "originalSha256": "2DC311A02EEC3C379F7A148F878AACE2545ACD8E98092FCC45D30BD050815098"
+  },
+  {
+    "path": "app/Models/MobileWalletRecharge.php",
+    "originalSha256": "F9E4BCF7501D3C0B789476AEDC71BF7A98EF36D5ECBAF8A6246E5128CE40CF17"
+  },
+  {
+    "path": "app/Models/MobileWalletWebhookEvent.php",
+    "originalSha256": "806CBB2F5625A0AF48C95B2C9EE72ABF5BF479A55F871CF2F4CDFAB2FA5B9796"
+  },
+  {
+    "path": "app/Services/Wallet/MobileWalletService.php",
+    "originalSha256": "39AC477BBAAB1B2E12DBD7255C82F0B32751805AE2E3C21C50C9BF13F38FEAE5"
+  },
+  {
+    "path": "app/Services/Wallet/StripeWalletGateway.php",
+    "originalSha256": "19681E44EF3CD7023CA72C8DE3DB3350EED7095AF1836B6FC56B08DFCE9FEEBD"
+  },
+  {
+    "path": "app/Services/Wallet/WalletPaymentException.php",
+    "originalSha256": "5A63640D0D606D4620E667D6A28A382C7F8517360BF8BA8A23C84DA4E3E25830"
+  },
+  {
+    "path": "config/wallet-payments.php",
+    "originalSha256": "0B44A0C6BF1CFD59410F6342DB107DB2E3FB2141B7358B135EF83A5D9C662FC3"
+  },
+  {
+    "path": "database/migrations/2026_11_12_000001_create_mobile_wallet_tables.php",
+    "originalSha256": "55362327F185CF21901CE7C4C6183A4EF8EBDDE8FEB561EDB54DAEDC24A19EDB"
+  },
+  {
+    "path": "docs/mobile-wallet-payments.md",
+    "originalSha256": "66F5BB6346FFEFC41C9503FB69A0DD91320F54CA1700404607548091A2D331C4"
+  },
+  {
+    "path": "routes/api.php",
+    "originalSha256": "2B80FAA108CCAA04F02DCA1AA31530E32F387EDD0087CC163557E9FF0C00FFDB"
+  },
+  {
+    "path": "tests/Feature/Api/Mobile/MobileWalletPaymentTest.php",
+    "originalSha256": "DDA99D57205D856BB6498E80D7577D817D16645BEF070228CB7B97A8309CAA21"
+  }
+]

@@ -365,12 +365,14 @@ export function Sheet({
   children,
   footer,
   step,
+  notice = "Datos de ejemplo · Guardado en este dispositivo",
 }: PropsWithChildren<{
   title: string;
   onClose: () => void;
   onBack?: () => void;
   footer?: ReactNode;
   step?: number;
+  notice?: string;
 }>) {
   return (
     <View style={styles.sheetOuter}>
@@ -436,7 +438,7 @@ export function Sheet({
           >
             {children}
             <Text style={styles.demo}>
-              Datos de ejemplo · Guardado en este dispositivo
+              {notice}
             </Text>
           </ScrollView>
           {footer && <View style={styles.sheetFooter}>{footer}</View>}

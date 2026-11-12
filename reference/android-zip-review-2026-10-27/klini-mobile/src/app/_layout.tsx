@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Stack } from 'expo-router';
-import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, AppState as NativeAppState, Image, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppProvider, useAppStore } from '../state/store';
 import { colors } from '../components/ui';
+import { syncMedicationAlerts } from '../services/medicationNotifications';
+import MedicationReminderProvider from '../components/MedicationReminderProvider';
+import StripeTestProvider from '../components/StripeTestProvider';
+import WalletPaymentProvider from '../components/WalletPaymentProvider';
+import WalletAccountSessionProvider from '../state/walletAccountSession';
 
 export const unstable_settings = { anchor: 'index' };
 
 function Navigation() {
-  const { ready } = useAppStore();
+  const { ready, state } = useAppStore();
+  useEffect(() => {
+    if (!ready) return;
+    // Reconcile edits, profile changes and resets, including an empty alert list.
+    // Permission prompts belong exclusively to explicit Save/Activate actions.
+    void syncMedicationAlerts(state);
+    const subscription = NativeAppState.addEventListener('change', status => {
+      if (status === 'active') void syncMedicationAlerts(state);
+    });
+    return () => subscription.remove();
+  }, [ready, state]);
   if (!ready)
     return (
       <View style={s.loading}>
@@ -19,6 +34,7 @@ function Navigation() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
+      <Stack.Screen name="medication-reminder" options={{ presentation: 'transparentModal', animation: 'fade', gestureEnabled: false, contentStyle: { backgroundColor: 'transparent' } }} />
       <Stack.Screen
         name="[section]"
         options={{
@@ -35,7 +51,7 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <AppProvider>
-        <Navigation />
+        <WalletAccountSessionProvider><WalletPaymentProvider><StripeTestProvider><MedicationReminderProvider><Navigation /></MedicationReminderProvider></StripeTestProvider></WalletPaymentProvider></WalletAccountSessionProvider>
       </AppProvider>
     </SafeAreaProvider>
   );

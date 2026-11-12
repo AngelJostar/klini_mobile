@@ -1,10 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Keyboard, Pressable, StyleSheet, Text, View } from 'react-native';
+import Constants from 'expo-constants';
+import { Keyboard, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import ArchivePopup from '../components/ArchivePopup';
 import BodyParameterListRow from '../components/BodyParameterListRow';
 import AppleHealthHistoryPopup from '../components/AppleHealthHistoryPopup';
 import AppleHealthLiveReadings from '../components/AppleHealthLiveReadings';
-import { emptyAppleHealthPreferences, orderedHealthCategories } from '../domain/appleHealth';
+import { canUseAppleHealthRuntime, emptyAppleHealthPreferences, orderedHealthCategories } from '../domain/appleHealth';
 import AppleHealthPanel from '../components/AppleHealthPanel';
 import AppleHealthInfoPopup from '../components/AppleHealthInfoPopup';
 import AppleHealthOptionsPopup from '../components/AppleHealthOptionsPopup';
@@ -53,7 +54,7 @@ function BodyParametersContent({ onClose }: { onClose: () => void }) {
   const filteredReadings = useMemo(() => listBodyParameters(state.profile.id, state.records, undefined, listFilters), [state.profile.id, state.records, listFilters]);
   const history = useMemo(() => bodyParameterHistory(state.profile.id, state.records, selectedKind), [state.profile.id, state.records, selectedKind]);
   const filteredHistory = useMemo(() => filterBodyParameterReadings(history, filters), [history, filters]);
-  const healthActive = healthOwner && healthPreferences.enabled;
+  const healthActive = canUseAppleHealthRuntime(Platform.OS, Constants.executionEnvironment) && healthOwner && healthPreferences.enabled;
   const healthReplacesHeartRate = healthActive && healthPreferences.selected.includes('HKQuantityTypeIdentifierHeartRate');
   const visible = filteredReadings.filter(reading => (!healthReplacesHeartRate || reading.kind !== 'heart-rate') && (tab === 'all' || readings.find(item => item.kind === reading.kind)?.favorite));
   const latest = history[0];
@@ -187,8 +188,8 @@ function BodyParametersContent({ onClose }: { onClose: () => void }) {
             {listFiltersActive && <View style={s.listClearSlot}>{clearFiltersButton}</View>}
           </View>
         </View>
-        <AppleHealthPanel onShowInfo={() => setHealthInfoOpen(true)} optionsOpen={healthOptionsOpen} enabled={healthOwner && healthPreferences.enabled} onDisable={() => updateSettings({ appleHealth: { ...healthPreferences, enabled: false } })} onOptionsChange={open => { if (open) setHealthCategories(healthPreferences.selected.length ? [...healthPreferences.selected] : HEALTH_CATEGORIES.map(item => item.id)); setHealthOptionsOpen(open); }} />
-        {healthOwner && healthPreferences.enabled && <AppleHealthLiveReadings selected={healthPreferences.selected} onOpenHistory={setHealthHistory} />}
+        <AppleHealthPanel onShowInfo={() => setHealthInfoOpen(true)} optionsOpen={healthOptionsOpen} enabled={healthActive} onDisable={() => updateSettings({ appleHealth: { ...healthPreferences, enabled: false } })} onOptionsChange={open => { if (open) setHealthCategories(healthPreferences.selected.length ? [...healthPreferences.selected] : HEALTH_CATEGORIES.map(item => item.id)); setHealthOptionsOpen(open); }} />
+        {healthActive && <AppleHealthLiveReadings selected={healthPreferences.selected} onOpenHistory={setHealthHistory} />}
         {visible.map(reading => <BodyParameterListRow key={reading.kind} testID={`body-row-${reading.kind}`} label={bodyParameterDefinition(reading.kind).label} icon={bodyParameterDefinition(reading.kind).icon} value={formatBodyParameterValue(reading)} unit={reading.unit} source={`${reading.source}${reading.origin === 'demo' ? ' · ejemplo' : ''}`} sourceIcon={sourceIcon(reading.source)} accessibilityLabel={`${bodyParameterDefinition(reading.kind).label}, ${formatBodyParameterValue(reading)} ${reading.unit}, ${reading.source}${reading.origin === 'demo' ? ', dato de ejemplo' : ''}`} onPress={() => openHistory(reading.kind)} />)}
         {!visible.length && !healthActive && <View style={s.empty}><Icon name={listFiltersActive ? 'filter' : tab === 'favorites' ? 'heart' : 'activity'} size={28} color={colors.teal} /><Text style={s.emptyTitle}>{listFiltersActive ? 'No hay registros' : tab === 'favorites' ? 'Aún no hay favoritos' : 'Aún no hay registros'}</Text><Text style={s.hint}>{listFiltersActive ? 'Prueba con otros filtros o bórralos para ver los parámetros.' : tab === 'favorites' ? 'Abre un parámetro y márcalo como favorito.' : 'Agrega una medición corporal para comenzar.'}</Text></View>}
       </>}
